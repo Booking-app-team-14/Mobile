@@ -2,4 +2,4 @@
 
 Student 1: Marija Živanović
 Student 2: Vuk Dimitrov
-Student 3Č Nikola Mitrović
+Student 3: Nikola Mitrović
