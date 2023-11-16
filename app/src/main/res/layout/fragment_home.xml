@@ -1,17 +1,27 @@
-<?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:id="@+id/homeFragment"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:id="@+id/homeFragment"
     tools:context=".HomeFragment">
 
-    <androidx.cardview.widget.CardView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <!-- SearchView for search functionality -->
+    <SearchView
+        android:id="@+id/searchView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:queryHint="Search for accommodations"
+        android:iconifiedByDefault="false" />
+
+
+    <!-- CardView for displaying each accommodation -->
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:id="@+id/cardView"
         app:cardCornerRadius="8dp"
         app:cardElevation="4dp">
@@ -77,9 +87,8 @@
                     android:text="Price/Night: $100"
                     android:textSize="14sp"
                     android:textColor="@color/text_black"
-                   />
+                    />
             </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
-
-</FrameLayout>
+</LinearLayout>

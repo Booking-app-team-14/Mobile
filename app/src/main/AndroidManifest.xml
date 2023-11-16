@@ -22,7 +22,9 @@
         <activity
             android:name=".LoginScreen"
             android:exported="false" />
-
+        <activity
+            android:name=".AccommodationDetailsScreen"
+            android:exported="false" />
         <activity
             android:name=".SplashScreen"
             android:exported="true">
