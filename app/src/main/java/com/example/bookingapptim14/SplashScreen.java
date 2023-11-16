@@ -1,16 +1,10 @@
-package com.example.bookingapptim14.Screens;
+package com.example.bookingapptim14;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
-import android.widget.Toast;
-
-import com.example.bookingapptim14.R;
 
 public class SplashScreen extends AppCompatActivity {
 
@@ -21,11 +15,11 @@ public class SplashScreen extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(SplashScreen.this, HomeScreen.class);
+                Intent intent = new Intent(SplashScreen.this, MainActivity.class);
                 startActivity(intent);
                 finish();
             }
-        }, 3000);
+        }, 5000);
     }
 
 }

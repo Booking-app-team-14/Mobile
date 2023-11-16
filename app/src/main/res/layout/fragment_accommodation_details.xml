@@ -1,0 +1,335 @@
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent">
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:orientation="vertical">
+
+
+        <View
+            android:id="@+id/_bg__typcn_star_full_outline2"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="388dp"
+            android:background="@drawable/baseline_star_24" />
+
+        <View
+            android:id="@+id/_bg__typcn_star_full_outline4"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginStart="80dp"
+            android:layout_marginTop="388dp"
+            android:background="@drawable/baseline_star_24" />
+
+        <!-- View 2 -->
+        <View
+            android:id="@+id/_bg__typcn_star_full_outline5"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginStart="64dp"
+            android:layout_marginTop="388dp"
+            android:background="@drawable/baseline_star_24" />
+
+        <!-- View 3 -->
+        <View
+            android:id="@+id/_bg__typcn_star_full_outline6"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="388dp"
+            android:background="@drawable/baseline_star_24" />
+
+
+        <!-- View 4 -->
+        <View
+            android:id="@+id/_bg__ic_round_arrow_back"
+            android:layout_width="23dp"
+            android:layout_height="23dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/ic_round_arrow_back" />
+
+        <!-- View 5 -->
+        <View
+            android:id="@+id/_bg__bi_three_dots_vertical"
+            android:layout_width="24dp"
+            android:layout_height="23dp"
+            android:layout_marginStart="371dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/baseline_more_horiz_24" />
+
+
+        <Button
+            android:id="@+id/common_button"
+            android:layout_width="367dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="660dp"
+            android:text="@string/button_string"
+            android:textColor="@color/white" />
+
+        <ImageView
+            android:id="@+id/rectangle_1"
+            android:layout_width="356dp"
+            android:layout_height="263dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="56dp"
+            android:contentDescription="rectangle_1"
+            android:src="@drawable/rectangle" />
+
+        <!-- TextView 1 -->
+        <TextView
+            android:id="@+id/barcino"
+            android:layout_width="107.4dp"
+            android:layout_height="36.4dp"
+            android:text="@string/barcino_string"
+            android:textColor="@color/text_black"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="337dp" />
+
+        <!-- TextView 2 -->
+        <TextView
+            android:id="@+id/__650"
+            android:layout_width="82.4dp"
+            android:layout_height="36.4dp"
+            android:text="@string/__650_string"
+            android:textColor="@color/primary_blue"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_marginStart="313dp"
+            android:layout_marginTop="337dp" />
+
+        <!-- TextView 3 -->
+        <TextView
+            android:id="@+id/per_night"
+            android:layout_width="67.2dp"
+            android:layout_height="21.2dp"
+            android:text="@string/per_night_string"
+            android:textColor="@color/text_gray"
+            android:textSize="12sp"
+            android:layout_marginStart="313dp"
+            android:layout_marginTop="367dp" />
+
+        <!-- TextView 4 -->
+        <TextView
+            android:id="@+id/_2464_royal_ln__mesa__new_jersey_"
+            android:layout_width="241.4dp"
+            android:layout_height="25.4dp"
+            android:text="@string/_2464_royal_ln__mesa__new_jersey__string"
+            android:textColor="@color/text_gray"
+            android:textSize="14sp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="367dp" />
+
+        <!-- View -->
+        <View
+            android:id="@+id/_bg__typcn_star_full_outline"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:background="@drawable/baseline_star_24"
+            android:layout_marginStart="48dp"
+            android:layout_marginTop="388dp" />
+
+        <TextView
+            android:id="@+id/_4_8"
+            android:layout_width="78dp"
+            android:layout_height="28dp"
+            android:text="@string/_4_8_string"
+            android:textColor="@color/text_black"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginStart="107dp"
+            android:layout_marginTop="388dp" />
+
+        <!-- TextView details -->
+        <TextView
+            android:id="@+id/details"
+            android:layout_width="67.6dp"
+            android:layout_height="23.6dp"
+            android:text="@string/details_string"
+            android:textColor="@color/text_black"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="433dp" />
+
+        <!-- TextView lorem ipsum -->
+        <TextView
+            android:id="@+id/lorem_ipsum_dolor_sit_amet_consectetur__eu_est_sapien_congue_faucibus__tempor_iaculis_lobortis_posuere_in_non__est_placerat_vitae_nulla_nunc_porttitor_justo__nisl_cum_fermentum_bibendum_tortor_lorem_interdum_turpis_condimentum_felis_"
+            android:layout_width="378dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="457dp"
+            android:text="@string/lorem_string"
+            android:textColor="@color/text_gray"
+            android:textSize="14sp" />
+
+        <!-- TextView facilities -->
+        <TextView
+            android:id="@+id/facilities"
+            android:layout_width="82.6dp"
+            android:layout_height="23.6dp"
+            android:text="@string/facilities_string"
+            android:textColor="@color/text_black"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="532dp" />
+
+        <!-- Views -->
+        <View
+            android:id="@+id/_bg__frame_5"
+            android:layout_width="95dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="556dp" />
+
+        <View
+            android:id="@+id/_bg__frame_"
+            android:layout_width="120dp"
+            android:layout_height="34dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="556dp" />
+
+        <View
+            android:id="@+id/_bg__frame_2"
+            android:layout_width="95dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="155dp"
+            android:layout_marginTop="601dp" />
+
+        <View
+            android:id="@+id/_bg__frame_3"
+            android:layout_width="124dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="601dp" />
+
+        <View
+            android:id="@+id/_bg__frame_4"
+            android:layout_width="90dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="299dp"
+            android:layout_marginTop="557dp" />
+
+        <View
+            android:id="@+id/_bg__frame_6"
+            android:layout_width="116dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="154dp"
+            android:layout_marginTop="556dp" />
+
+        <!-- View ic_outline_free_breakfast -->
+
+        <View
+            android:id="@+id/_bg__ic_sharp_wifi"
+            android:layout_width="33dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="279dp"
+            android:layout_marginTop="557dp"
+            android:background="@drawable/ic_sharp_wifi" />
+
+        <View
+            android:id="@+id/ic_outline_free_breakfast"
+            android:layout_width="32dp"
+            android:layout_height="33dp"
+            android:background="@drawable/ic_outline_free_breakfast"
+            android:layout_marginStart="155dp"
+            android:layout_marginTop="601dp" />
+
+        <!-- View tabler_air_conditioning -->
+        <View
+            android:id="@+id/tabler_air_conditioning"
+            android:layout_width="30dp"
+            android:layout_height="38dp"
+            android:background="@drawable/tabler_air_conditioning"
+            android:layout_marginStart="155dp"
+            android:layout_marginTop="556dp" />
+
+        <!-- View heroicons_tv -->
+        <View
+            android:id="@+id/heroicons_tv"
+            android:layout_width="34dp"
+            android:layout_height="32dp"
+            android:background="@drawable/heroicons_tv"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="601dp" />
+
+        <!-- View fluent_swimming_pool_24_filled -->
+        <View
+            android:id="@+id/fluent_swimming_pool_24_filled"
+            android:layout_width="31dp"
+            android:layout_height="31dp"
+            android:background="@drawable/fluent_swimming_pool_24_filled"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="557dp" />
+
+        <!-- TextView free_wifi -->
+
+        <!-- TextView air_condition -->
+        <TextView
+            android:id="@+id/free_wifi"
+            android:layout_width="61dp"
+            android:layout_height="33dp"
+            android:layout_marginStart="312dp"
+            android:layout_marginTop="557dp"
+            android:gravity="center"
+            android:text="@string/free_wifi_string"
+            android:textColor="@color/primary_blue"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/air_condition"
+            android:layout_width="84dp"
+            android:layout_height="35dp"
+            android:text="@string/air_condition_string"
+            android:textColor="@color/primary_blue"
+            android:textSize="12sp"
+            android:layout_marginStart="191dp"
+            android:layout_marginTop="557dp" />
+
+        <!-- TextView pool -->
+        <TextView
+            android:id="@+id/pool"
+            android:layout_width="87dp"
+            android:layout_height="34dp"
+            android:text="@string/pool_string"
+            android:textColor="@color/primary_blue"
+            android:textSize="12sp"
+            android:gravity="center"
+            android:layout_marginStart="48dp"
+            android:layout_marginTop="556dp" />
+
+        <!-- TextView breakfast -->
+        <TextView
+            android:id="@+id/breakfast"
+            android:layout_width="64dp"
+            android:layout_height="32dp"
+            android:text="@string/breakfast_string"
+            android:textColor="@color/primary_blue"
+            android:gravity="center"
+            android:textSize="12sp"
+            android:layout_marginStart="182dp"
+            android:layout_marginTop="602dp" />
+
+        <!-- TextView tv -->
+        <TextView
+            android:id="@+id/tv"
+            android:layout_width="91dp"
+            android:layout_height="32dp"
+            android:gravity="center"
+            android:text="@string/tv_string"
+            android:textColor="@color/primary_blue"
+            android:textSize="12sp"
+            android:layout_marginStart="48dp"
+            android:layout_marginTop="601dp" />
+
+    </FrameLayout>
+</ScrollView>
