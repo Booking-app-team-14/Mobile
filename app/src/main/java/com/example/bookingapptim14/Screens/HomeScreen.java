@@ -47,7 +47,7 @@ public class HomeScreen extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Navigacija na ReservationsScreen
-                startActivity(new Intent(HomeScreen.this, ReservationsScreen.class));
+                startActivity(new Intent(HomeScreen.this, AccommodationDetailsScreen.class));
             }
         });
 
