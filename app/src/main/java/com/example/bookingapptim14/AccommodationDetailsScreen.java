@@ -7,7 +7,6 @@ public class AccommodationDetailsScreen extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_accommodation_details); // Replace with your layout file
-        // Other initialization code or logic
+        setContentView(R.layout.activity_accommodation_details);
     }
 }

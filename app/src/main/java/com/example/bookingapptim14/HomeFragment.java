@@ -1,6 +1,5 @@
 package com.example.bookingapptim14;
 
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,13 +9,10 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.ImageView;
 
 import androidx.cardview.widget.CardView;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
+
 
 public class HomeFragment extends Fragment {
 
@@ -24,26 +20,23 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        // Find the filter icon ImageView in your layout
         ImageView filterIcon = view.findViewById(R.id.filterIcon);
 
-        // Set an OnClickListener for the filter icon
         filterIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Call the method to show the filter dialog
+
                 showFilterDialog();
             }
         });
 
-        // Find the view (e.g., CardView) in your layout
+
         CardView cardView = view.findViewById(R.id.cardView);
 
-        // Set OnClickListener for the CardView
         cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Start the AccommodationDetailsScreen activity
+
                 Intent intent = new Intent(getActivity(), AccommodationDetailsScreen.class);
                 startActivity(intent);
             }
@@ -73,7 +66,5 @@ public class HomeFragment extends Fragment {
 
        AlertDialog dialog = builder.create();
        dialog.show();
-}
-
-
+    }
 }

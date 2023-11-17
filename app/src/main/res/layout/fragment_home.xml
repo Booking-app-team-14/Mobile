@@ -7,14 +7,12 @@
     android:padding="16dp"
     tools:context=".HomeFragment">
 
-    <!-- SearchView for search functionality -->
     <LinearLayout
         android:id="@+id/searchFilterLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <!-- SearchView with layout_weight="0.7" to take 70% of the width -->
         <SearchView
             android:id="@+id/searchView"
             android:layout_width="0dp"
@@ -23,7 +21,6 @@
             android:iconifiedByDefault="false"
             android:queryHint="Search for accommodations" />
 
-        <!-- ImageView with layout_weight="0.3" to take 30% of the width -->
         <ImageView
             android:id="@+id/filterIcon"
             android:layout_width="0dp"
@@ -37,14 +34,12 @@
             android:src="@drawable/baseline_filter_list_24" />
     </LinearLayout>
 
-    <!-- Separator View to position ScrollView -->
     <View
         android:id="@+id/separatorView"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@id/searchFilterLayout" />
 
-    <!-- ScrollView with CardViews -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -70,21 +65,18 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <!-- ImageView for displaying apartment image -->
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:scaleType="centerCrop"
                     android:src="@drawable/rectangle" />
 
-                <!-- LinearLayout for apartment details -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:padding="16dp">
 
-                    <!-- TextView for apartment description -->
                     <TextView
                         android:id="@+id/descriptionTextView"
                         android:layout_width="match_parent"
@@ -95,14 +87,12 @@
                         android:lineSpacingExtra="4dp"
                         android:fontFamily="@font/inter_medium" />
 
-                    <!-- Divider line -->
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:layout_marginTop="8dp"
                         android:background="@color/text_gray" />
 
-                    <!-- LinearLayout for rating and price -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -110,7 +100,6 @@
                         android:gravity="center_vertical"
                         android:layout_marginTop="8dp">
 
-                        <!-- TextView for rating -->
                         <TextView
                             android:id="@+id/ratingTextView"
                             android:layout_width="0dp"
@@ -123,7 +112,6 @@
                             android:drawablePadding="8dp"
                             android:gravity="start|center_vertical" />
 
-                        <!-- TextView for price per night -->
                         <TextView
                             android:id="@+id/priceTextView"
                             android:layout_width="0dp"
@@ -152,21 +140,18 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <!-- ImageView for displaying apartment image -->
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:scaleType="centerCrop"
                     android:src="@drawable/rectangle" />
 
-                <!-- LinearLayout for apartment details -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:padding="16dp">
 
-                    <!-- TextView for apartment description -->
                     <TextView
                         android:id="@+id/descriptionTextView2"
                         android:layout_width="match_parent"
@@ -177,14 +162,12 @@
                         android:lineSpacingExtra="4dp"
                         android:fontFamily="@font/inter_medium" />
 
-                    <!-- Divider line -->
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:layout_marginTop="8dp"
                         android:background="@color/text_gray" />
 
-                    <!-- LinearLayout for rating and price -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -192,7 +175,6 @@
                         android:gravity="center_vertical"
                         android:layout_marginTop="8dp">
 
-                        <!-- TextView for rating -->
                         <TextView
                             android:id="@+id/ratingTextView2"
                             android:layout_width="0dp"
@@ -205,7 +187,6 @@
                             android:drawablePadding="8dp"
                             android:gravity="start|center_vertical" />
 
-                        <!-- TextView for price per night -->
                         <TextView
                             android:id="@+id/priceTextView2"
                             android:layout_width="0dp"
@@ -234,21 +215,18 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <!-- ImageView for displaying apartment image -->
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:scaleType="centerCrop"
                     android:src="@drawable/rectangle" />
 
-                <!-- LinearLayout for apartment details -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:padding="16dp">
 
-                    <!-- TextView for apartment description -->
                     <TextView
                         android:id="@+id/descriptionTextView3"
                         android:layout_width="match_parent"
@@ -259,14 +237,12 @@
                         android:lineSpacingExtra="4dp"
                         android:fontFamily="@font/inter_medium" />
 
-                    <!-- Divider line -->
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:layout_marginTop="8dp"
                         android:background="@color/text_gray" />
 
-                    <!-- LinearLayout for rating and price -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -274,7 +250,6 @@
                         android:gravity="center_vertical"
                         android:layout_marginTop="8dp">
 
-                        <!-- TextView for rating -->
                         <TextView
                             android:id="@+id/ratingTextView3"
                             android:layout_width="0dp"
@@ -287,7 +262,6 @@
                             android:drawablePadding="8dp"
                             android:gravity="start|center_vertical" />
 
-                        <!-- TextView for price per night -->
                         <TextView
                             android:id="@+id/priceTextView3"
                             android:layout_width="0dp"
@@ -316,21 +290,18 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <!-- ImageView for displaying apartment image -->
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:scaleType="centerCrop"
                     android:src="@drawable/rectangle" />
 
-                <!-- LinearLayout for apartment details -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:padding="16dp">
 
-                    <!-- TextView for apartment description -->
                     <TextView
                         android:id="@+id/descriptionTextView4"
                         android:layout_width="match_parent"
@@ -341,14 +312,12 @@
                         android:lineSpacingExtra="4dp"
                         android:fontFamily="@font/inter_medium" />
 
-                    <!-- Divider line -->
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:layout_marginTop="8dp"
                         android:background="@color/text_gray" />
 
-                    <!-- LinearLayout for rating and price -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -356,7 +325,6 @@
                         android:gravity="center_vertical"
                         android:layout_marginTop="8dp">
 
-                        <!-- TextView for rating -->
                         <TextView
                             android:id="@+id/ratingTextView4"
                             android:layout_width="0dp"
@@ -369,7 +337,6 @@
                             android:drawablePadding="8dp"
                             android:gravity="start|center_vertical" />
 
-                        <!-- TextView for price per night -->
                         <TextView
                             android:id="@+id/priceTextView4"
                             android:layout_width="0dp"
@@ -398,21 +365,18 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <!-- ImageView for displaying apartment image -->
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:scaleType="centerCrop"
                     android:src="@drawable/rectangle" />
 
-                <!-- LinearLayout for apartment details -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:padding="16dp">
 
-                    <!-- TextView for apartment description -->
                     <TextView
                         android:id="@+id/descriptionTextView5"
                         android:layout_width="match_parent"
@@ -423,14 +387,12 @@
                         android:lineSpacingExtra="4dp"
                         android:fontFamily="@font/inter_medium" />
 
-                    <!-- Divider line -->
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:layout_marginTop="8dp"
                         android:background="@color/text_gray" />
 
-                    <!-- LinearLayout for rating and price -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -438,7 +400,6 @@
                         android:gravity="center_vertical"
                         android:layout_marginTop="8dp">
 
-                        <!-- TextView for rating -->
                         <TextView
                             android:id="@+id/ratingTextView5"
                             android:layout_width="0dp"
@@ -451,7 +412,6 @@
                             android:drawablePadding="8dp"
                             android:gravity="start|center_vertical" />
 
-                        <!-- TextView for price per night -->
                         <TextView
                             android:id="@+id/priceTextView5"
                             android:layout_width="0dp"

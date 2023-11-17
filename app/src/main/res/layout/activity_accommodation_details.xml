@@ -25,7 +25,7 @@
             android:layout_marginTop="388dp"
             android:background="@drawable/baseline_star_24" />
 
-        <!-- View 2 -->
+
         <View
             android:id="@+id/_bg__typcn_star_full_outline5"
             android:layout_width="16dp"
@@ -34,7 +34,7 @@
             android:layout_marginTop="388dp"
             android:background="@drawable/baseline_star_24" />
 
-        <!-- View 3 -->
+
         <View
             android:id="@+id/_bg__typcn_star_full_outline6"
             android:layout_width="16dp"
@@ -52,8 +52,6 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="15dp"
             android:background="@drawable/ic_round_arrow_back" />
-
-        <!-- View 5 -->
 
 
         <View
@@ -82,7 +80,6 @@
             android:contentDescription="rectangle_1"
             android:src="@drawable/rectangle" />
 
-        <!-- TextView 1 -->
         <TextView
             android:id="@+id/barcino"
             android:layout_width="107.4dp"
@@ -94,7 +91,6 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="337dp" />
 
-        <!-- TextView 2 -->
         <TextView
             android:id="@+id/__650"
             android:layout_width="82.4dp"
@@ -106,7 +102,6 @@
             android:layout_marginStart="313dp"
             android:layout_marginTop="337dp" />
 
-        <!-- TextView 3 -->
         <TextView
             android:id="@+id/per_night"
             android:layout_width="67.2dp"
@@ -117,7 +112,6 @@
             android:layout_marginStart="313dp"
             android:layout_marginTop="367dp" />
 
-        <!-- TextView 4 -->
         <TextView
             android:id="@+id/_2464_royal_ln__mesa__new_jersey_"
             android:layout_width="241.4dp"
@@ -128,7 +122,6 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="367dp" />
 
-        <!-- View -->
         <View
             android:id="@+id/_bg__typcn_star_full_outline"
             android:layout_width="16dp"
@@ -148,7 +141,6 @@
             android:layout_marginStart="107dp"
             android:layout_marginTop="388dp" />
 
-        <!-- TextView details -->
         <TextView
             android:id="@+id/details"
             android:layout_width="67.6dp"
@@ -160,7 +152,6 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="433dp" />
 
-        <!-- TextView lorem ipsum -->
         <TextView
             android:id="@+id/lorem_ipsum_dolor_sit_amet_consectetur__eu_est_sapien_congue_faucibus__tempor_iaculis_lobortis_posuere_in_non__est_placerat_vitae_nulla_nunc_porttitor_justo__nisl_cum_fermentum_bibendum_tortor_lorem_interdum_turpis_condimentum_felis_"
             android:layout_width="378dp"
@@ -171,7 +162,6 @@
             android:textColor="@color/text_gray"
             android:textSize="14sp" />
 
-        <!-- TextView facilities -->
         <TextView
             android:id="@+id/facilities"
             android:layout_width="82.6dp"
@@ -183,7 +173,6 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="543dp" />
 
-        <!-- Views -->
         <View
             android:id="@+id/_bg__frame_5"
             android:layout_width="95dp"
@@ -226,8 +215,6 @@
             android:layout_marginStart="154dp"
             android:layout_marginTop="567dp" />
 
-        <!-- View ic_outline_free_breakfast -->
-
         <View
             android:id="@+id/_bg__ic_sharp_wifi"
             android:layout_width="33dp"
@@ -244,7 +231,6 @@
             android:layout_marginStart="155dp"
             android:layout_marginTop="612dp" />
 
-        <!-- View tabler_air_conditioning -->
         <View
             android:id="@+id/tabler_air_conditioning"
             android:layout_width="30dp"
@@ -253,7 +239,6 @@
             android:layout_marginStart="155dp"
             android:layout_marginTop="567dp" />
 
-        <!-- View heroicons_tv -->
         <View
             android:id="@+id/heroicons_tv"
             android:layout_width="34dp"
@@ -262,7 +247,6 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="612dp" />
 
-        <!-- View fluent_swimming_pool_24_filled -->
         <View
             android:id="@+id/fluent_swimming_pool_24_filled"
             android:layout_width="31dp"
@@ -271,9 +255,6 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="568dp" />
 
-        <!-- TextView free_wifi -->
-
-        <!-- TextView air_condition -->
         <TextView
             android:id="@+id/free_wifi"
             android:layout_width="61dp"
@@ -295,7 +276,6 @@
             android:layout_marginStart="191dp"
             android:layout_marginTop="568dp" />
 
-        <!-- TextView pool -->
         <TextView
             android:id="@+id/pool"
             android:layout_width="87dp"
@@ -307,7 +287,6 @@
             android:layout_marginStart="48dp"
             android:layout_marginTop="568dp" />
 
-        <!-- TextView breakfast -->
         <TextView
             android:id="@+id/breakfast"
             android:layout_width="64dp"
@@ -319,7 +298,6 @@
             android:layout_marginStart="182dp"
             android:layout_marginTop="613dp" />
 
-        <!-- TextView tv -->
         <TextView
             android:id="@+id/tv"
             android:layout_width="91dp"
@@ -330,6 +308,5 @@
             android:textSize="12sp"
             android:layout_marginStart="48dp"
             android:layout_marginTop="612dp" />
-
     </FrameLayout>
 </ScrollView>

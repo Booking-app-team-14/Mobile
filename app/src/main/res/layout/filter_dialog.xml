@@ -3,15 +3,12 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
-    <!-- Content Layout -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:padding="16dp">
 
-    <!-- Text label for price range -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -20,7 +17,6 @@
         android:textStyle="bold"
         android:layout_marginBottom="8dp"/>
 
-    <!-- RangeSlider for price range -->
     <com.google.android.material.slider.RangeSlider
         android:id="@+id/rangeSlider"
         android:layout_width="wrap_content"
@@ -31,7 +27,6 @@
         android:contentDescription="Price Range"
         android:layout_marginBottom="16dp" />
 
-    <!-- Text label for facilities -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -40,14 +35,12 @@
         android:textStyle="bold"
         android:layout_marginBottom="8dp"/>
 
-    <!-- GridLayout for grouping CheckBoxes -->
     <GridLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:columnCount="3"
         android:rowCount="2">
 
-        <!-- CheckBoxes arranged in groups of three with labels -->
         <CheckBox
             android:id="@+id/checkbox_wifi"
             android:layout_width="wrap_content"
@@ -127,14 +120,12 @@
         android:layout_marginTop="16dp"
         android:layout_marginBottom="8dp"/>
 
-    <!-- GridLayout for grouping CheckBoxes for type of place -->
     <GridLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:columnCount="3"
         android:rowCount="2">
 
-        <!-- CheckBoxes for type of place -->
         <CheckBox
             android:id="@+id/checkbox_apartment"
             android:layout_width="wrap_content"
@@ -154,14 +145,14 @@
 
     </GridLayout>
     <LinearLayout
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="end">
 
-
-
     </LinearLayout>
 
 </LinearLayout>
+
 </ScrollView>
