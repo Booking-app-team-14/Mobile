@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HomeFragment">
+    tools:context=".guest.SavedFragmentGuest">
 
     <TextView
         android:layout_width="match_parent"
@@ -11,6 +11,6 @@
         android:gravity="center"
         android:textSize="16sp"
         android:fontFamily="@font/inter_bold"
-        android:text="Home Fragment" />
+        android:text="Saved Fragment" />
 
 </FrameLayout>

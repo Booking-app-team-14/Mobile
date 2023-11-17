@@ -1,4 +1,4 @@
-package com.example.bookingapptim14;
+package com.example.bookingapptim14.host;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,45 +11,47 @@ import android.view.MenuItem;
 import android.widget.FrameLayout;
 
 import com.example.bookingapptim14.R;
+import com.example.bookingapptim14.admin.HomeFragmentAdmin;
+import com.example.bookingapptim14.admin.ProfileFragmentAdmin;
+import com.example.bookingapptim14.admin.ReportsFragmentAdmin;
+import com.example.bookingapptim14.admin.RequestsFragmentAdmin;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class MainActivity extends AppCompatActivity {
-
+public class MainActivityHost extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
     private FrameLayout frameLayout;
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener;
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            int itemId = item.getItemId();
+
+            if (itemId == R.id.navHomeHost) {
+                loadFragment(new HomeFragmentHost(), false);
+            }
+            if (itemId == R.id.navReservationsHost) {
+                loadFragment(new ReservationsFragmentHost(), false);
+            }
+            if (itemId == R.id.navNotificationsHost) {
+                loadFragment(new NotificationsFragmentHost(), false);
+            }
+            if (itemId == R.id.navProfileHost) {
+                loadFragment(new ProfileFragmentHost(), false);
+            }
+            return true;
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main_host);
 
         bottomNavigationView = findViewById(R.id.bottomNavView);
         frameLayout = findViewById(R.id.frameLayout);
 
-        mOnNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                int itemId = item.getItemId();
-
-                if (itemId == R.id.navHome) {
-                    loadFragment(new HomeFragment(), false);
-                }
-                if (itemId == R.id.navLiked) {
-                    loadFragment(new SavedFragment(), false);
-                }
-                if (itemId == R.id.navNotifications) {
-                    loadFragment(new NotificationsFragment(), false);
-                }
-                if (itemId == R.id.navProfile) {
-                    loadFragment(new ProfileFragment(), false);
-                }
-                return true;
-            }
-        };
         bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        loadFragment(new HomeFragment(), true);
+        loadFragment(new HomeFragmentHost(), true);
 
     }
 
@@ -75,14 +77,14 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView.setOnNavigationItemSelectedListener(null);
         super.onBackPressed();
         Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.frameLayout);
-        if (currentFragment instanceof HomeFragment) {
-            bottomNavigationView.setSelectedItemId(R.id.navHome);
-        } else if (currentFragment instanceof SavedFragment) {
-            bottomNavigationView.setSelectedItemId(R.id.navLiked);
-        } else if (currentFragment instanceof NotificationsFragment) {
-            bottomNavigationView.setSelectedItemId(R.id.navNotifications);
-        } else if (currentFragment instanceof ProfileFragment) {
-            bottomNavigationView.setSelectedItemId(R.id.navProfile);
+        if (currentFragment instanceof HomeFragmentHost) {
+            bottomNavigationView.setSelectedItemId(R.id.navHomeHost);
+        } else if (currentFragment instanceof ReservationsFragmentHost) {
+            bottomNavigationView.setSelectedItemId(R.id.navReservationsHost);
+        } else if (currentFragment instanceof NotificationsFragmentHost) {
+            bottomNavigationView.setSelectedItemId(R.id.navNotificationsHost);
+        } else if (currentFragment instanceof ProfileFragmentHost) {
+            bottomNavigationView.setSelectedItemId(R.id.navProfileHost);
         }
         bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
