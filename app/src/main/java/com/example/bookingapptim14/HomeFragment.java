@@ -1,5 +1,7 @@
 package com.example.bookingapptim14;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -8,7 +10,9 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.FragmentManager;
@@ -20,10 +24,22 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        // Find the view (e.g., Button, CardView) in your layout
+        // Find the filter icon ImageView in your layout
+        ImageView filterIcon = view.findViewById(R.id.filterIcon);
+
+        // Set an OnClickListener for the filter icon
+        filterIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Call the method to show the filter dialog
+                showFilterDialog();
+            }
+        });
+
+        // Find the view (e.g., CardView) in your layout
         CardView cardView = view.findViewById(R.id.cardView);
 
-        // Set OnClickListener for the view
+        // Set OnClickListener for the CardView
         cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -35,26 +51,29 @@ public class HomeFragment extends Fragment {
 
         return view;
     }
-/*
-    public void showFilterDialog(View view) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Filter Options");
 
-        // Inflate the layout for the dialog
-        View dialogView = getLayoutInflater().inflate(R.layout.dialog_filter_options, null);
-        builder.setView(dialogView);
+   public void showFilterDialog() {
+       AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+       LayoutInflater inflater = requireActivity().getLayoutInflater();
 
-        // Set up checkboxes and their functionality
-        CheckBox checkbox1 = dialogView.findViewById(R.id.checkbox1);
-        CheckBox checkbox2 = dialogView.findViewById(R.id.checkbox2);
-        // Add more checkboxes as needed
+       View dialogView = inflater.inflate(R.layout.filter_dialog, null);
 
-        // Set up your dialog buttons (e.g., Apply, Cancel)
+       builder.setView(dialogView)
+               .setPositiveButton("Apply", new DialogInterface.OnClickListener() {
+                   @Override
+                   public void onClick(DialogInterface dialog, int id) {
+                       // Apply action
+                   }
+               })
+               .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                   public void onClick(DialogInterface dialog, int id) {
+                       // Cancel action
+                   }
+               });
 
-        AlertDialog dialog = builder.create();
-        dialog.show();
-    }
+       AlertDialog dialog = builder.create();
+       dialog.show();
 }
-*/
+
 
 }

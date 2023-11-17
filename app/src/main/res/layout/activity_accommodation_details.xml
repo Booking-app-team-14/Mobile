@@ -4,7 +4,7 @@
     android:layout_height="match_parent">
 
     <FrameLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
@@ -54,14 +54,15 @@
             android:background="@drawable/ic_round_arrow_back" />
 
         <!-- View 5 -->
+
+
         <View
             android:id="@+id/_bg__bi_three_dots_vertical"
             android:layout_width="24dp"
             android:layout_height="23dp"
-            android:layout_marginStart="371dp"
+            android:layout_marginStart="340dp"
             android:layout_marginTop="16dp"
             android:background="@drawable/baseline_more_horiz_24" />
-
 
         <Button
             android:id="@+id/common_button"
