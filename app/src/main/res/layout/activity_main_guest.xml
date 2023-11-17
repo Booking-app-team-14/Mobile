@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".guest.MainActivityGuest">
 
     <FrameLayout
         android:id="@+id/frameLayout"
@@ -18,7 +18,7 @@
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavView"
         android:layout_width="match_parent"
-        app:menu="@menu/bottom_nav_menu"
+        app:menu="@menu/bottom_nav_menu_guest"
         android:layout_height="75dp"
         android:background="@color/white"
         app:itemTextColor="@color/primary_blue"

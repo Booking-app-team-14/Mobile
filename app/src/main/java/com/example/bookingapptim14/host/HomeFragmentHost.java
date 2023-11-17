@@ -1,4 +1,4 @@
-package com.example.bookingapptim14;
+package com.example.bookingapptim14.host;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -14,12 +14,15 @@ import android.widget.ImageView;
 
 import androidx.cardview.widget.CardView;
 
+import com.example.bookingapptim14.AccommodationDetailsScreen;
+import com.example.bookingapptim14.R;
 
-public class HomeFragment extends Fragment {
+
+public class HomeFragmentHost extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        View view = inflater.inflate(R.layout.fragment_home_host, container, false);
         ImageButton heartButton = view.findViewById(R.id.heartButton);
 
         final boolean[] isFavorite = {false};

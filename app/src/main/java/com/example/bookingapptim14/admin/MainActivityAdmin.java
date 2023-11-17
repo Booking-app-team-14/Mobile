@@ -1,4 +1,4 @@
-package com.example.bookingapptim14;
+package com.example.bookingapptim14.admin;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,45 +11,48 @@ import android.view.MenuItem;
 import android.widget.FrameLayout;
 
 import com.example.bookingapptim14.R;
+import com.example.bookingapptim14.guest.HomeFragmentGuest;
+import com.example.bookingapptim14.guest.NotificationsFragmentGuest;
+import com.example.bookingapptim14.guest.ProfileFragmentGuest;
+import com.example.bookingapptim14.guest.SavedFragmentGuest;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivityAdmin extends AppCompatActivity {
 
     private BottomNavigationView bottomNavigationView;
     private FrameLayout frameLayout;
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener;
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            int itemId = item.getItemId();
+
+            if (itemId == R.id.navHomeAdmin) {
+                loadFragment(new HomeFragmentAdmin(), false);
+            }
+            if (itemId == R.id.navReportsAdmin) {
+                loadFragment(new ReportsFragmentAdmin(), false);
+            }
+            if (itemId == R.id.navRequestsAdmin) {
+                loadFragment(new RequestsFragmentAdmin(), false);
+            }
+            if (itemId == R.id.navProfileAdmin) {
+                loadFragment(new ProfileFragmentAdmin(), false);
+            }
+            return true;
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main_admin);
 
         bottomNavigationView = findViewById(R.id.bottomNavView);
         frameLayout = findViewById(R.id.frameLayout);
 
-        mOnNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                int itemId = item.getItemId();
-
-                if (itemId == R.id.navHome) {
-                    loadFragment(new HomeFragment(), false);
-                }
-                if (itemId == R.id.navLiked) {
-                    loadFragment(new SavedFragment(), false);
-                }
-                if (itemId == R.id.navNotifications) {
-                    loadFragment(new NotificationsFragment(), false);
-                }
-                if (itemId == R.id.navProfile) {
-                    loadFragment(new ProfileFragment(), false);
-                }
-                return true;
-            }
-        };
         bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        loadFragment(new HomeFragment(), true);
+        loadFragment(new HomeFragmentAdmin(), true);
 
     }
 
@@ -75,14 +78,14 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView.setOnNavigationItemSelectedListener(null);
         super.onBackPressed();
         Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.frameLayout);
-        if (currentFragment instanceof HomeFragment) {
-            bottomNavigationView.setSelectedItemId(R.id.navHome);
-        } else if (currentFragment instanceof SavedFragment) {
-            bottomNavigationView.setSelectedItemId(R.id.navLiked);
-        } else if (currentFragment instanceof NotificationsFragment) {
-            bottomNavigationView.setSelectedItemId(R.id.navNotifications);
-        } else if (currentFragment instanceof ProfileFragment) {
-            bottomNavigationView.setSelectedItemId(R.id.navProfile);
+        if (currentFragment instanceof HomeFragmentAdmin) {
+            bottomNavigationView.setSelectedItemId(R.id.navHomeAdmin);
+        } else if (currentFragment instanceof ReportsFragmentAdmin) {
+            bottomNavigationView.setSelectedItemId(R.id.navReportsAdmin);
+        } else if (currentFragment instanceof RequestsFragmentAdmin) {
+            bottomNavigationView.setSelectedItemId(R.id.navRequestsAdmin);
+        } else if (currentFragment instanceof ProfileFragmentAdmin) {
+            bottomNavigationView.setSelectedItemId(R.id.navProfileAdmin);
         }
         bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
