@@ -11,28 +11,35 @@
         android:id="@+id/searchFilterLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:elevation="4dp"
+        android:background="?android:attr/selectableItemBackground">
 
-        <SearchView
-            android:id="@+id/searchView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.7"
-            android:iconifiedByDefault="false"
-            android:queryHint="Search for accommodations" />
+    <SearchView
+        android:id="@+id/searchView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:iconifiedByDefault="false"
+        android:queryHint="Search for accommodations"
+        android:background="@null"
+        android:elevation="0dp"
+        android:padding="8dp"
+        android:foreground="?android:attr/selectableItemBackgroundBorderless" /> <!-- Adding foreground for ripple effect -->
 
-        <ImageView
-            android:id="@+id/filterIcon"
-            android:layout_width="0dp"
-            android:layout_height="47dp"
-            android:layout_weight="0.3"
-            android:layout_marginStart="3dp"
-            android:layout_marginEnd="22dp"
-            android:clickable="true"
-            android:contentDescription="Filter Icon"
-            android:focusable="true"
-            android:src="@drawable/baseline_filter_list_24" />
-    </LinearLayout>
+    <ImageView
+        android:id="@+id/filterIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="47dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:clickable="true"
+        android:contentDescription="Filter Icon"
+        android:focusable="true"
+        android:src="@drawable/baseline_filter_list_24"
+        android:background="?android:attr/selectableItemBackgroundBorderless" /> <!-- Adding background for touch feedback -->
+
+</LinearLayout>
 
     <View
         android:id="@+id/separatorView"
@@ -65,11 +72,26 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <ImageView
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/rectangle" />
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/rectangle" />
+
+                    <ImageButton
+                        android:id="@+id/heartButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top|end"
+                        android:background="?android:selectableItemBackgroundBorderless"
+                        android:contentDescription="Favorite"
+                        android:padding="8dp"
+                        android:src="@drawable/heart_selector" />
+                </FrameLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -123,8 +145,11 @@
                             android:drawableStart="@drawable/baseline_monetization_on_24"
                             android:drawablePadding="8dp"
                             android:gravity="start|center_vertical" />
-                    </LinearLayout>
+
+                       </LinearLayout>
                 </LinearLayout>
+
+
             </LinearLayout>
         </androidx.cardview.widget.CardView>
         <androidx.cardview.widget.CardView
@@ -140,11 +165,26 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <ImageView
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/rectangle" />
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/rectangle" />
+
+                    <ImageButton
+                        android:id="@+id/heartButton2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top|end"
+                        android:background="?android:selectableItemBackgroundBorderless"
+                        android:contentDescription="Favorite"
+                        android:padding="8dp"
+                        android:src="@drawable/heart_selector" />
+                </FrameLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -215,11 +255,26 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <ImageView
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/rectangle" />
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/rectangle" />
+
+                    <ImageButton
+                        android:id="@+id/heartButton3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top|end"
+                        android:background="?android:selectableItemBackgroundBorderless"
+                        android:contentDescription="Favorite"
+                        android:padding="8dp"
+                        android:src="@drawable/heart_selector" />
+                </FrameLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -290,11 +345,26 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <ImageView
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/rectangle" />
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/rectangle" />
+
+                    <ImageButton
+                        android:id="@+id/heartButton4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top|end"
+                        android:background="?android:selectableItemBackgroundBorderless"
+                        android:contentDescription="Favorite"
+                        android:padding="8dp"
+                        android:src="@drawable/heart_selector" />
+                </FrameLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -365,11 +435,26 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <ImageView
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/rectangle" />
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/rectangle" />
+
+                    <ImageButton
+                        android:id="@+id/heartButton5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top|end"
+                        android:background="?android:selectableItemBackgroundBorderless"
+                        android:contentDescription="Favorite"
+                        android:padding="8dp"
+                        android:src="@drawable/heart_selector" />
+                </FrameLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"

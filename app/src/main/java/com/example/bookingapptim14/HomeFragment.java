@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import androidx.cardview.widget.CardView;
@@ -19,7 +20,18 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+        ImageButton heartButton = view.findViewById(R.id.heartButton);
 
+        final boolean[] isFavorite = {false};
+        heartButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isFavorite[0] = !isFavorite[0];
+
+                heartButton.setSelected(isFavorite[0]);
+
+            }
+        });
         ImageView filterIcon = view.findViewById(R.id.filterIcon);
 
         filterIcon.setOnClickListener(new View.OnClickListener() {
@@ -29,8 +41,6 @@ public class HomeFragment extends Fragment {
                 showFilterDialog();
             }
         });
-
-
         CardView cardView = view.findViewById(R.id.cardView);
 
         cardView.setOnClickListener(new View.OnClickListener() {
