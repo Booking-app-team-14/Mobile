@@ -23,7 +23,7 @@
         android:background="@drawable/navbar"
         app:itemTextColor="@color/primary_blue"
         app:itemIconTint="@color/primary_blue"
-        app:itemIconSize="35dp"
-        />
+        app:itemIconSize="30dp"
+        app:itemBackground="@color/transparent"/>
     
 </LinearLayout>

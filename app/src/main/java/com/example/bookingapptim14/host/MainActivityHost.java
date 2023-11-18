@@ -6,15 +6,19 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 
+import com.example.bookingapptim14.LoginScreen;
 import com.example.bookingapptim14.R;
-import com.example.bookingapptim14.admin.HomeFragmentAdmin;
-import com.example.bookingapptim14.admin.ProfileFragmentAdmin;
-import com.example.bookingapptim14.admin.ReportsFragmentAdmin;
-import com.example.bookingapptim14.admin.RequestsFragmentAdmin;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivityHost extends AppCompatActivity {
@@ -87,6 +91,37 @@ public class MainActivityHost extends AppCompatActivity {
             bottomNavigationView.setSelectedItemId(R.id.navProfileHost);
         }
         bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+    }
+
+    public void closeAccount(View view) {
+        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        View popupView = inflater.inflate(R.layout.popup_window_close_account, null);
+
+        int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+        int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+        boolean focusable = true;
+        final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+
+        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+
+        popupView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                popupWindow.dismiss();
+                return true;
+            }
+        });
+    }
+
+    public void signOut(View view) {
+        Intent intent = new Intent(MainActivityHost.this, LoginScreen.class);
+        startActivity(intent);
+        finish();
+    }
+
+    public void updateDetails(View view) {
+        // TODO make update details fragment for the guest
+        // loadFragment(new UpdateDetailsFragmentGuest(), false);
     }
 
 }

@@ -6,15 +6,20 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 
+import com.example.bookingapptim14.LoginScreen;
 import com.example.bookingapptim14.R;
-import com.example.bookingapptim14.guest.HomeFragmentGuest;
-import com.example.bookingapptim14.guest.NotificationsFragmentGuest;
-import com.example.bookingapptim14.guest.ProfileFragmentGuest;
-import com.example.bookingapptim14.guest.SavedFragmentGuest;
+import com.example.bookingapptim14.host.MainActivityHost;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivityAdmin extends AppCompatActivity {
@@ -32,8 +37,8 @@ public class MainActivityAdmin extends AppCompatActivity {
             if (itemId == R.id.navReportsAdmin) {
                 loadFragment(new ReportsFragmentAdmin(), false);
             }
-            if (itemId == R.id.navRequestsAdmin) {
-                loadFragment(new RequestsFragmentAdmin(), false);
+            if (itemId == R.id.navApprovalAdmin) {
+                loadFragment(new ApprovalFragmentAdmin(), false);
             }
             if (itemId == R.id.navProfileAdmin) {
                 loadFragment(new ProfileFragmentAdmin(), false);
@@ -82,12 +87,43 @@ public class MainActivityAdmin extends AppCompatActivity {
             bottomNavigationView.setSelectedItemId(R.id.navHomeAdmin);
         } else if (currentFragment instanceof ReportsFragmentAdmin) {
             bottomNavigationView.setSelectedItemId(R.id.navReportsAdmin);
-        } else if (currentFragment instanceof RequestsFragmentAdmin) {
-            bottomNavigationView.setSelectedItemId(R.id.navRequestsAdmin);
+        } else if (currentFragment instanceof ApprovalFragmentAdmin) {
+            bottomNavigationView.setSelectedItemId(R.id.navApprovalAdmin);
         } else if (currentFragment instanceof ProfileFragmentAdmin) {
             bottomNavigationView.setSelectedItemId(R.id.navProfileAdmin);
         }
         bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+    }
+
+    public void closeAccount(View view) {
+        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        View popupView = inflater.inflate(R.layout.popup_window_close_account, null);
+
+        int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+        int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+        boolean focusable = true;
+        final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+
+        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+
+        popupView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                popupWindow.dismiss();
+                return true;
+            }
+        });
+    }
+
+    public void signOut(View view) {
+        Intent intent = new Intent(MainActivityAdmin.this, LoginScreen.class);
+        startActivity(intent);
+        finish();
+    }
+
+    public void updateDetails(View view) {
+        // TODO make update details fragment for the guest
+        // loadFragment(new UpdateDetailsFragmentGuest(), false);
     }
 
 }

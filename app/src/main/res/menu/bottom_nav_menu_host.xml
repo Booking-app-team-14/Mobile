@@ -12,8 +12,8 @@
         android:id="@+id/navReservationsHost"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:icon="@drawable/ic_request"
-        android:title="Saved" />
+        android:icon="@drawable/ic_reservation"
+        android:title="Reservations" />
     <item
         android:id="@+id/navNotificationsHost"
         android:layout_width="wrap_content"
