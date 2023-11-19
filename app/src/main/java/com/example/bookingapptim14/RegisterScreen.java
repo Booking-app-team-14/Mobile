@@ -23,19 +23,17 @@ public class RegisterScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_screen);
 
-        // Inicijalizacija elemenata sa layout-a
+       //inicijalizacija elemenata sa layouta
         usernameEditText = findViewById(R.id.editTextEmail);
         passwordEditText = findViewById(R.id.editTextPassword);
         registerButton = findViewById(R.id.buttonRegister);
         TextView loginLink = findViewById(R.id.textViewLogin);
 
-        // Dodajte OnClickListener za dugme za registraciju
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Ovde treba dodati kod za proces registracije.
-                // Nakon uspešne registracije, možete prebaciti korisnika na LoginScreenActivity.
-                Intent intent = new Intent(RegisterScreen.this, LoginScreen.class);
+
+                Intent intent = new Intent(RegisterScreen.this, ConfirmRegistrationScreen.class);
                 startActivity(intent);
             }
         });
@@ -43,7 +41,6 @@ public class RegisterScreen extends AppCompatActivity {
         loginLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Ovde dodajte kod za prelazak na ekran za registraciju.
                 Intent intent = new Intent(RegisterScreen.this, LoginScreen.class);
                 startActivity(intent);
             }
