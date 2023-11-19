@@ -51,7 +51,7 @@ public class ConfirmRegistrationScreen extends AppCompatActivity {
 
         //textViewGmail
         TextView feedback = (TextView) findViewById(R.id.textViewGmail);
-        feedback.setText(Html.fromHtml("<a href=\"mailto:ask@me.it\">Open Gmail</a>"));
+        feedback.setText(Html.fromHtml("<a href=\"content://gmail.com/inbox\">Open Gmail</a>"));
         feedback.setTextColor(Color.WHITE);
         feedback.setMovementMethod(LinkMovementMethod.getInstance());
 
