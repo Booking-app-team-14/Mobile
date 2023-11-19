@@ -1,12 +1,12 @@
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     >
 
     <FrameLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
 
@@ -57,18 +57,20 @@
 
         <Button
             android:id="@+id/common_button"
-            android:layout_width="390dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
             android:layout_marginTop="660dp"
             android:text="@string/button_string"
             android:textColor="@color/white" />
 
         <ImageView
             android:id="@+id/rectangle_1"
-            android:layout_width="356dp"
-            android:layout_height="263dp"
-            android:layout_marginStart="26dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
             android:layout_marginTop="56dp"
             android:contentDescription="rectangle_1"
             android:src="@drawable/rectangle" />
@@ -431,9 +433,10 @@
         </TableLayout>
 
         <TableLayout
-            android:layout_width="362dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
             android:layout_marginTop="950dp"
             android:padding="8dp">
 

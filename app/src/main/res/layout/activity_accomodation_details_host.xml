@@ -1,7 +1,7 @@
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -64,27 +64,32 @@
 
         <Button
             android:id="@+id/update_button"
-            android:layout_width="364dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
             android:layout_marginTop="660dp"
+            android:layout_centerHorizontal="true"
             android:text="@string/update_string"
             android:textColor="@color/white" />
 
         <Button
             android:id="@+id/report_button"
-            android:layout_width="364dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
             android:layout_marginTop="710dp"
+            android:layout_centerHorizontal="true"
             android:text="@string/report_string"
             android:textColor="@color/white" />
 
         <ImageView
             android:id="@+id/rectangle_1"
-            android:layout_width="356dp"
-            android:layout_height="248dp"
-            android:layout_marginStart="26dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
             android:layout_marginTop="56dp"
             android:contentDescription="rectangle_1"
             android:src="@drawable/rectangle" />
@@ -221,6 +226,7 @@
             android:id="@+id/_bg__frame_6"
             android:layout_width="116dp"
             android:layout_height="35dp"
+
             android:layout_marginStart="154dp"
             android:layout_marginTop="567dp" />
 
@@ -447,9 +453,10 @@
         </TableLayout>
 
         <TableLayout
-            android:layout_width="366dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
             android:layout_marginTop="1000dp"
             android:padding="8dp">
 
