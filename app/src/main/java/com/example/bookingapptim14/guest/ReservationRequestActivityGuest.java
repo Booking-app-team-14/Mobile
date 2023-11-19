@@ -29,7 +29,7 @@ public class ReservationRequestActivityGuest extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reservation_request_guest);
 
-        // Initialize your TextViews
+
         dateRangeRecapTextView = findViewById(R.id.dateRangeRecapTextView);
         guestCountRecapTextView = findViewById(R.id.totalAmountOfGuests);
         totalAmountRecapTextView = findViewById(R.id.totalAmountLabel);

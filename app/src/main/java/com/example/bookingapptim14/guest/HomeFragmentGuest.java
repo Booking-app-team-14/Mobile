@@ -14,13 +14,12 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
-import com.example.bookingapptim14.AccommodationDetailsScreen;
 import com.example.bookingapptim14.R;
 
 public class HomeFragmentGuest extends Fragment {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-            View view = inflater.inflate(R.layout.fragment_home_host, container, false);
+            View view = inflater.inflate(R.layout.fragment_home_guest, container, false);
             ImageButton heartButton = view.findViewById(R.id.heartButton);
 
             final boolean[] isFavorite = {false};
@@ -48,7 +47,7 @@ public class HomeFragmentGuest extends Fragment {
                 @Override
                 public void onClick(View v) {
 
-                    Intent intent = new Intent(getActivity(), AccommodationDetailsScreen.class);
+                    Intent intent = new Intent(getActivity(), AccommodationDetailsActivityGuest.class);
                     startActivity(intent);
                 }
             });
@@ -66,12 +65,12 @@ public class HomeFragmentGuest extends Fragment {
                     .setPositiveButton("Apply", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int id) {
-                            // Apply action
+
                         }
                     })
                     .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            // Cancel action
+
                         }
                     });
 

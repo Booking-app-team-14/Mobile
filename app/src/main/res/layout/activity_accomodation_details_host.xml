@@ -54,7 +54,7 @@
             android:background="@drawable/ic_round_arrow_back" />
 
 
-        <View
+        <ImageButton
             android:id="@+id/_bg__bi_three_dots_vertical"
             android:layout_width="24dp"
             android:layout_height="23dp"
@@ -63,19 +63,28 @@
             android:background="@drawable/baseline_more_horiz_24" />
 
         <Button
-            android:id="@+id/common_button"
-            android:layout_width="367dp"
+            android:id="@+id/update_button"
+            android:layout_width="390dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="660dp"
-            android:text="@string/button_string"
+            android:text="@string/update_string"
+            android:textColor="@color/white" />
+
+        <Button
+            android:id="@+id/report_button"
+            android:layout_width="390dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="710dp"
+            android:text="@string/report_string"
             android:textColor="@color/white" />
 
         <ImageView
             android:id="@+id/rectangle_1"
             android:layout_width="356dp"
             android:layout_height="263dp"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="26dp"
             android:layout_marginTop="56dp"
             android:contentDescription="rectangle_1"
             android:src="@drawable/rectangle" />
@@ -314,7 +323,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:layout_marginEnd="24dp"
-            android:layout_marginTop="720dp"
+            android:layout_marginTop="760dp"
             android:padding="8dp"
             android:background="@drawable/background_table">
 
@@ -438,10 +447,10 @@
         </TableLayout>
 
         <TableLayout
-            android:layout_width="340dp"
-            android:layout_height="390dp"
+            android:layout_width="366dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
-            android:layout_marginTop="950dp"
+            android:layout_marginTop="1000dp"
             android:padding="8dp">
 
             <!-- Header row -->
@@ -518,6 +527,13 @@
                         android:layout_height="wrap_content"
                         android:text="5 stars!"
                         android:textSize="14sp" />
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:padding="8dp"
+                        android:text="Report" />
                 </LinearLayout>
             </TableRow>
 
@@ -571,6 +587,13 @@
                         android:layout_height="wrap_content"
                         android:text="5 stars!"
                         android:textSize="14sp" />
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:padding="8dp"
+                        android:text="Report" />
                 </LinearLayout>
             </TableRow>
 
@@ -623,6 +646,13 @@
                         android:layout_height="wrap_content"
                         android:text="5 stars!"
                         android:textSize="14sp" />
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:padding="8dp"
+                        android:text="Report" />
                 </LinearLayout>
             </TableRow>
 
@@ -675,6 +705,13 @@
                         android:layout_height="wrap_content"
                         android:text="5 stars!"
                         android:textSize="14sp" />
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:padding="8dp"
+                        android:text="Report" />
                 </LinearLayout>
             </TableRow>
         </TableLayout>
