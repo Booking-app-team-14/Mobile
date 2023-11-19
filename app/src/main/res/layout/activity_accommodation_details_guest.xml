@@ -45,7 +45,7 @@
             android:background="@drawable/baseline_star_24" />
 
 
-        <!-- View 4 -->
+
         <View
             android:id="@+id/_bg__ic_round_arrow_back"
             android:layout_width="23dp"
