@@ -40,12 +40,12 @@ public class LoginScreen extends AppCompatActivity {
         rotationAnimator.start();
 
         //podesavanje velicine ikonica
-        Drawable emailIcon = getResources().getDrawable(R.drawable.img_4);
-        emailIcon.setBounds(15, 1, (int) (emailIcon.getIntrinsicWidth() * 0.06), (int) (emailIcon.getIntrinsicHeight() * 0.06));
-        usernameEditText.setCompoundDrawables(emailIcon, null, null, null);
+        //Drawable emailIcon = getResources().getDrawable(R.drawable.img_4);
+        //emailIcon.setBounds(15, 1, (int) (emailIcon.getIntrinsicWidth() * 0.06), (int) (emailIcon.getIntrinsicHeight() * 0.06));
+        //usernameEditText.setCompoundDrawables(emailIcon, null, null, null);
 
-        Drawable passwordIcon = getResources().getDrawable(R.drawable.img_1);
-        passwordIcon.setBounds(15, 1, (int) (passwordIcon.getIntrinsicWidth() * 0.15), (int) (passwordIcon.getIntrinsicHeight() * 0.15));
+        Drawable passwordIcon = getResources().getDrawable(R.drawable.img_3);
+        passwordIcon.setBounds(15, 1, (int) (passwordIcon.getIntrinsicWidth() * 0.05), (int) (passwordIcon.getIntrinsicHeight() * 0.05));
         passwordEditText.setCompoundDrawables(null, null, passwordIcon, null);
 
         //dugme za prijavu

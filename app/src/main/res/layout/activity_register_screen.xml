@@ -10,6 +10,17 @@
         android:layout_height="wrap_content">
 
 
+        <ImageView
+            android:id="@+id/imageViewLogo"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:src="@drawable/ic_logo"
+            android:contentDescription="Logo" />
+
+
         <TextView
             android:id="@+id/textViewTitle"
             android:layout_width="wrap_content"
@@ -59,6 +70,7 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:hint="Email"
+            android:drawableLeft="@drawable/ic_profile"
             android:layout_below="@+id/textViewEmailLabel"
             android:layout_marginTop="8dp"
             android:inputType="textEmailAddress"
@@ -85,7 +97,6 @@
             android:layout_below="@+id/textViewPasswordLabel"
             android:layout_marginTop="8dp"
             android:inputType="textPassword"
-            android:drawableRight="@drawable/img_1"
             android:textColorHint="#777777"
             android:background="@drawable/edit_text_border"
              />
@@ -104,7 +115,6 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:hint="Confirm Password"
-            android:drawableRight="@drawable/img_1"
             android:layout_below="@+id/textViewConfirmPasswordLabel"
             android:layout_marginTop="8dp"
             android:inputType="textPassword"
@@ -214,6 +224,7 @@
                 android:id="@+id/radioButtonGuest"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textStyle="bold"
                 android:text="Guest" />
 
             <RadioButton
@@ -221,6 +232,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Owner"
+                android:textStyle="bold"
                 android:layout_marginStart="16dp" />
         </RadioGroup>
 
