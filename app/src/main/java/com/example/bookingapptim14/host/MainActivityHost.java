@@ -6,16 +6,21 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 
-import com.example.bookingapptim14.host.HomeFragmentHost;
+import com.example.bookingapptim14.LoginScreen;
 import com.example.bookingapptim14.R;
-import com.example.bookingapptim14.admin.HomeFragmentAdmin;
-import com.example.bookingapptim14.admin.ProfileFragmentAdmin;
-import com.example.bookingapptim14.admin.ReportsFragmentAdmin;
-import com.example.bookingapptim14.admin.RequestsFragmentAdmin;
+import com.example.bookingapptim14.UpdateAccountFragment;
+import com.example.bookingapptim14.UpdateAccountPasswordFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivityHost extends AppCompatActivity {
@@ -76,18 +81,28 @@ public class MainActivityHost extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         bottomNavigationView.setOnNavigationItemSelectedListener(null);
-        super.onBackPressed();
         Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.frameLayout);
-        if (currentFragment instanceof HomeFragmentHost) {
+        if ((currentFragment instanceof UpdateAccountFragment) || (currentFragment instanceof UpdateAccountPasswordFragment)) {
+            bottomNavigationView.setVisibility(View.VISIBLE);
+        }
+        super.onBackPressed();
+        Fragment previousFragment = getSupportFragmentManager().findFragmentById(R.id.frameLayout);
+        if (previousFragment instanceof HomeFragmentHost) {
             bottomNavigationView.setSelectedItemId(R.id.navHomeHost);
-        } else if (currentFragment instanceof ReservationsFragmentHost) {
+        } else if (previousFragment instanceof ReservationsFragmentHost) {
             bottomNavigationView.setSelectedItemId(R.id.navReservationsHost);
-        } else if (currentFragment instanceof NotificationsFragmentHost) {
+        } else if (previousFragment instanceof NotificationsFragmentHost) {
             bottomNavigationView.setSelectedItemId(R.id.navNotificationsHost);
-        } else if (currentFragment instanceof ProfileFragmentHost) {
+        } else if (previousFragment instanceof ProfileFragmentHost) {
             bottomNavigationView.setSelectedItemId(R.id.navProfileHost);
         }
         bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+    }
+
+    public void signOut(View view) {
+        Intent intent = new Intent(MainActivityHost.this, LoginScreen.class);
+        startActivity(intent);
+        finish();
     }
 
 }
