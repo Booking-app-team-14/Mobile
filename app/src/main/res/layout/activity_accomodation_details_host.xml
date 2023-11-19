@@ -4,8 +4,8 @@
     android:layout_height="wrap_content">
 
     <FrameLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
 
@@ -64,18 +64,18 @@
 
         <Button
             android:id="@+id/update_button"
-            android:layout_width="390dp"
+            android:layout_width="364dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="24dp"
             android:layout_marginTop="660dp"
             android:text="@string/update_string"
             android:textColor="@color/white" />
 
         <Button
             android:id="@+id/report_button"
-            android:layout_width="390dp"
+            android:layout_width="364dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="24dp"
             android:layout_marginTop="710dp"
             android:text="@string/report_string"
             android:textColor="@color/white" />
@@ -83,7 +83,7 @@
         <ImageView
             android:id="@+id/rectangle_1"
             android:layout_width="356dp"
-            android:layout_height="263dp"
+            android:layout_height="248dp"
             android:layout_marginStart="26dp"
             android:layout_marginTop="56dp"
             android:contentDescription="rectangle_1"
@@ -342,7 +342,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:layout_width="269dp"
+                    android:layout_width="179dp"
                     android:layout_height="wrap_content"
                     android:background="@color/primary_blue"
                     android:padding="8dp"
@@ -453,7 +453,6 @@
             android:layout_marginTop="1000dp"
             android:padding="8dp">
 
-            <!-- Header row -->
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
