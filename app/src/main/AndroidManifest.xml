@@ -37,8 +37,12 @@
             android:name=".guest.AccommodationDetailsActivityGuest"
             android:exported="false" />
         <activity
+            android:name=".ConfirmRegistrationScreen"
+            android:exported="false" />
+        <activity
             android:name=".SplashScreen"
             android:exported="true">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
