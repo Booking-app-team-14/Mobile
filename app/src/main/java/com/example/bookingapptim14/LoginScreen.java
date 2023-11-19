@@ -44,9 +44,9 @@ public class LoginScreen extends AppCompatActivity {
         emailIcon.setBounds(15, 1, (int) (emailIcon.getIntrinsicWidth() * 0.06), (int) (emailIcon.getIntrinsicHeight() * 0.06));
         usernameEditText.setCompoundDrawables(emailIcon, null, null, null);
 
-        Drawable passwordIcon = getResources().getDrawable(R.drawable.img_6);
-        passwordIcon.setBounds(15, 1, (int) (passwordIcon.getIntrinsicWidth() * 0.07), (int) (passwordIcon.getIntrinsicHeight() * 0.05));
-        passwordEditText.setCompoundDrawables(passwordIcon, null, null, null);
+        Drawable passwordIcon = getResources().getDrawable(R.drawable.img_1);
+        passwordIcon.setBounds(15, 1, (int) (passwordIcon.getIntrinsicWidth() * 0.15), (int) (passwordIcon.getIntrinsicHeight() * 0.15));
+        passwordEditText.setCompoundDrawables(null, null, passwordIcon, null);
 
         //dugme za prijavu
         loginButton.setOnClickListener(new View.OnClickListener() {

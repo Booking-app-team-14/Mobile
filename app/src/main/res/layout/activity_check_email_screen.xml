@@ -79,29 +79,27 @@
         android:clickable="true"
         android:onClick="onResendEmailClick"/>
 
-    <Button
-        android:id="@+id/buttonOpenGmail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Open Gmail"
-        android:layout_below="@+id/textViewResendEmail"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
-        android:clickable="true"
-        android:onClick="onOpenGmailClick"/>
 
-    <TextView
-        android:id="@+id/textViewGmail"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardViewGmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Open Gmail"
-        android:textColor="#3498db"
-        android:layout_below="@+id/buttonOpenGmail"
+        android:layout_below="@+id/textViewResendEmail"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="32dp"
-        android:clickable="true"
-        android:onClick="onResendEmailClick"/>
+        app:cardBackgroundColor="#3498db"
+        app:cardCornerRadius="15dp">
+
+        <TextView
+            android:id="@+id/textViewGmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Open Gmail"
+            android:textColor="#ffffffff"
+            android:padding="16dp"/>
+    </androidx.cardview.widget.CardView>
+
 
 
 

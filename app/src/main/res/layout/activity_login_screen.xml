@@ -85,7 +85,7 @@
         android:textColorHint="#777777"
         android:layout_below="@id/textViewPasswordLabel"
         android:layout_marginTop="8dp"
-        android:drawableLeft="@drawable/img_6"
+        android:drawableRight="@drawable/img_1"
         android:drawablePadding="8dp"
         android:layout_alignParentLeft="true"
         android:background="@drawable/edit_text_border"/>

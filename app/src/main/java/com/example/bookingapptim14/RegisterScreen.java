@@ -2,6 +2,7 @@ package com.example.bookingapptim14;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.widget.Button;
 import android.content.Intent;
@@ -15,6 +16,8 @@ import com.example.bookingapptim14.guest.MainActivityGuest;
 public class RegisterScreen extends AppCompatActivity {
     private EditText usernameEditText;
     private EditText passwordEditText;
+
+    private EditText editTextConfirmPassword;
     private Button registerButton;
     private Button loginButton;
 
@@ -28,6 +31,19 @@ public class RegisterScreen extends AppCompatActivity {
         passwordEditText = findViewById(R.id.editTextPassword);
         registerButton = findViewById(R.id.buttonRegister);
         TextView loginLink = findViewById(R.id.textViewLogin);
+        //editTextConfirmPassword
+        editTextConfirmPassword = findViewById(R.id.editTextConfirmPassword);
+
+
+
+
+        Drawable passwordIcon = getResources().getDrawable(R.drawable.img_1);
+        passwordIcon.setBounds(15, 1, (int) (passwordIcon.getIntrinsicWidth() * 0.15), (int) (passwordIcon.getIntrinsicHeight() * 0.15));
+        passwordEditText.setCompoundDrawables(null, null, passwordIcon, null);
+
+        Drawable passwordIcon2 = getResources().getDrawable(R.drawable.img_1);
+        passwordIcon2.setBounds(15, 1, (int) (passwordIcon2.getIntrinsicWidth() * 0.15), (int) (passwordIcon.getIntrinsicHeight() * 0.15));
+        editTextConfirmPassword.setCompoundDrawables(null, null, passwordIcon2, null);
 
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
