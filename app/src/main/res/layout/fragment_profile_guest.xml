@@ -59,7 +59,7 @@
                         android:fontFamily="@font/inter_bold"
                         android:text="Name Surname"
                         android:textColor="@color/white"
-                        android:textSize="20sp"
+                        android:textSize="20dp"
                         app:layout_constraintEnd_toEndOf="@+id/profilePictureImage"
                         app:layout_constraintStart_toStartOf="@+id/profilePictureImage"
                         app:layout_constraintTop_toBottomOf="@+id/profilePictureImage" />
@@ -70,7 +70,7 @@
                         android:layout_height="wrap_content"
                         android:text="example@gmail.com"
                         android:textColor="@color/white"
-                        android:textSize="18sp"
+                        android:textSize="18dp"
                         app:layout_constraintEnd_toEndOf="@+id/nameSurnameTextView"
                         app:layout_constraintStart_toStartOf="@+id/nameSurnameTextView"
                         app:layout_constraintTop_toBottomOf="@+id/nameSurnameTextView" />
@@ -147,7 +147,7 @@
                                     android:text="Requests"
                                     android:textAlignment="center"
                                     android:textColor="@color/text_black"
-                                    android:textSize="13sp" />
+                                    android:textSize="13dp" />
                             </LinearLayout>
 
                             <LinearLayout
@@ -191,7 +191,7 @@
                                     android:text="Reservations"
                                     android:textAlignment="center"
                                     android:textColor="@color/text_black"
-                                    android:textSize="13sp" />
+                                    android:textSize="13dp" />
                             </LinearLayout>
                         </LinearLayout>
 
@@ -212,7 +212,7 @@
                                 android:fontFamily="@font/inter_medium"
                                 android:text="Password"
                                 android:textColor="@color/primary_blue"
-                                android:textSize="18sp" />
+                                android:textSize="18dp" />
 
                             <TextView
                                 android:id="@+id/changePasswordTextView"
@@ -223,7 +223,7 @@
                                 android:text="Change"
                                 android:textAlignment="viewEnd"
                                 android:textColor="@color/text_black"
-                                android:textSize="18sp" />
+                                android:textSize="18dp" />
                         </LinearLayout>
 
                         <View
@@ -250,18 +250,18 @@
                                 android:fontFamily="@font/inter_medium"
                                 android:text="Address:"
                                 android:textColor="@color/primary_blue"
-                                android:textSize="18sp" />
+                                android:textSize="18dp" />
 
                             <TextView
                                 android:id="@+id/addressTextView"
-                                android:layout_width="260dp"
+                                android:layout_width="245dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:fontFamily="@font/inter"
                                 android:text="Example Street 42A"
                                 android:textAlignment="viewEnd"
                                 android:textColor="@color/text_gray"
-                                android:textSize="18sp" />
+                                android:textSize="18dp" />
                         </LinearLayout>
 
                         <View
@@ -282,24 +282,24 @@
 
                             <TextView
                                 android:id="@+id/textView10"
-                                android:layout_width="185dp"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:fontFamily="@font/inter_medium"
                                 android:text="Phone Number:"
                                 android:textColor="@color/primary_blue"
-                                android:textSize="18sp" />
+                                android:textSize="18dp" />
 
                             <TextView
                                 android:id="@+id/phoneNumberTextView"
-                                android:layout_width="260dp"
+                                android:layout_width="190dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:fontFamily="@font/inter"
                                 android:text="+381 66 0123456"
                                 android:textAlignment="viewEnd"
                                 android:textColor="@color/text_gray"
-                                android:textSize="18sp" />
+                                android:textSize="18dp" />
                         </LinearLayout>
 
                         <View
