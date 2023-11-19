@@ -14,8 +14,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.bookingapptim14.admin.MainActivityAdmin;
 import com.example.bookingapptim14.guest.MainActivityGuest;
 import com.example.bookingapptim14.guest.ProfileFragmentGuest;
+import com.example.bookingapptim14.host.MainActivityHost;
 
 public class LoginScreen extends AppCompatActivity {
 
@@ -51,10 +53,23 @@ public class LoginScreen extends AppCompatActivity {
         //dugme za prijavu
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                // dodati proveru unosa emaila i lozinke
-                Intent intent = new Intent(LoginScreen.this, MainActivityGuest.class);
+            public void onClick(View view) {
+                Intent intent = null;
+                if (usernameEditText.getText().toString().equals("guest")){
+                    intent = new Intent(LoginScreen.this, MainActivityGuest.class);
+                }
+                else if (usernameEditText.getText().toString().equals("host")){
+                    intent = new Intent(LoginScreen.this, MainActivityHost.class);
+                }
+                else if (usernameEditText.getText().toString().equals("admin")){
+                    intent = new Intent(LoginScreen.this, MainActivityAdmin.class);
+                }
+                else{
+                    Toast.makeText(LoginScreen.this, "Enter username", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 startActivity(intent);
+                finish();
             }
         });
 
