@@ -38,12 +38,15 @@
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
-                    <ImageView
+                    <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/profilePictureImage"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
                         android:layout_marginTop="32dp"
-                        android:src="@drawable/profile"
+                        android:elevation="3dp"
+                        android:src="@drawable/profile_logo"
+                        app:civ_border_color="@color/white"
+                        app:civ_border_width="2dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -165,7 +168,7 @@
                                 android:textSize="18sp" />
 
                             <TextView
-                                android:id="@+id/textView7"
+                                android:id="@+id/changePasswordTextView"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -270,7 +273,6 @@
 
                             <Button
                                 android:id="@+id/buttonCloseAccount"
-                                android:onClick="closeAccount"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -281,7 +283,6 @@
 
                             <Button
                                 android:id="@+id/buttonUpdateAccountDetails"
-                                android:onClick="updateDetails"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
