@@ -1,0 +1,9 @@
+<!-- res/animator/rotate_animation.xml -->
+<objectAnimator xmlns:android="http://schemas.android.com/apk/res/android"
+    android:propertyName="rotationY"
+    android:duration="4000"
+    android:valueFrom="0"
+    android:valueTo="360"
+    android:repeatCount="infinite"
+    android:interpolator="@android:anim/linear_interpolator" />
+
