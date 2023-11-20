@@ -15,11 +15,11 @@
         android:icon="@drawable/ic_report"
         android:title="Reports" />
     <item
-        android:id="@+id/navRequestsAdmin"
+        android:id="@+id/navApprovalAdmin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:icon="@drawable/ic_request"
-        android:title="Requests" />
+        android:title="Approval" />
     <item
         android:id="@+id/navProfileAdmin"
         android:layout_width="wrap_content"
