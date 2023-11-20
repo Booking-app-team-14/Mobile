@@ -1,3 +1,21 @@
 <resources>
     <string name="app_name">Home Sweet Home</string>
+    <string name="barcino_string">Barcino</string>
+    <string name="__650_string">$650</string>
+    <string name="per_night_string">per night</string>
+    <string name="_2464_royal_ln__mesa__new_jersey__string">2464 Royal In, Mesa, New Jersey</string>
+    <string name="details_string">Details</string>
+    <string name="_4_8_string">4.8</string>
+    <string name="lorem_string">Lorem ipsum dolor sit amet consectetur. Eu est sapien congue faucibus. Tempor iaculis lobortis posuere in non. Est placerat vitae nulla nunc porttitor justo. Nisl cum fermentum bibendum tortor lorem interdum turpis condimentum felis.</string>
+    <string name="facilities_string">Facilities</string>
+    <string name="free_wifi_string">Free WiFi</string>
+    <string name="pool_string">Swimming Pool</string>
+    <string name="breakfast_string">Breakfast</string>
+    <string name="tv_string">Flat Screen TV</string>
+    <string name="air_condition_string">Air Conditioning</string>
+    <string name="button_string">Book Now</string>
+    <string name="update_string">Update an accommodation</string>
+    <string name="report_string">Generate a report</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

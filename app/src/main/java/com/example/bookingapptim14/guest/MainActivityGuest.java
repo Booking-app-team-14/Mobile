@@ -6,11 +6,22 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 
+import com.example.bookingapptim14.LoginScreen;
 import com.example.bookingapptim14.R;
+import com.example.bookingapptim14.UpdateAccountFragment;
+import com.example.bookingapptim14.UpdateAccountPasswordFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivityGuest extends AppCompatActivity {
@@ -72,18 +83,28 @@ public class MainActivityGuest extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         bottomNavigationView.setOnNavigationItemSelectedListener(null);
-        super.onBackPressed();
         Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.frameLayout);
-        if (currentFragment instanceof HomeFragmentGuest) {
+        if ((currentFragment instanceof UpdateAccountFragment) || (currentFragment instanceof UpdateAccountPasswordFragment)) {
+            bottomNavigationView.setVisibility(View.VISIBLE);
+        }
+        super.onBackPressed();
+        Fragment previousFragment = getSupportFragmentManager().findFragmentById(R.id.frameLayout);
+        if (previousFragment instanceof HomeFragmentGuest) {
             bottomNavigationView.setSelectedItemId(R.id.navHomeGuest);
-        } else if (currentFragment instanceof SavedFragmentGuest) {
+        } else if (previousFragment instanceof SavedFragmentGuest) {
             bottomNavigationView.setSelectedItemId(R.id.navLikedGuest);
-        } else if (currentFragment instanceof NotificationsFragmentGuest) {
+        } else if (previousFragment instanceof NotificationsFragmentGuest) {
             bottomNavigationView.setSelectedItemId(R.id.navNotificationsGuest);
-        } else if (currentFragment instanceof ProfileFragmentGuest) {
+        } else if (previousFragment instanceof ProfileFragmentGuest) {
             bottomNavigationView.setSelectedItemId(R.id.navProfileGuest);
         }
         bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+    }
+
+    public void signOut(View view) {
+        Intent intent = new Intent(MainActivityGuest.this, LoginScreen.class);
+        startActivity(intent);
+        finish();
     }
 
 }
