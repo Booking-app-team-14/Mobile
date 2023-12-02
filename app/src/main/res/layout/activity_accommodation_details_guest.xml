@@ -138,8 +138,8 @@
 
         <TextView
             android:id="@+id/details"
-            android:layout_width="67.6dp"
-            android:layout_height="23.6dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="@string/details_string"
             android:textColor="@color/text_black"
             android:textSize="16sp"
@@ -149,7 +149,7 @@
 
         <TextView
             android:id="@+id/lorem_ipsum_dolor_sit_amet_consectetur__eu_est_sapien_congue_faucibus__tempor_iaculis_lobortis_posuere_in_non__est_placerat_vitae_nulla_nunc_porttitor_justo__nisl_cum_fermentum_bibendum_tortor_lorem_interdum_turpis_condimentum_felis_"
-            android:layout_width="378dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="457dp"

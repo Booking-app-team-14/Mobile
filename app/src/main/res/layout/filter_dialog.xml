@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -17,17 +17,72 @@
         android:textStyle="bold"
         android:layout_marginBottom="8dp"/>
 
-    <com.google.android.material.slider.RangeSlider
-        android:id="@+id/rangeSlider"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:stepSize="10"
-        android:valueFrom="0"
-        android:valueTo="1000"
-        android:contentDescription="Price Range"
-        android:layout_marginBottom="16dp" />
 
-    <TextView
+        <com.google.android.material.slider.RangeSlider
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="Price Range"
+            android:valueFrom="0.0"
+            android:valueTo="10000.0"
+            app:values="@array/initial_slider_values"  />
+
+        <TextView
+            android:id="@+id/textViewDateRange"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Select Date Range"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"
+            android:layout_centerHorizontal="true"/>
+
+        <!-- Button to open date range picker -->
+        <Button
+            android:id="@+id/btnDateRangePicker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Select Dates"
+            android:layout_below="@id/textViewDateRange"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Number of Guests"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"/>
+
+
+        <NumberPicker
+            android:id="@+id/numberPickerGuests"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Minimum Rating"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"/>
+
+        <!-- Adding a RatingBar for selecting minimum rating -->
+        <RatingBar
+            android:id="@+id/ratingBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:numStars="5"
+            android:stepSize="1"
+            android:rating="1"
+            android:layout_marginBottom="16dp"/>
+
+        <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Facilities"
@@ -153,6 +208,9 @@
 
     </LinearLayout>
 
-</LinearLayout>
+       
+
+
+    </LinearLayout>
 
 </ScrollView>
