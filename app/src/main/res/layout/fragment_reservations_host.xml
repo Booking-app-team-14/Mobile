@@ -1,16 +1,167 @@
-<?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<!-- fragment_reservations_host.xml -->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".host.ReservationsFragmentHost">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
-    <TextView
+    <!-- RadioGroup for selecting confirmation method -->
+    <RadioGroup
+        android:id="@+id/radioGroupConfirmationMethod"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:textSize="16sp"
-        android:fontFamily="@font/inter_bold"
-        android:text="Reservations Fragment" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-</FrameLayout>
+        <!-- RadioButton for manual confirmation -->
+        <RadioButton
+            android:id="@+id/radioButtonManual"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Manual Confirmation"
+            android:checked="true" /> <!-- Initially checked -->
+
+        <!-- RadioButton for automatic confirmation -->
+        <RadioButton
+            android:id="@+id/radioButtonAutomatic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Automatic Confirmation" />
+    </RadioGroup>
+
+    <!-- Add a button or perform necessary actions to save the selected confirmation method -->
+    <!-- For example, a button to save the selected method -->
+    <Button
+        android:id="@+id/buttonSaveConfirmationMethod"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save Confirmation Method" />
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <androidx.cardview.widget.CardView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:elevation="4dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <!-- User information with image and text -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <!-- User profile picture -->
+                    <ImageView
+                        android:id="@+id/imageViewUserProfile"
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"
+                        android:src="@drawable/ic_profile" /> <!-- Replace with actual default image -->
+
+                    <!-- User name or name and surname -->
+                    <TextView
+                        android:id="@+id/textViewUserName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Nikola Mitrovic"
+                        android:textSize="18sp"
+                        android:layout_marginStart="16dp"/>
+                </LinearLayout>
+
+                <!-- Apartment details with image and text -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="16dp">
+
+                    <!-- Apartment photo -->
+                    <ImageView
+                        android:id="@+id/imageViewApartment"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/rectangle" /> <!-- Replace with actual default image -->
+
+                    <!-- Apartment name, type -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginStart="16dp">
+
+                        <TextView
+                            android:id="@+id/textViewApartmentName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Apartment Name"
+                            android:textSize="18sp"/>
+
+                        <TextView
+                            android:id="@+id/textViewApartmentType"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Apartment Type"
+                            android:textSize="16sp"/>
+                    </LinearLayout>
+                </LinearLayout>
+                <!-- Start Date -->
+                <TextView
+                    android:id="@+id/textViewStartDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Start Date"
+                    android:textSize="16sp"/>
+
+                <!-- End Date -->
+                <TextView
+                    android:id="@+id/textViewEndDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="End Date"
+                    android:textSize="16sp"/>
+
+                <!-- Number of Guests -->
+                <TextView
+                    android:id="@+id/textViewNumGuests"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Number of Guests"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="16dp"/>
+
+                <!-- Buttons for accept and deny actions -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/buttonAccept"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Accept" />
+
+                    <Button
+                        android:id="@+id/buttonDeny"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Deny"
+                        android:layout_marginStart="8dp" />
+                </LinearLayout>
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+
+</LinearLayout>
