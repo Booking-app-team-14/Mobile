@@ -109,9 +109,7 @@ public class ReservationRequestsAdapter extends RecyclerView.Adapter<Reservation
             imageViewApartment = itemView.findViewById(R.id.imageViewApartment);
             textViewApartmentName = itemView.findViewById(R.id.textViewApartmentName);
             textViewApartmentType = itemView.findViewById(R.id.textViewApartmentType);
-            textViewStartDate = itemView.findViewById(R.id.textViewStartDate);
-            textViewEndDate = itemView.findViewById(R.id.textViewEndDate);
-            textViewNumGuests = itemView.findViewById(R.id.textViewNumGuests);
+            textViewStartDate = itemView.findViewById(R.id.textViewDateGuests);
             buttonAccept = itemView.findViewById(R.id.buttonAccept);
             buttonDeny = itemView.findViewById(R.id.buttonDeny);
         }
