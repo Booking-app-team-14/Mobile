@@ -25,80 +25,80 @@ import java.util.Calendar;
 
 public class HomeFragmentGuest extends Fragment {
 
-        private TextView textViewDateRange;
-        private Button btnDateRangePicker;
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-            View view = inflater.inflate(R.layout.fragment_home_guest, container, false);
-            ImageButton heartButton = view.findViewById(R.id.heartButton);
+    private TextView textViewDateRange;
+    private Button btnDateRangePicker;
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_home_guest, container, false);
+        ImageButton heartButton = view.findViewById(R.id.heartButton);
 
-            final boolean[] isFavorite = {false};
-            heartButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    isFavorite[0] = !isFavorite[0];
+        final boolean[] isFavorite = {false};
+        heartButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isFavorite[0] = !isFavorite[0];
 
-                    heartButton.setSelected(isFavorite[0]);
+                heartButton.setSelected(isFavorite[0]);
 
 
 
-                }
-            });
-            ImageView filterIcon = view.findViewById(R.id.filterIcon);
+            }
+        });
+        ImageView filterIcon = view.findViewById(R.id.filterIcon);
 
-            filterIcon.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+        filterIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-                    showFilterDialog();
-                }
-            });
-            CardView cardView = view.findViewById(R.id.cardView);
+                showFilterDialog();
+            }
+        });
+        CardView cardView = view.findViewById(R.id.cardView);
 
-            cardView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+        cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-                    Intent intent = new Intent(getActivity(), AccommodationDetailsActivityGuest.class);
-                    startActivity(intent);
-                }
-            });
+                Intent intent = new Intent(getActivity(), AccommodationDetailsActivityGuest.class);
+                startActivity(intent);
+            }
+        });
 
-            return view;
-        }
+        return view;
+    }
 
-        public void showFilterDialog() {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            LayoutInflater inflater = requireActivity().getLayoutInflater();
+    public void showFilterDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        LayoutInflater inflater = requireActivity().getLayoutInflater();
 
-            View dialogView = inflater.inflate(R.layout.filter_dialog, null);
+        View dialogView = inflater.inflate(R.layout.filter_dialog, null);
 
-            NumberPicker numberPicker = dialogView.findViewById(R.id.numberPickerGuests);
+        NumberPicker numberPicker = dialogView.findViewById(R.id.numberPickerGuests);
 
-            numberPicker.setMinValue(1);
-            numberPicker.setMaxValue(10);
+        numberPicker.setMinValue(1);
+        numberPicker.setMaxValue(10);
 
-            textViewDateRange = dialogView.findViewById(R.id.textViewDateRange);
-            btnDateRangePicker = dialogView.findViewById(R.id.btnDateRangePicker);
+        textViewDateRange = dialogView.findViewById(R.id.textViewDateRange);
+        btnDateRangePicker = dialogView.findViewById(R.id.btnDateRangePicker);
 
-            // Set OnClickListener to open Date Range Picker
-            btnDateRangePicker.setOnClickListener(v -> openDateRangePicker());
-            builder.setView(dialogView)
-                    .setPositiveButton("Apply", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int id) {
+        // Set OnClickListener to open Date Range Picker
+        btnDateRangePicker.setOnClickListener(v -> openDateRangePicker());
+        builder.setView(dialogView)
+                .setPositiveButton("Apply", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
 
-                        }
-                    })
-                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
 
-                        }
-                    });
+                    }
+                });
 
-            AlertDialog dialog = builder.create();
-            dialog.show();
-        }
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
 
     private void openDateRangePicker() {
         MaterialDatePicker.Builder<Pair<Long, Long>> builder = MaterialDatePicker.Builder.dateRangePicker();
@@ -131,4 +131,3 @@ public class HomeFragmentGuest extends Fragment {
         picker.show(getChildFragmentManager(), picker.toString());
     }
 }
-
