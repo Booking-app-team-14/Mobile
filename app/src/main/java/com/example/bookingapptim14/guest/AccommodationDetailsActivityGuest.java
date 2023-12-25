@@ -94,7 +94,8 @@ public class AccommodationDetailsActivityGuest extends Activity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
-
+                Toast.makeText(AccommodationDetailsActivityGuest.this, "Reservation Successfully Sent", Toast.LENGTH_SHORT).show();
+/*
                 Context context = AccommodationDetailsActivityGuest.this;
                 String channelId = "my_channel_id";
 
@@ -123,8 +124,10 @@ public class AccommodationDetailsActivityGuest extends Activity {
                 } else {
                     notificationManager.notify(notificationId, notificationBuilder.build());
                 }
+*/
+            }
+            }
 
-            }}
         );
 
 
