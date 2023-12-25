@@ -15,9 +15,9 @@ import com.example.bookingapptim14.enums.ConfirmationMethod;
 import com.example.bookingapptim14.models.ReservationRequest;
 
 import java.util.List;
-
+/*
 public class ReservationRequestsAdapter extends RecyclerView.Adapter<ReservationRequestsAdapter.RequestViewHolder> {
-
+/*
     private List<ReservationRequest> requestList;
     private ConfirmationMethod confirmationMethod;
 
@@ -114,5 +114,7 @@ public class ReservationRequestsAdapter extends RecyclerView.Adapter<Reservation
             buttonDeny = itemView.findViewById(R.id.buttonDeny);
         }
     }
-}
+    W
+
+}*/
 

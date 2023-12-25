@@ -1,9 +1,11 @@
 package com.example.bookingapptim14;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.animation.AnimatorInflater;
 import android.animation.ObjectAnimator;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -17,7 +19,6 @@ import android.widget.Toast;
 import com.example.bookingapptim14.admin.MainActivityAdmin;
 import com.example.bookingapptim14.guest.MainActivityGuest;
 import com.example.bookingapptim14.host.MainActivityHost;
-import com.example.bookingapptim14.models.User;
 
 public class LoginScreen extends AppCompatActivity {
 
@@ -57,18 +58,22 @@ public class LoginScreen extends AppCompatActivity {
                 Intent intent = null;
                 if (usernameEditText.getText().toString().equals("tim14.guest@gmail.com") &&
                         (passwordEditText.getText().toString().equals("12345678") || passwordEditText.getText().toString().equals("123456789"))) {
+                    showSuccessMessage();
                     intent = new Intent(LoginScreen.this, MainActivityGuest.class);
                 }
                 else if (usernameEditText.getText().toString().equals("tim14.owner@gmail.com") &&
                         (passwordEditText.getText().toString().equals("12345678") || passwordEditText.getText().toString().equals("123456789"))) {
+                    showSuccessMessage();
                     intent = new Intent(LoginScreen.this, MainActivityHost.class);
                 }
                 else if (usernameEditText.getText().toString().equals("tim14.admin@gmail.com") &&
                         (passwordEditText.getText().toString().equals("12345678") || passwordEditText.getText().toString().equals("123456789"))) {
+                    showSuccessMessage();
                     intent = new Intent(LoginScreen.this, MainActivityAdmin.class);
                 }
 
                 else{
+                    showUnsuccessMessage();
                     Toast.makeText(LoginScreen.this, "Enter username", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -90,5 +95,35 @@ public class LoginScreen extends AppCompatActivity {
 
     public void onForgotPasswordClick(View view) {
         //dodati kod
+    }
+
+    private void showSuccessMessage() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Successful registration\n")
+                .setMessage("You have successfully created your account!"
+                )
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                    }
+                });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void showUnsuccessMessage() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Unsuccessful registration\n")
+                .setMessage("Bad credentials! Try again!"
+                )
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                    }
+                });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }
