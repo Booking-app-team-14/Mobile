@@ -162,6 +162,9 @@ public class HomeFragmentHost extends Fragment {
         popupMenu.setOnMenuItemClickListener(item -> {
             switch (item.getTitle().toString()) {
                 case "Create new accommodation":
+                    Intent createAccommodationIntent = new Intent(requireContext(), CreateAccommodationScreen.class);
+                    startActivity(createAccommodationIntent);
+                    return true;
                 case "Generate a report for all your accommodation":
                     return true;
                 default:
