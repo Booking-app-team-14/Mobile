@@ -187,12 +187,6 @@
         </GridLayout>
 
 
-
-        <!-- Photos -->
-        <!-- Add Photo-related fields -->
-
-        <!-- Capacity -->
-
         <TextView
             android:id="@+id/textViewCapacityLabel"
             android:layout_width="wrap_content"

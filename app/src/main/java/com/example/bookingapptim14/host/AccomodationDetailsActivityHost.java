@@ -7,6 +7,7 @@ import androidx.appcompat.widget.PopupMenu;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 
 import com.example.bookingapptim14.R;
@@ -29,6 +30,15 @@ public class AccomodationDetailsActivityHost extends AppCompatActivity {
 
         popupMenu.getMenu().add("Update an accommodation");
         popupMenu.getMenu().add("Generate a report");
+
+        Button updateButton = findViewById(R.id.update_button);
+        updateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent updateAccommodationIntent = new Intent(AccomodationDetailsActivityHost.this, UpdateAccommodationScreen.class);
+                startActivity(updateAccommodationIntent);
+            }
+        });
 
 
         popupMenu.setOnMenuItemClickListener(item -> {
