@@ -52,10 +52,10 @@ public class AccommodationApprovalFragment extends Fragment implements Accommoda
 
     @Override
     public void onAccommodationApproved(AccommodationRequest request) {
-//        if (request.getAccommodationId() == 2){
-//            GlobalData data = GlobalData.getInstance();
-//            data.addAccommodation(request);
-//        }
+        if (request.getAccommodationId() == 15L){
+            GlobalData data = GlobalData.getInstance();
+            data.addAccommodation(request);
+        }
         // TODO: Handle approval logic here
         adapter.removeItem(request);
         Log.d("AccommodationApproval", "Approved");

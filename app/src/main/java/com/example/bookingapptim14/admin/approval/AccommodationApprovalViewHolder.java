@@ -36,7 +36,7 @@ public class AccommodationApprovalViewHolder extends RecyclerView.ViewHolder {
 
     public AccommodationApprovalViewHolder(@NonNull View itemView) {
         super(itemView);
-        ownerImage = itemView.findViewById(R.id.profilePictureImage);
+        ownerImage = itemView.findViewById(R.id.ownerProfilePicture);
         ownerUsername = itemView.findViewById(R.id.ownerUsername);
         datePosted = itemView.findViewById(R.id.datePosted);
         requestMessage = itemView.findViewById(R.id.requestMessage);
@@ -76,6 +76,7 @@ public class AccommodationApprovalViewHolder extends RecyclerView.ViewHolder {
 //            String ownerImageType = request.getOwnerImageType();
 //
 //        }
+        ownerImage.setImageResource(R.drawable.default_profile_picture);
     }
 
     public static String getPostedAgo(Instant date) {
