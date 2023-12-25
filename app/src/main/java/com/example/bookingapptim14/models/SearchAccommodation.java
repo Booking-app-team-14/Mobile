@@ -1,7 +1,5 @@
 package com.example.bookingapptim14.models;
 
-import android.health.connect.datatypes.StepsCadenceRecord;
-
 import com.example.bookingapptim14.enums.AccommodationType;
 
 public class SearchAccommodation {
@@ -39,13 +37,13 @@ public class SearchAccommodation {
     private void setName(String name){
         this.name = name;
     }
-    private String getName(){
+    public String getName(){
         return this.name;
     }
     private void setDescription(String description){
         this.description = description;
     }
-    private String getDescription(){
+    public String getDescription(){
         return this.description;
     }
     private void setAccommodationType(AccommodationType accommodationType){
@@ -57,14 +55,14 @@ public class SearchAccommodation {
     private void setImage(String image){
         this.image = image;
     }
-    private String getImage(){
+    public String getImage(){
         return this.image;
     }
 
     private void setRating(){
         this.rating = rating;
     }
-    private Double getRating(){
+    public Double getRating(){
         return this.rating;
     }
 
@@ -77,7 +75,7 @@ public class SearchAccommodation {
     private void setPricePerNight(Double pricePerNight){
         this.pricePerNight = pricePerNight;
     }
-    private Double getPricePerNight(){
+    public Double getPricePerNight(){
         return this.pricePerNight;
     }
 

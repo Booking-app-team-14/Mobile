@@ -15,7 +15,7 @@ import android.widget.Button;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import com.example.bookingapptim14.Adapters.ReservationRequestsAdapter;
+
 import com.example.bookingapptim14.R;
 import com.example.bookingapptim14.enums.ConfirmationMethod;
 import com.example.bookingapptim14.models.ReservationRequest;

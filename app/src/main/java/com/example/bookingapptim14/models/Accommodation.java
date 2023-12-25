@@ -66,13 +66,13 @@ public class Accommodation {
     private void setDescription(String description){
         this.description = description;
     }
-    private String getDescription(){
+    public String getDescription(){
         return this.description;
     }
     private void setRating(Double rating){
         this.rating = rating;
     }
-    private Double getRating(){
+    public Double getRating(){
         return this.rating;
     }
     private void setAmenities(Set<Amenity> amenities){
@@ -124,7 +124,7 @@ public class Accommodation {
     private void setPricePerNight(Double pricePerNight){
         this.pricePerNight = pricePerNight;
     }
-    private Double getPricePerNight(){
+    public Double getPricePerNight(){
         return this.pricePerNight;
     }
 
