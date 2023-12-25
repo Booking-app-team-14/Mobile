@@ -4,6 +4,7 @@ package com.example.bookingapptim14.host;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.PopupMenu;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
@@ -33,6 +34,9 @@ public class AccomodationDetailsActivityHost extends AppCompatActivity {
         popupMenu.setOnMenuItemClickListener(item -> {
             switch (item.getTitle().toString()) {
                 case "Update an accommodation":
+                    Intent updateAccommodationIntent = new Intent(AccomodationDetailsActivityHost.this, UpdateAccommodationScreen.class);
+                    startActivity(updateAccommodationIntent);
+                    return true;
                 case "Generate a report":
 
                     return true;

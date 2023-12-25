@@ -31,6 +31,16 @@
             android:name=".host.MainActivityHost"
             android:exported="false" />
         <activity
+            android:name=".host.CreateAccommodationScreen"
+            android:exported="false" />
+        <activity
+            android:name=".host.UpdateAccommodationScreen"
+            android:exported="false" />
+
+        <activity
+            android:name=".host.AccommodationAvailabilityScreen"
+            android:exported="false" />
+        <activity
             android:name=".guest.MainActivityGuest"
             android:exported="false" />
         <activity

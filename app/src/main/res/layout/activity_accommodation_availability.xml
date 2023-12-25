@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F4F4F4">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <!-- Naslov -->
+        <TextView
+            android:id="@+id/textViewTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Availability And Prices"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- Radio Group -->
+        <RadioGroup
+            android:id="@+id/radioGroupPriceType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textViewTitle"
+            android:layout_marginTop="16dp">
+
+            <!-- Price Per Night -->
+            <RadioButton
+                android:id="@+id/radioButtonPricePerNight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Price Per Night"/>
+
+            <!-- Price Per Guest -->
+            <RadioButton
+                android:id="@+id/radioButtonPricePerGuest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Price Per Guest"/>
+        </RadioGroup>
+
+        <!-- From Date -->
+        <TextView
+            android:id="@+id/textViewFromDateLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="From Date"
+            android:textColor="#000000"
+            android:layout_below="@+id/radioGroupPriceType"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="16dp" />
+
+    <DatePicker
+        android:id="@+id/datePickerFrom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewFromDateLabel"
+        android:layout_marginTop="8dp"
+        android:calendarViewShown="false"
+        android:datePickerMode="spinner"/>
+
+    <!-- To Date -->
+    <TextView
+        android:id="@+id/textViewToDateLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="To Date"
+        android:textColor="#000000"
+        android:layout_below="@+id/datePickerFrom"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="16dp" />
+
+    <DatePicker
+        android:id="@+id/datePickerTo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewToDateLabel"
+        android:layout_marginTop="8dp"
+        android:calendarViewShown="false"
+        android:datePickerMode="spinner"/>
+
+    <!-- Price -->
+    <TextView
+        android:id="@+id/textViewPriceLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Price"
+        android:textColor="#000000"
+        android:layout_below="@+id/datePickerTo"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="16dp" />
+
+    <EditText
+        android:id="@+id/editTextPrice"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:hint="Price"
+        android:layout_below="@+id/textViewPriceLabel"
+        android:layout_marginTop="8dp"
+        android:inputType="numberDecimal"
+        android:textColorHint="#777777"
+        android:background="@drawable/edit_text_border" />
+
+        <Button
+            android:id="@+id/plusButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+"
+            android:layout_below="@+id/buttonCreateAccommodation"
+            android:layout_marginTop="16dp"
+            android:layout_centerHorizontal="true"/>
+
+    <!-- Button to create accommodation -->
+
+        <Button
+            android:id="@+id/buttonCreateAccommodation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="CREATE ACCOMMODATION"
+            android:layout_below="@+id/editTextPrice"
+            android:layout_marginTop="16dp" />
+
+
+    <ViewStub
+        android:id="@+id/viewStub"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/plusButton"
+        android:layout_marginTop="16dp"
+        android:layout="@layout/custom_layout"
+        android:visibility="gone" />
+
+
+
+</RelativeLayout>
+
+</ScrollView>
+
