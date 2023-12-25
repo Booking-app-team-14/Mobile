@@ -17,10 +17,12 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 
+import com.example.bookingapptim14.GlobalData;
 import com.example.bookingapptim14.LoginScreen;
 import com.example.bookingapptim14.R;
 import com.example.bookingapptim14.UpdateAccountFragment;
 import com.example.bookingapptim14.UpdateAccountPasswordFragment;
+import com.example.bookingapptim14.models.User;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivityHost extends AppCompatActivity {
@@ -100,6 +102,8 @@ public class MainActivityHost extends AppCompatActivity {
     }
 
     public void signOut(View view) {
+        GlobalData gd = GlobalData.getInstance();
+        gd.setLoggedInUser(new User());
         Intent intent = new Intent(MainActivityHost.this, LoginScreen.class);
         startActivity(intent);
         finish();

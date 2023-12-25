@@ -8,8 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.bookingapptim14.models.User;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class UpdateAccountPasswordFragment extends Fragment {
@@ -41,6 +43,17 @@ public class UpdateAccountPasswordFragment extends Fragment {
 
     private void changePassword() {
         // TODO: Change password
+        TextView passwordTextView = getActivity().findViewById(R.id.editTextNewPassword);
+        String newPassword = passwordTextView.getText().toString();
+        TextView confirmPasswordTextView = getActivity().findViewById(R.id.editTextConfirmNewPassword);
+        String confirmPassword = confirmPasswordTextView.getText().toString();
+        if (!newPassword.equals(confirmPassword)) {
+            Toast.makeText(getContext(), "Passwords do not match", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        GlobalData gd = GlobalData.getInstance();
+        User loggedUser = gd.getLoggedInUser();
+        loggedUser.setPassword(newPassword);
         Toast.makeText(getContext(), "Password successfully changed", Toast.LENGTH_SHORT).show();
         getActivity().getWindow().findViewById(R.id.bottomNavView).setVisibility(View.VISIBLE);
         getActivity().getOnBackPressedDispatcher().onBackPressed();

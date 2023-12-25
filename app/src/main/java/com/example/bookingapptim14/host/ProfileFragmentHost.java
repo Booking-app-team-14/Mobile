@@ -14,10 +14,12 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.bookingapptim14.GlobalData;
 import com.example.bookingapptim14.LoginScreen;
 import com.example.bookingapptim14.R;
 import com.example.bookingapptim14.UpdateAccountFragment;
 import com.example.bookingapptim14.UpdateAccountPasswordFragment;
+import com.example.bookingapptim14.models.User;
 
 public class ProfileFragmentHost extends Fragment {
 
@@ -33,6 +35,27 @@ public class ProfileFragmentHost extends Fragment {
 
         TextView changePasswordTextView = (TextView) view.findViewById(R.id.changePasswordTextView);
         changePasswordTextView.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { changePassword(); } });
+
+        // TODO: Get logged in user from database
+        GlobalData gd = GlobalData.getInstance();
+        User loggedUser = gd.getLoggedInUser();
+        if (!loggedUser.getEmail().equals("")) {
+            TextView emailTextView = view.findViewById(R.id.emailTextView);
+            emailTextView.setText(loggedUser.getEmail());
+        }
+        if (!loggedUser.getFirstName().equals("") && !loggedUser.getLastName().equals("")) {
+            TextView firstNameTextView = view.findViewById(R.id.nameSurnameTextView);
+            firstNameTextView.setText(loggedUser.getFirstName() + " " + loggedUser.getLastName());
+        }
+        if (!loggedUser.getPhoneNumber().equals("")) {
+            TextView phoneNumberTextView = view.findViewById(R.id.phoneNumberTextView);
+            phoneNumberTextView.setText(loggedUser.getPhoneNumber());
+        }
+        if (!loggedUser.getAddress().equals("")) {
+            TextView addressTextView = view.findViewById(R.id.addressTextView);
+            addressTextView.setText(loggedUser.getAddress());
+        }
+        //
 
         return view;
     }

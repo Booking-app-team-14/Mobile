@@ -58,23 +58,19 @@ public class LoginScreen extends AppCompatActivity {
                 Intent intent = null;
                 if (usernameEditText.getText().toString().equals("tim14.guest@gmail.com") &&
                         (passwordEditText.getText().toString().equals("12345678") || passwordEditText.getText().toString().equals("123456789"))) {
-                    showSuccessMessage();
                     intent = new Intent(LoginScreen.this, MainActivityGuest.class);
                 }
                 else if (usernameEditText.getText().toString().equals("tim14.owner@gmail.com") &&
                         (passwordEditText.getText().toString().equals("12345678") || passwordEditText.getText().toString().equals("123456789"))) {
-                    showSuccessMessage();
                     intent = new Intent(LoginScreen.this, MainActivityHost.class);
                 }
                 else if (usernameEditText.getText().toString().equals("tim14.admin@gmail.com") &&
                         (passwordEditText.getText().toString().equals("12345678") || passwordEditText.getText().toString().equals("123456789"))) {
-                    showSuccessMessage();
                     intent = new Intent(LoginScreen.this, MainActivityAdmin.class);
                 }
 
                 else{
                     showUnsuccessMessage();
-                    Toast.makeText(LoginScreen.this, "Enter username", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 startActivity(intent);
@@ -99,7 +95,7 @@ public class LoginScreen extends AppCompatActivity {
 
     private void showSuccessMessage() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Successful registration\n")
+        builder.setTitle("Successful login\n")
                 .setMessage("You have successfully created your account!"
                 )
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -114,7 +110,7 @@ public class LoginScreen extends AppCompatActivity {
 
     private void showUnsuccessMessage() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Unsuccessful registration\n")
+        builder.setTitle("Unsuccessful login\n")
                 .setMessage("Bad credentials! Try again!"
                 )
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
