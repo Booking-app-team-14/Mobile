@@ -84,27 +84,6 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="24dp"
                 android:layout_marginRight="24dp"
-                android:id="@+id/textInputLayout3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColorHint="@color/text_gray"
-                app:startIconDrawable="@drawable/ic_email">
-
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Email"
-                    android:imeOptions="actionNext"
-                    android:inputType="textEmailAddress"
-                    android:textColor="@color/text_black" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                app:boxBackgroundColor="@color/white"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="24dp"
-                android:layout_marginRight="24dp"
                 android:id="@+id/textInputLayout4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
