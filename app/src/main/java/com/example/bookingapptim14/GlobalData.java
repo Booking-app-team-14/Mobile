@@ -1,6 +1,7 @@
 package com.example.bookingapptim14;
 
 import com.example.bookingapptim14.models.AccommodationRequest;
+import com.example.bookingapptim14.models.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +10,7 @@ public class GlobalData {
 
     private static GlobalData instance;
     private List<AccommodationRequest> accommodationRequest = new ArrayList<>();
+    private User loggedInUser = new User();
 
     private GlobalData() {
         accommodationRequest.add(new AccommodationRequest(1L, "Accommodation 1", "Apartment", "jpg", "", "owner_username", "1703451446", "new", "Lorem ipsum ...", 4, "jpg", ""));
@@ -29,6 +31,14 @@ public class GlobalData {
 
     public List<AccommodationRequest> getAccommodationRequest() {
         return accommodationRequest;
+    }
+
+    public User getLoggedInUser() {
+        return loggedInUser;
+    }
+
+    public void setLoggedInUser(User user) {
+        this.loggedInUser = user;
     }
 
     public void addAccommodation(AccommodationRequest request) {

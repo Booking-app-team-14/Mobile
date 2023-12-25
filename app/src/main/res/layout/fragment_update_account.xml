@@ -49,6 +49,7 @@
                 app:startIconDrawable="@drawable/ic_profile">
 
                 <EditText
+                    android:id="@+id/editTextName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Name"
@@ -70,6 +71,7 @@
                 app:startIconDrawable="@drawable/ic_profile">
 
                 <EditText
+                    android:id="@+id/editTextSurname"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Surname"
@@ -91,6 +93,7 @@
                 app:startIconDrawable="@drawable/ic_accommodations">
 
                 <EditText
+                    android:id="@+id/editTextAddress"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Address"
@@ -113,6 +116,7 @@
                 android:nextFocusForward="@+id/buttonUpdateDetails">
 
                 <EditText
+                    android:id="@+id/editTextPhone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Phone number"
