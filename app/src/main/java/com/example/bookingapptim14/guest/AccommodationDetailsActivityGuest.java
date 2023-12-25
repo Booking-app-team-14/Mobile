@@ -155,7 +155,7 @@ public class AccommodationDetailsActivityGuest extends Activity {
         String recap = "Start Date: " + startDay + "/" + startMonth + "/" + startYear +
                 "\nEnd Date: " + endDay + "/" + endMonth + "/" + endYear +
                 "\nNumber of Guests: " + numOfGuests +
-                "\nTotal Amount: $XXX";
+                "\nTotal Amount: $1000";
 
         textViewRecap.setText(recap);
         textViewRecap.setVisibility(View.VISIBLE);

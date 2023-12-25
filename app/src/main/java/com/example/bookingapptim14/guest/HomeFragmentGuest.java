@@ -46,7 +46,7 @@ public class HomeFragmentGuest extends Fragment {
 
         accommodationsList = new ArrayList<>();
 
-        // Dodavanje elemenata u listu
+
         accommodationsList.add(new SearchAccommodation(1L, "Sunny Beach House", "Enjoy the sun and sea at this delightful beach house.", AccommodationType.HOTEL, new Location(1L,"Serbia","Zlatibor","Katunska 4"), "accommodation_13", 2.6,2,4, 180.0, new HashSet<>(),true));
         accommodationsList.add(new SearchAccommodation(2L, "Mountain View Cabin", "Breathtaking mountain views from this cozy cabin retreat.",AccommodationType.APARTMENT, new Location(2L,"Serbia","Novi Sad","Hilandarska 2"), "accommodation_1", 4.9,2 ,7,150.0,new HashSet<>(),true));
         accommodationsList.add(new SearchAccommodation(3L, "Lakeside Villa", "Stunning villa by the lake with serene views.", AccommodationType.VILLA, new Location(3L,"Serbia","Belgrade","Mirijevska 51a"), "accommodation_2", 4.0, 3, 10,250.0,new HashSet<>(), true));
@@ -209,7 +209,7 @@ public class HomeFragmentGuest extends Fragment {
             }
         }
 
-        // Ovdje ažurirajte prikaz s novom filtriranom listom
+
         updateUI(filteredList);
     }
 
