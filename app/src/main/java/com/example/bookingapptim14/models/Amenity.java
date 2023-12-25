@@ -1,6 +1,8 @@
 package com.example.bookingapptim14.models;
 
-public class Amenity {
+import java.io.Serializable;
+
+public class Amenity implements Serializable {
     private Long id;
     private String name;
     private String description;
