@@ -70,7 +70,7 @@ public class HomeFragmentGuest extends Fragment {
             ImageView accommodationImageView = cardView.findViewById(R.id.imageView);
 
 
-            descriptionTextView.setText(accommodation.getDescription());
+            descriptionTextView.setText(accommodation.getName());
             ratingTextView.setText("Rating: " + accommodation.getRating());
             priceTextView.setText("Price/Night: $" + accommodation.getPricePerNight());
 
@@ -236,7 +236,7 @@ public class HomeFragmentGuest extends Fragment {
             ImageView accommodationImageView = cardView.findViewById(R.id.imageView);
 
 
-            descriptionTextView.setText(accommodation.getDescription());
+            descriptionTextView.setText(accommodation.getName());
             ratingTextView.setText("Rating: " + accommodation.getRating());
             priceTextView.setText("Price/Night: $" + accommodation.getPricePerNight());
 
