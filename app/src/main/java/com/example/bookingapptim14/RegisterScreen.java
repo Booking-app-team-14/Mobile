@@ -1,9 +1,11 @@
 package com.example.bookingapptim14;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.animation.AnimatorInflater;
 import android.animation.ObjectAnimator;
+import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.widget.Button;
@@ -58,7 +60,10 @@ public class RegisterScreen extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(RegisterScreen.this, ConfirmRegistrationScreen.class);
+                //Intent intent = new Intent(RegisterScreen.this, ConfirmRegistrationScreen.class);
+                //startActivity(intent);
+                showSuccessMessage();
+                Intent intent = new Intent(RegisterScreen.this, LoginScreen.class);
                 startActivity(intent);
             }
         });
@@ -66,10 +71,25 @@ public class RegisterScreen extends AppCompatActivity {
         loginLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(RegisterScreen.this, CreateAccommodationScreen.class);
+                Intent intent = new Intent(RegisterScreen.this, LoginScreen.class);
                 startActivity(intent);
             }
         });
+    }
+
+    private void showSuccessMessage() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Successful registration\n")
+                .setMessage("You have successfully created your account!"
+                )
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                    }
+                });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
 }

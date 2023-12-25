@@ -18,7 +18,9 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.bookingapptim14.LoginScreen;
 import com.example.bookingapptim14.R;
+import com.example.bookingapptim14.RegisterScreen;
 
 public class AccommodationAvailabilityScreen extends AppCompatActivity {
 
@@ -54,6 +56,8 @@ public class AccommodationAvailabilityScreen extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 showSuccessMessage();
+                Intent intent = new Intent(AccommodationAvailabilityScreen.this, MainActivityHost.class);
+                startActivity(intent);
             }
         });
 
