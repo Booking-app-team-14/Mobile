@@ -2,6 +2,8 @@ package com.example.bookingapptim14.models;
 
 import com.example.bookingapptim14.enums.AccommodationType;
 
+import java.util.Set;
+
 public class SearchAccommodation {
 
     private Long id;
@@ -9,21 +11,28 @@ public class SearchAccommodation {
     private String description;
     private AccommodationType accommodationType;
     private String image;
-    private Double rating;
+
+    private Set<Amenity> amenities;
+    private Location location;
+    private Integer minNumberOfGuests;
     private Integer maxNumberOfGuests;
+    private Double rating;
     private Double pricePerNight;
     private boolean approved;
 
-    public SearchAccommodation(Long id, String name, String description, AccommodationType accommodationType,
-                                  String image, Double rating, Integer maxNumberOfGuests, Double pricePerNight, boolean approved) {
+    public SearchAccommodation(Long id, String name, String description, AccommodationType accommodationType, Location location,
+                                  String image, Double rating,Integer minNumberOfGuests, Integer maxNumberOfGuests, Double pricePerNight, Set<Amenity> amenities, boolean approved) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.accommodationType = accommodationType;
+        this.location = location;
         this.image = image;
         this.rating = rating;
+        this.minNumberOfGuests = minNumberOfGuests;
         this.maxNumberOfGuests = maxNumberOfGuests;
         this.pricePerNight = pricePerNight;
+        this.amenities = amenities;
         this.approved = approved;
     }
 
@@ -69,8 +78,14 @@ public class SearchAccommodation {
     private void setMaxNumberOfGuests(Integer maxNumberOfGuests){
         this.maxNumberOfGuests = maxNumberOfGuests;
     }
-    private Integer getMaxNumberOfGuests(){
+    public Integer getMaxNumberOfGuests(){
         return this.maxNumberOfGuests;
+    }
+    private void setMinNumberOfGuests(Integer minNumberOfGuests){
+        this.minNumberOfGuests = minNumberOfGuests;
+    }
+    public Integer getMinNumberOfGuests(){
+        return this.minNumberOfGuests;
     }
     private void setPricePerNight(Double pricePerNight){
         this.pricePerNight = pricePerNight;

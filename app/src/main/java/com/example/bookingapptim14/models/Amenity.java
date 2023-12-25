@@ -23,7 +23,7 @@ public class Amenity {
     private void setName(String name){
         this.name = name;
     }
-    private String getName(){
+    public String getName(){
         return this.name;
     }
 

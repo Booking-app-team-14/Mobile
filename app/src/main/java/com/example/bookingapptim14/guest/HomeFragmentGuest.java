@@ -2,12 +2,9 @@ package com.example.bookingapptim14.guest;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.cardview.widget.CardView;
 import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
 
@@ -24,14 +21,17 @@ import android.widget.TextView;
 
 import com.example.bookingapptim14.R;
 import com.example.bookingapptim14.enums.AccommodationType;
-import com.example.bookingapptim14.models.Accommodation;
+import com.example.bookingapptim14.models.Amenity;
+import com.example.bookingapptim14.models.Location;
 import com.example.bookingapptim14.models.SearchAccommodation;
 import com.google.android.material.datepicker.MaterialDatePicker;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class HomeFragmentGuest extends Fragment {
 
@@ -47,18 +47,18 @@ public class HomeFragmentGuest extends Fragment {
         accommodationsList = new ArrayList<>();
 
         // Dodavanje elemenata u listu
-        accommodationsList.add(new SearchAccommodation(1L, "Sunny Beach House", "Enjoy the sun and sea at this delightful beach house.", AccommodationType.HOTEL, "accommodation_13", 4.6,2, 180.0,true));
-        accommodationsList.add(new SearchAccommodation(2L, "Mountain View Cabin", "Breathtaking mountain views from this cozy cabin retreat.",AccommodationType.APARTMENT, "accommodation_1", 4.9,2, 150.0,true));
-        accommodationsList.add(new SearchAccommodation(3L, "Lakeside Villa", "Stunning villa by the lake with serene views.", AccommodationType.VILLA, "accommodation_2", 4.8, 3, 250.0, true));
-        accommodationsList.add(new SearchAccommodation(4L, "Downtown Loft", "Modern loft in the heart of the city.", AccommodationType.APARTMENT, "accommodation_3", 4.3, 2, 120.0, true));
-        accommodationsList.add(new SearchAccommodation(5L, "Rustic Country House", "Escape to the countryside in this cozy house.", AccommodationType.ROOM, "accommodation_5", 4.7, 4, 200.0, true));
-        accommodationsList.add(new SearchAccommodation(6L, "Seaside Bungalow", "Relaxing bungalow near the beach.", AccommodationType.STUDIO, "accommodation_4", 4.5, 2, 160.0, true));
-        accommodationsList.add(new SearchAccommodation(7L, "Luxury Penthouse", "Experience luxury in this exquisite penthouse.", AccommodationType.APARTMENT, "accommodation_6", 4.9, 4, 350.0, true));
-        accommodationsList.add(new SearchAccommodation(8L, "Countryside Cottage", "Charming cottage in a peaceful rural setting.", AccommodationType.ROOM, "accommodation_7", 4.6, 3, 180.0, true));
-        accommodationsList.add(new SearchAccommodation(9L, "Tropical Paradise Villa", "Tropical villa surrounded by lush greenery.", AccommodationType.VILLA, "accommodation_8", 4.7, 5, 300.0, true));
-        accommodationsList.add(new SearchAccommodation(10L, "Beachfront Resort", "Relaxing resort right by the beach.", AccommodationType.STUDIO, "accommodation_9", 4.8, 4, 280.0, true));
-        accommodationsList.add(new SearchAccommodation(11L, "Chic Urban Studio", "Stylish studio apartment in a trendy neighborhood.", AccommodationType.APARTMENT, "accommodation_10", 4.4, 1, 90.0, true));
-        accommodationsList.add(new SearchAccommodation(12L, "Mountain Retreat Chalet", "Escape to this cozy chalet nestled in the mountains.", AccommodationType.VILLA, "accommodation_11", 4.6, 3, 210.0, true));
+        accommodationsList.add(new SearchAccommodation(1L, "Sunny Beach House", "Enjoy the sun and sea at this delightful beach house.", AccommodationType.HOTEL, new Location(1L,"Serbia","Zlatibor","Katunska 4"), "accommodation_13", 2.6,2,4, 180.0, new HashSet<>(),true));
+        accommodationsList.add(new SearchAccommodation(2L, "Mountain View Cabin", "Breathtaking mountain views from this cozy cabin retreat.",AccommodationType.APARTMENT, new Location(2L,"Serbia","Novi Sad","Hilandarska 2"), "accommodation_1", 4.9,2 ,7,150.0,new HashSet<>(),true));
+        accommodationsList.add(new SearchAccommodation(3L, "Lakeside Villa", "Stunning villa by the lake with serene views.", AccommodationType.VILLA, new Location(3L,"Serbia","Belgrade","Mirijevska 51a"), "accommodation_2", 4.0, 3, 10,250.0,new HashSet<>(), true));
+        accommodationsList.add(new SearchAccommodation(4L, "Downtown Loft", "Modern loft in the heart of the city.", AccommodationType.APARTMENT,new Location(4L,"Croatia","Zagreb","Katunska 4"), "accommodation_3", 3.3, 4,6, 120.0,new HashSet<>(), true));
+        accommodationsList.add(new SearchAccommodation(5L, "Rustic Country House", "Escape to the countryside in this cozy house.", AccommodationType.ROOM,new Location(5L,"USA","New York","Time Square"), "accommodation_5", 4.7, 5,8, 200.0,new HashSet<>(), true));
+        accommodationsList.add(new SearchAccommodation(6L, "Seaside Bungalow", "Relaxing bungalow near the beach.", AccommodationType.STUDIO,new Location(6L,"Bulgaria","Plovdiv","Katunska 4"), "accommodation_4", 4.5, 2,10, 160.0,new HashSet<>(), true));
+        accommodationsList.add(new SearchAccommodation(7L, "Luxury Penthouse", "Experience luxury in this exquisite penthouse.", AccommodationType.APARTMENT,new Location(7L,"Serbia","Zlatibor","Katunska 2"), "accommodation_6", 5.0, 4,8, 350.0,new HashSet<>(), true));
+        accommodationsList.add(new SearchAccommodation(8L, "Countryside Cottage", "Charming cottage in a peaceful rural setting.", AccommodationType.ROOM, new Location(8L,"Croatia","Zagreb","Katunska 66"),"accommodation_7", 3.6, 3,5, 180.0,new HashSet<>(), true));
+        accommodationsList.add(new SearchAccommodation(9L, "Tropical Paradise Villa", "Tropical villa surrounded by lush greenery.", AccommodationType.VILLA,new Location(9l,"Serbia","Zlatibor","Katunska 56789"), "accommodation_8", 2.7, 5,7, 300.0,new HashSet<>(), true));
+        accommodationsList.add(new SearchAccommodation(10L, "Beachfront Resort", "Relaxing resort right by the beach.", AccommodationType.STUDIO, new Location(10l,"Norway","Oslo","Katunska 4"), "accommodation_9", 4.8, 4, 12,280.0,new HashSet<>(), true));
+        accommodationsList.add(new SearchAccommodation(11L, "Chic Urban Studio", "Stylish studio apartment in a trendy neighborhood.", AccommodationType.APARTMENT,new Location(11l,"Hungary","Budapest","Katunska 4"), "accommodation_10", 3.4, 1,3, 90.0,new HashSet<>(), true));
+        accommodationsList.add(new SearchAccommodation(12L, "Mountain Retreat Chalet", "Escape to this cozy chalet nestled in the mountains.", AccommodationType.VILLA,new Location(12l,"Serbia","Zlatibor","Katunska 543"), "accommodation_11", 2.6, 3,5, 210.0,new HashSet<>(), true));
 
 
         linearLayout = view.findViewById(R.id.linearView);
@@ -123,7 +123,7 @@ public class HomeFragmentGuest extends Fragment {
                 return true;
             }
         });
-        View cardView1 = getLayoutInflater().inflate(R.layout.card_vew, null);
+        View cardView1 = view.findViewById(R.id.cardView);
 
         cardView1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -146,8 +146,7 @@ public class HomeFragmentGuest extends Fragment {
         NumberPicker numberPicker = dialogView.findViewById(R.id.numberPickerGuests);
 
         numberPicker.setMinValue(1);
-        numberPicker.setMaxValue(10);
-
+        numberPicker.setMaxValue(100);
         textViewDateRange = dialogView.findViewById(R.id.textViewDateRange);
         btnDateRangePicker = dialogView.findViewById(R.id.btnDateRangePicker);
 
@@ -240,5 +239,61 @@ public class HomeFragmentGuest extends Fragment {
 
             linearLayout.addView(cardView);
         }
+    }
+
+    public List<SearchAccommodation> filterAccommodations(Date startDate, Date endDate, int minRating, int minGuests, int maxGuests, Set<String> amenities) {
+        List<SearchAccommodation> filteredList = new ArrayList<>();
+
+        for (SearchAccommodation accommodation : accommodationsList) {
+
+            boolean dateInRange = checkDateRange(accommodation, startDate, endDate);
+
+
+            boolean ratingInRange = accommodation.getRating() >= minRating;
+
+
+            boolean guestsInRange = accommodation.getMinNumberOfGuests() >= minGuests &&
+                    accommodation.getMaxNumberOfGuests() <= maxGuests;
+
+
+            boolean amenitiesMatch = checkAmenities(accommodation, amenities);
+
+
+            if (dateInRange && ratingInRange && guestsInRange && amenitiesMatch) {
+                filteredList.add(accommodation);
+            }
+        }
+
+        return filteredList;
+    }
+
+
+    private boolean checkDateRange(SearchAccommodation accommodation, Date startDate, Date endDate) {
+
+        return true;
+    }
+
+
+    private boolean checkAmenities(SearchAccommodation accommodation, Set<String> amenities) {
+       /*
+        Set<Amenity> accommodationAmenities = accommodation.getAmenities();
+        for (String amenity : amenities) {
+            if (!containsAmenity(accommodationAmenities, amenity)) {
+                return false;
+            }
+        }
+        */
+
+        return true;
+    }
+
+
+    private boolean containsAmenity(Set<Amenity> amenities, String amenityName) {
+        for (Amenity amenity : amenities) {
+            if (amenity.getName().equals(amenityName)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

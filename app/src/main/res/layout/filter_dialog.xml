@@ -188,15 +188,25 @@
             android:text="Apartment" />
 
         <CheckBox
-            android:id="@+id/checkbox_house"
+            android:id="@+id/checkbox_studio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="House" />
+            android:text="Studio" />
         <CheckBox
             android:id="@+id/checkbox_hotel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Hotel" />
+        <CheckBox
+            android:id="@+id/checkbox_villa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Villa" />
+        <CheckBox
+            android:id="@+id/checkbox_room"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Room" />
 
     </GridLayout>
     <LinearLayout
