@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.bookingapptim14.guest.MainActivityGuest;
+import com.example.bookingapptim14.host.CreateAccommodationScreen;
 
 
 public class RegisterScreen extends AppCompatActivity {
@@ -65,7 +66,7 @@ public class RegisterScreen extends AppCompatActivity {
         loginLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(RegisterScreen.this, LoginScreen.class);
+                Intent intent = new Intent(RegisterScreen.this, CreateAccommodationScreen.class);
                 startActivity(intent);
             }
         });

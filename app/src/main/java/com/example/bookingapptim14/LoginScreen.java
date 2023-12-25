@@ -54,15 +54,19 @@ public class LoginScreen extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = null;
-                if (usernameEditText.getText().toString().equals("guest")){
+                if (usernameEditText.getText().toString().equals("tim14.guest@gmail.com") &&
+                        (passwordEditText.getText().toString().equals("12345678") || passwordEditText.getText().toString().equals("123456789"))) {
                     intent = new Intent(LoginScreen.this, MainActivityGuest.class);
                 }
-                else if (usernameEditText.getText().toString().equals("host")){
+                else if (usernameEditText.getText().toString().equals("tim14.owner@gmail.com") &&
+                        (passwordEditText.getText().toString().equals("12345678") || passwordEditText.getText().toString().equals("123456789"))) {
                     intent = new Intent(LoginScreen.this, MainActivityHost.class);
                 }
-                else if (usernameEditText.getText().toString().equals("admin")){
+                else if (usernameEditText.getText().toString().equals("tim14.admin@gmail.com") &&
+                        (passwordEditText.getText().toString().equals("12345678") || passwordEditText.getText().toString().equals("123456789"))) {
                     intent = new Intent(LoginScreen.this, MainActivityAdmin.class);
                 }
+
                 else{
                     Toast.makeText(LoginScreen.this, "Enter username", Toast.LENGTH_SHORT).show();
                     return;

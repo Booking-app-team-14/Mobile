@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp">
+
+    <!-- Availability -->
+    <TextView
+        android:id="@+id/textViewAvailabilityLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Availability"
+        android:textColor="#000000"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="16dp" />
+
+    <EditText
+        android:id="@+id/editTextAvailability"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Availability"
+        android:layout_below="@+id/textViewAvailabilityLabel"
+        android:layout_marginTop="8dp"
+        android:textColorHint="#777777"
+        android:background="@drawable/edit_text_border" />
+
+    <!-- Price -->
+    <TextView
+        android:id="@+id/textViewPriceLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Price"
+        android:textColor="#000000"
+        android:layout_below="@+id/editTextAvailability"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="16dp" />
+
+    <EditText
+        android:id="@+id/editTextPrice"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:hint="Price"
+        android:layout_below="@+id/textViewPriceLabel"
+        android:layout_marginTop="8dp"
+        android:inputType="numberDecimal"
+        android:textColorHint="#777777"
+        android:background="@drawable/edit_text_border" />
+
+    <!-- Button to create accommodation -->
+    <Button
+        android:id="@+id/buttonCreateAccommodation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="CREATE ACCOMMODATION"
+        android:layout_below="@+id/editTextPrice"
+        android:layout_marginTop="16dp" />
+
+</RelativeLayout>
