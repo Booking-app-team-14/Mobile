@@ -1,9 +1,15 @@
 package com.example.bookingapptim14.guest;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -13,12 +19,18 @@ import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.ContextCompat;
+
 import com.example.bookingapptim14.R;
 
 import java.util.Calendar;
 
-public class AccommodationDetailsActivityGuest extends Activity {
 
+public class AccommodationDetailsActivityGuest extends Activity {
+    private static final int MY_PERMISSIONS_REQUEST_NOTIFICATION = 1001;
     Button bookingButton;
 
     @Override
@@ -82,9 +94,41 @@ public class AccommodationDetailsActivityGuest extends Activity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
-                dialog.dismiss();
+                Toast.makeText(AccommodationDetailsActivityGuest.this, "Reservation Successfully Sent", Toast.LENGTH_SHORT).show();
+/*
+                Context context = AccommodationDetailsActivityGuest.this;
+                String channelId = "my_channel_id";
+
+
+                int notificationId = 1;
+                Intent detailsIntent = new Intent(context, context.getClass());
+                detailsIntent.putExtra("accommodation_id", 2);
+
+                PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, detailsIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, channelId)
+                        .setSmallIcon(R.drawable.ic_logo)
+                        .setContentTitle("Succesfully reserved")
+                        .setContentText("Your accommodation is successfully reserved.")
+                        .addAction(R.drawable.ic_lock, "SHOW", pendingIntent)
+                        .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+                NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+
+
+                if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_NOTIFICATION_POLICY)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(AccommodationDetailsActivityGuest.this,
+                            new String[]{Manifest.permission.ACCESS_NOTIFICATION_POLICY},
+                            MY_PERMISSIONS_REQUEST_NOTIFICATION);
+                } else {
+                    notificationManager.notify(notificationId, notificationBuilder.build());
+                }
+*/
             }
-        });
+            }
+
+        );
 
 
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -114,7 +158,7 @@ public class AccommodationDetailsActivityGuest extends Activity {
         String recap = "Start Date: " + startDay + "/" + startMonth + "/" + startYear +
                 "\nEnd Date: " + endDay + "/" + endMonth + "/" + endYear +
                 "\nNumber of Guests: " + numOfGuests +
-                "\nTotal Amount: $XXX";
+                "\nTotal Amount: $1000";
 
         textViewRecap.setText(recap);
         textViewRecap.setVisibility(View.VISIBLE);

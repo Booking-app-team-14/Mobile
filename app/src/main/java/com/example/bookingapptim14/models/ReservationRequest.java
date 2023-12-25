@@ -1,91 +1,72 @@
 package com.example.bookingapptim14.models;
 
+import com.example.bookingapptim14.enums.RequestStatus;
+
+import java.time.LocalDate;
+
 public class ReservationRequest {
-    private int userProfileImage; // Resource ID for user profile image
-    private String userName;
-    private int apartmentImage; // Resource ID for apartment image
-    private String apartmentName;
-    private String apartmentType;
-    private String startDate;
-    private String endDate;
-    private int numGuests;
+    private Long guestId;
+    private Long accommodationId;
+    private LocalDate startDate;
+    private LocalDate endDate;
+    private int numberOfGuests ;
+    private double totalPrice;
+    private RequestStatus requestStatus;
 
-    // Constructor
-    public ReservationRequest(int userProfileImage, String userName, int apartmentImage,
-                              String apartmentName, String apartmentType,
-                              String startDate, String endDate, int numGuests) {
-        this.userProfileImage = userProfileImage;
-        this.userName = userName;
-        this.apartmentImage = apartmentImage;
-        this.apartmentName = apartmentName;
-        this.apartmentType = apartmentType;
+    public ReservationRequest(Long guestId,Long accommodationId,double totalPrice, LocalDate startDate, LocalDate endDate, int numberOfGuests, RequestStatus status){
+        this.guestId = guestId;
+        this.accommodationId = accommodationId;
+        this.totalPrice = totalPrice;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.numGuests = numGuests;
+        this.numberOfGuests = numberOfGuests;
+        this.requestStatus = status;
     }
 
-    // Getters and Setters
-    public int getUserProfileImage() {
-        return userProfileImage;
+    public ReservationRequest() {
+
     }
 
-    public void setUserProfileImage(int userProfileImage) {
-        this.userProfileImage = userProfileImage;
+    private void setGuestIdId(Long guestId){
+        this.guestId = guestId;
+    }
+    private Long getGuestId(){
+        return this.guestId;
+    }
+    private void setAccommodationId(Long accommodationId){
+        this.accommodationId = accommodationId;
+    }
+    private Long getAccommodationId(){
+        return this.accommodationId;
     }
 
-    public String getUserName() {
-        return userName;
+    private void setTotalPrice(Double totalPrice){
+        this.totalPrice = totalPrice;
+    }
+    private Double getTotalPrice(){
+        return this.totalPrice;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    private void setNumberOfGuests(int numberOfGuests){
+        this.numberOfGuests = numberOfGuests;
+    }
+    private int getNumberOfGuests(){
+        return this.numberOfGuests;
     }
 
-    public int getApartmentImage() {
-        return apartmentImage;
-    }
-
-    public void setApartmentImage(int apartmentImage) {
-        this.apartmentImage = apartmentImage;
-    }
-
-    public String getApartmentName() {
-        return apartmentName;
-    }
-
-    public void setApartmentName(String apartmentName) {
-        this.apartmentName = apartmentName;
-    }
-
-    public String getApartmentType() {
-        return apartmentType;
-    }
-
-    public void setApartmentType(String apartmentType) {
-        this.apartmentType = apartmentType;
-    }
-
-    public String getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(String startDate) {
+    private void setStartDate(LocalDate startDate){
         this.startDate = startDate;
     }
-
-    public String getEndDate() {
-        return endDate;
+    private LocalDate getStartDate(){
+        return this.startDate;
     }
 
-    public void setEndDate(String endDate) {
+    private void setEndDate(LocalDate endDate){
         this.endDate = endDate;
     }
-
-    public int getNumGuests() {
-        return numGuests;
+    private LocalDate getEndDate(){
+        return this.endDate;
     }
 
-    public void setNumGuests(int numGuests) {
-        this.numGuests = numGuests;
-    }
+
 }
