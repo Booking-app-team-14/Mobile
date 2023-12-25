@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -43,6 +44,25 @@ public class UpdateAccountFragment extends Fragment {
 
     private void updateDetails() {
         // TODO: Update account details
+        String firstName = ((EditText) getActivity().getWindow().findViewById(R.id.editTextName)).getText().toString();
+        String lastName = ((EditText) getActivity().getWindow().findViewById(R.id.editTextSurname)).getText().toString();
+        String phoneNumber = ((EditText) getActivity().getWindow().findViewById(R.id.editTextPhone)).getText().toString();
+        String address = ((EditText) getActivity().getWindow().findViewById(R.id.editTextAddress)).getText().toString();
+
+        GlobalData gd = GlobalData.getInstance();
+        if (!firstName.isEmpty()){
+            gd.getLoggedInUser().setFirstName(firstName);
+        }
+        if (!lastName.isEmpty()){
+            gd.getLoggedInUser().setLastName(lastName);
+        }
+        if (!phoneNumber.isEmpty()){
+            gd.getLoggedInUser().setPhoneNumber(phoneNumber);
+        }
+        if (!address.isEmpty()){
+            gd.getLoggedInUser().setAddress(address);
+        }
+
         Toast.makeText(getContext(), "Account details successfully updated", Toast.LENGTH_SHORT).show();
         getActivity().getWindow().findViewById(R.id.bottomNavView).setVisibility(View.VISIBLE);
         getActivity().getOnBackPressedDispatcher().onBackPressed();

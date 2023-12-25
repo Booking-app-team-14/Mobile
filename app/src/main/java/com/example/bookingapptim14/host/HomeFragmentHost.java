@@ -23,6 +23,7 @@ import androidx.appcompat.widget.PopupMenu;
 
 import androidx.cardview.widget.CardView;
 
+import com.example.bookingapptim14.GlobalData;
 import com.example.bookingapptim14.R;
 import com.example.bookingapptim14.enums.AccommodationType;
 import com.example.bookingapptim14.models.Location;
@@ -45,22 +46,7 @@ public class HomeFragmentHost extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home_host, container, false);
 
-        accommodationsList = new ArrayList<>();
-
-
-        accommodationsList.add(new SearchAccommodation(1L, "Sunny Beach House", "Enjoy the sun and sea at this delightful beach house.", AccommodationType.HOTEL, new Location(1L,"Serbia","Zlatibor","Katunska 4"), "accommodation_13", 2.6,2,4, 180.0, new HashSet<>(),true));
-        accommodationsList.add(new SearchAccommodation(2L, "Mountain View Cabin", "Breathtaking mountain views from this cozy cabin retreat.",AccommodationType.APARTMENT, new Location(2L,"Serbia","Novi Sad","Hilandarska 2"), "rectangle", 4.9,2 ,7,150.0,new HashSet<>(),true));
-        accommodationsList.add(new SearchAccommodation(3L, "Lakeside Villa", "Stunning villa by the lake with serene views.", AccommodationType.VILLA, new Location(3L,"Serbia","Belgrade","Mirijevska 51a"), "accommodation_2", 4.0, 3, 10,250.0,new HashSet<>(), true));
-        accommodationsList.add(new SearchAccommodation(4L, "Downtown Loft", "Modern loft in the heart of the city.", AccommodationType.APARTMENT,new Location(4L,"Croatia","Zagreb","Katunska 4"), "accommodation_3", 3.3, 4,6, 220.0,new HashSet<>(), true));
-        accommodationsList.add(new SearchAccommodation(5L, "Rustic Country House", "Escape to the countryside in this cozy house.", AccommodationType.ROOM,new Location(5L,"USA","New York","Time Square"), "accommodation_5", 4.7, 5,8, 210.0,new HashSet<>(), true));
-        accommodationsList.add(new SearchAccommodation(6L, "Seaside Bungalow", "Relaxing bungalow near the beach.", AccommodationType.STUDIO,new Location(6L,"Bulgaria","Plovdiv","Katunska 4"), "accommodation_4", 4.5, 2,10, 160.0,new HashSet<>(), true));
-        accommodationsList.add(new SearchAccommodation(7L, "Luxury Penthouse", "Experience luxury in this exquisite penthouse.", AccommodationType.APARTMENT,new Location(7L,"Serbia","Zlatibor","Katunska 2"), "accommodation_6", 5.0, 4,8, 350.0,new HashSet<>(), true));
-        accommodationsList.add(new SearchAccommodation(8L, "Countryside Cottage", "Charming cottage in a peaceful rural setting.", AccommodationType.ROOM, new Location(8L,"Croatia","Zagreb","Katunska 66"),"accommodation_7", 3.6, 3,5, 180.0,new HashSet<>(), true));
-        accommodationsList.add(new SearchAccommodation(9L, "Tropical Paradise Villa", "Tropical villa surrounded by lush greenery.", AccommodationType.VILLA,new Location(9l,"Serbia","Zlatibor","Katunska 56789"), "accommodation_8", 2.7, 5,7, 300.0,new HashSet<>(), true));
-        accommodationsList.add(new SearchAccommodation(10L, "Beachfront Resort", "Relaxing resort right by the beach.", AccommodationType.STUDIO, new Location(10l,"Norway","Oslo","Katunska 4"), "accommodation_9", 4.8, 4, 12,280.0,new HashSet<>(), true));
-        accommodationsList.add(new SearchAccommodation(11L, "Chic Urban Studio", "Stylish studio apartment in a trendy neighborhood.", AccommodationType.APARTMENT,new Location(11l,"Hungary","Budapest","Katunska 4"), "accommodation_10", 3.4, 1,3, 90.0,new HashSet<>(), true));
-        accommodationsList.add(new SearchAccommodation(12L, "Mountain Retreat Chalet", "Escape to this cozy chalet nestled in the mountains.", AccommodationType.VILLA,new Location(12l,"Serbia","Zlatibor","Katunska 543"), "accommodation_11", 2.6, 3,5, 210.0,new HashSet<>(), true));
-
+        accommodationsList = GlobalData.getInstance().getSearchAccommodations();
 
         linearLayout = view.findViewById(R.id.linearView);
 
@@ -162,6 +148,9 @@ public class HomeFragmentHost extends Fragment {
         popupMenu.setOnMenuItemClickListener(item -> {
             switch (item.getTitle().toString()) {
                 case "Create new accommodation":
+                    Intent createAccommodationIntent = new Intent(requireContext(), CreateAccommodationScreen.class);
+                    startActivity(createAccommodationIntent);
+                    return true;
                 case "Generate a report for all your accommodation":
                     return true;
                 default:

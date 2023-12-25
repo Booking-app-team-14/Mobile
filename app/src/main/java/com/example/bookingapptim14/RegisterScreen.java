@@ -1,17 +1,21 @@
 package com.example.bookingapptim14;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.animation.AnimatorInflater;
 import android.animation.ObjectAnimator;
+import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.widget.Button;
 import android.content.Intent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.bookingapptim14.guest.MainActivityGuest;
 
@@ -29,7 +33,7 @@ public class RegisterScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_screen);
 
-       //inicijalizacija elemenata sa layouta
+        //inicijalizacija elemenata sa layouta
         usernameEditText = findViewById(R.id.editTextEmail);
         passwordEditText = findViewById(R.id.editTextPassword);
         registerButton = findViewById(R.id.buttonRegister);
@@ -57,7 +61,10 @@ public class RegisterScreen extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(RegisterScreen.this, ConfirmRegistrationScreen.class);
+                //Intent intent = new Intent(RegisterScreen.this, ConfirmRegistrationScreen.class);
+                //startActivity(intent);
+                showSuccessMessage();
+                Intent intent = new Intent(RegisterScreen.this, LoginScreen.class);
                 startActivity(intent);
             }
         });
@@ -71,4 +78,9 @@ public class RegisterScreen extends AppCompatActivity {
         });
     }
 
+    private static final int DURATION_MILLIS = 3000;
+
+    private void showSuccessMessage() {
+        Toast.makeText(RegisterScreen.this, "You have successfully created your account!", Toast.LENGTH_SHORT).show();
+    }
 }
