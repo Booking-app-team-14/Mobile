@@ -6,11 +6,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewStub;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.bookingapptim14.R;
+import com.example.bookingapptim14.RegisterScreen;
 
 public class AccommodationAvailabilityScreen extends AppCompatActivity {
 
@@ -55,19 +57,7 @@ public class AccommodationAvailabilityScreen extends AppCompatActivity {
     }
 
     private void showSuccessMessage() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Successfully created accommodation")
-                .setMessage("You have successfully created your accommodation! The approval request has been sent to the admin."
-                )
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        //na ok da resetuje podatke??
-                        dialog.dismiss();
-                    }
-                });
-
-        AlertDialog dialog = builder.create();
-        dialog.show();
+        Toast.makeText(AccommodationAvailabilityScreen.this, "You have successfully created your accommodation! The approval request has been sent to the admin.", Toast.LENGTH_LONG).show();
     }
 }
 

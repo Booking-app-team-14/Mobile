@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,6 +26,8 @@ import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 
 import com.example.bookingapptim14.R;
+import com.example.bookingapptim14.models.Accommodation;
+import com.example.bookingapptim14.models.SearchAccommodation;
 
 import java.util.Calendar;
 
@@ -33,11 +36,35 @@ public class AccommodationDetailsActivityGuest extends Activity {
     private static final int MY_PERMISSIONS_REQUEST_NOTIFICATION = 1001;
     Button bookingButton;
 
+    private SearchAccommodation accommodation;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_accomodation_details_guest);
 
+        Intent intent = getIntent();
+        if (intent != null) {
+            accommodation = (SearchAccommodation) intent.getSerializableExtra("accommodation");
+        }
+
+        if (accommodation != null) {
+
+            ImageView accommodationImageView = findViewById(R.id.rectangle_1);
+            TextView nameTextView = findViewById(R.id.barcino);
+            TextView descriptionTextView = findViewById(R.id.lorem_ipsum_dolor_sit_amet_consectetur__eu_est_sapien_congue_faucibus__tempor_iaculis_lobortis_posuere_in_non__est_placerat_vitae_nulla_nunc_porttitor_justo__nisl_cum_fermentum_bibendum_tortor_lorem_interdum_turpis_condimentum_felis_);
+            TextView priceTextView = findViewById(R.id.__650);
+            TextView ratingTextView = findViewById(R.id._4_8);
+
+
+            int drawableResourceId = getResources().getIdentifier(accommodation.getImage(), "drawable", getPackageName());
+            accommodationImageView.setImageResource(drawableResourceId);
+
+
+            nameTextView.setText(accommodation.getName());
+            descriptionTextView.setText(accommodation.getDescription());
+            priceTextView.setText("$" + accommodation.getPricePerNight());
+            ratingTextView.setText(String.valueOf(accommodation.getRating()));
+        }
         bookingButton = findViewById(R.id.common_button);
         bookingButton.setOnClickListener(new View.OnClickListener() {
             @Override

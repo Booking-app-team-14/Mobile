@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.bookingapptim14.admin.MainActivityAdmin;
+import com.example.bookingapptim14.guest.AccommodationDetailsActivityGuest;
 import com.example.bookingapptim14.guest.MainActivityGuest;
 import com.example.bookingapptim14.host.MainActivityHost;
 
@@ -58,14 +59,17 @@ public class LoginScreen extends AppCompatActivity {
                 Intent intent = null;
                 if (usernameEditText.getText().toString().equals("tim14.guest@gmail.com") &&
                         (passwordEditText.getText().toString().equals("12345678") || passwordEditText.getText().toString().equals("123456789"))) {
+                    showSuccessMessage();
                     intent = new Intent(LoginScreen.this, MainActivityGuest.class);
                 }
                 else if (usernameEditText.getText().toString().equals("tim14.owner@gmail.com") &&
                         (passwordEditText.getText().toString().equals("12345678") || passwordEditText.getText().toString().equals("123456789"))) {
+                    showSuccessMessage();
                     intent = new Intent(LoginScreen.this, MainActivityHost.class);
                 }
                 else if (usernameEditText.getText().toString().equals("tim14.admin@gmail.com") &&
                         (passwordEditText.getText().toString().equals("12345678") || passwordEditText.getText().toString().equals("123456789"))) {
+                    showSuccessMessage();
                     intent = new Intent(LoginScreen.this, MainActivityAdmin.class);
                 }
 
@@ -94,18 +98,7 @@ public class LoginScreen extends AppCompatActivity {
     }
 
     private void showSuccessMessage() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Successful login\n")
-                .setMessage("You have successfully created your account!"
-                )
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.dismiss();
-                    }
-                });
-
-        AlertDialog dialog = builder.create();
-        dialog.show();
+        Toast.makeText(LoginScreen.this, "You successfully logged in!", Toast.LENGTH_SHORT).show();
     }
 
     private void showUnsuccessMessage() {

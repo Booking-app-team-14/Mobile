@@ -2,9 +2,10 @@ package com.example.bookingapptim14.models;
 
 import com.example.bookingapptim14.enums.AccommodationType;
 
+import java.io.Serializable;
 import java.util.Set;
 
-public class SearchAccommodation {
+public class SearchAccommodation implements Serializable {
 
     private Long id;
     private String name;

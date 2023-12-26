@@ -8,12 +8,14 @@ import android.animation.ObjectAnimator;
 import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.widget.Button;
 import android.content.Intent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.bookingapptim14.guest.MainActivityGuest;
 
@@ -76,19 +78,9 @@ public class RegisterScreen extends AppCompatActivity {
         });
     }
 
+    private static final int DURATION_MILLIS = 3000;
+
     private void showSuccessMessage() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Successful registration\n")
-                .setMessage("You have successfully created your account!"
-                )
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.dismiss();
-                    }
-                });
-
-        AlertDialog dialog = builder.create();
-        dialog.show();
+        Toast.makeText(RegisterScreen.this, "You have successfully created your account!", Toast.LENGTH_SHORT).show();
     }
-
 }

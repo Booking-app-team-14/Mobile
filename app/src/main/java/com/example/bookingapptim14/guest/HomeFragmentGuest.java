@@ -27,6 +27,7 @@ import com.example.bookingapptim14.models.Location;
 import com.example.bookingapptim14.models.SearchAccommodation;
 import com.google.android.material.datepicker.MaterialDatePicker;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -53,13 +54,23 @@ public class HomeFragmentGuest extends Fragment {
         for (SearchAccommodation accommodation : accommodationsList) {
             View cardView = getLayoutInflater().inflate(R.layout.card_vew, null);
 
+
+            cardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    Intent intent = new Intent(getActivity(), AccommodationDetailsActivityGuest.class);
+                    intent.putExtra("accommodation", accommodation);
+                    startActivity(intent);
+                }
+            });
             TextView descriptionTextView = cardView.findViewById(R.id.descriptionTextView);
             TextView ratingTextView = cardView.findViewById(R.id.ratingTextView);
             TextView priceTextView = cardView.findViewById(R.id.priceTextView);
             ImageView accommodationImageView = cardView.findViewById(R.id.imageView);
 
 
-            descriptionTextView.setText(accommodation.getDescription());
+            descriptionTextView.setText(accommodation.getName());
             ratingTextView.setText("Rating: " + accommodation.getRating());
             priceTextView.setText("Price/Night: $" + accommodation.getPricePerNight());
 
@@ -225,7 +236,7 @@ public class HomeFragmentGuest extends Fragment {
             ImageView accommodationImageView = cardView.findViewById(R.id.imageView);
 
 
-            descriptionTextView.setText(accommodation.getDescription());
+            descriptionTextView.setText(accommodation.getName());
             ratingTextView.setText("Rating: " + accommodation.getRating());
             priceTextView.setText("Price/Night: $" + accommodation.getPricePerNight());
 

@@ -1,6 +1,8 @@
 package com.example.bookingapptim14.models;
 
-public class Location {
+import java.io.Serializable;
+
+public class Location implements Serializable {
     private Long id;
     private String country;
     private String city;

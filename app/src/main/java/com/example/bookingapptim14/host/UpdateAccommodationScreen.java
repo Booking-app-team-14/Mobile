@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -91,19 +92,7 @@ public class UpdateAccommodationScreen extends AppCompatActivity {
     }
 
     private void showSuccessMessage() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Successfully updated accommodation")
-                .setMessage("The request for approval of accommodation changes has been sent to the admin\n"
-                )
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        //na ok da resetuje podatke??
-                        dialog.dismiss();
-                    }
-                });
-
-        AlertDialog dialog = builder.create();
-        dialog.show();
+        Toast.makeText(UpdateAccommodationScreen.this, "The request for approval of accommodation changes has been sent to the admin.", Toast.LENGTH_LONG).show();
     }
 
     @Override
