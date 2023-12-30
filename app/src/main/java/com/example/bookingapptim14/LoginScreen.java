@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,6 +21,13 @@ import com.example.bookingapptim14.admin.MainActivityAdmin;
 import com.example.bookingapptim14.guest.AccommodationDetailsActivityGuest;
 import com.example.bookingapptim14.guest.MainActivityGuest;
 import com.example.bookingapptim14.host.MainActivityHost;
+import com.example.bookingapptim14.interfaces.AuthenticationService;
+import com.example.bookingapptim14.models.JwtAuthenticationRequest;
+import com.example.bookingapptim14.utils.RetrofitClient;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class LoginScreen extends AppCompatActivity {
 
@@ -53,7 +61,7 @@ public class LoginScreen extends AppCompatActivity {
         passwordEditText.setCompoundDrawables(null, null, passwordIcon, null);
 
         //dugme za prijavu
-        loginButton.setOnClickListener(new View.OnClickListener() {
+        /*loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = null;
@@ -80,7 +88,46 @@ public class LoginScreen extends AppCompatActivity {
                 startActivity(intent);
                 finish();
             }
+        });*/
+
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String username = usernameEditText.getText().toString();
+                String password = passwordEditText.getText().toString();
+
+                AuthenticationService authService = RetrofitClient.getInstance().create(AuthenticationService.class);
+                JwtAuthenticationRequest authRequest = new JwtAuthenticationRequest(username, password);
+
+                Call<String> call = authService.createAuthenticationToken(authRequest);
+                call.enqueue(new Callback<String>() {
+                    @Override
+                    public void onResponse(Call<String> call, Response<String> response) {
+                        int statusCode = response.code();
+
+                        if (response.isSuccessful()) {
+                            String jwtToken = response.body();
+                            showSuccessMessage();
+                            Intent intent = new Intent(LoginScreen.this, MainActivityGuest.class);
+                            startActivity(intent);
+                        } else {
+                            showUnsuccessMessage();
+                            Log.e("AuthenticationError", "Authentication failed with status code: " + statusCode);
+                        }
+                    }
+
+
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
+                        // Neuspješna autentifikacija, prikažite poruku o grešci
+                        showUnsuccessMessage();
+                        Log.e("AuthenticationError", "Authentication request failed", t);
+                    }
+
+                });
+            }
         });
+
 
         //hyperlink za registraciju
         signUpLink.setOnClickListener(new View.OnClickListener() {
