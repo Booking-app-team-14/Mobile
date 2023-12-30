@@ -51,44 +51,9 @@ public class LoginScreen extends AppCompatActivity {
         rotationAnimator.setTarget(imageView);
         rotationAnimator.start();
 
-        //podesavanje velicine ikonica
-        //Drawable emailIcon = getResources().getDrawable(R.drawable.img_4);
-        //emailIcon.setBounds(15, 1, (int) (emailIcon.getIntrinsicWidth() * 0.06), (int) (emailIcon.getIntrinsicHeight() * 0.06));
-        //usernameEditText.setCompoundDrawables(emailIcon, null, null, null);
-
         Drawable passwordIcon = getResources().getDrawable(R.drawable.img_3);
         passwordIcon.setBounds(15, 1, (int) (passwordIcon.getIntrinsicWidth() * 0.05), (int) (passwordIcon.getIntrinsicHeight() * 0.05));
         passwordEditText.setCompoundDrawables(null, null, passwordIcon, null);
-
-        //dugme za prijavu
-        /*loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = null;
-                if (usernameEditText.getText().toString().equals("tim14.guest@gmail.com") &&
-                        (passwordEditText.getText().toString().equals("12345678") || passwordEditText.getText().toString().equals("123456789"))) {
-                    showSuccessMessage();
-                    intent = new Intent(LoginScreen.this, MainActivityGuest.class);
-                }
-                else if (usernameEditText.getText().toString().equals("tim14.owner@gmail.com") &&
-                        (passwordEditText.getText().toString().equals("12345678") || passwordEditText.getText().toString().equals("123456789"))) {
-                    showSuccessMessage();
-                    intent = new Intent(LoginScreen.this, MainActivityHost.class);
-                }
-                else if (usernameEditText.getText().toString().equals("tim14.admin@gmail.com") &&
-                        (passwordEditText.getText().toString().equals("12345678") || passwordEditText.getText().toString().equals("123456789"))) {
-                    showSuccessMessage();
-                    intent = new Intent(LoginScreen.this, MainActivityAdmin.class);
-                }
-
-                else{
-                    showUnsuccessMessage();
-                    return;
-                }
-                startActivity(intent);
-                finish();
-            }
-        });*/
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,21 +80,17 @@ public class LoginScreen extends AppCompatActivity {
                             Log.e("AuthenticationError", "Authentication failed with status code: " + statusCode);
                         }
                     }
-
-
                     @Override
                     public void onFailure(Call<String> call, Throwable t) {
-                        // Neuspješna autentifikacija, prikažite poruku o grešci
                         showUnsuccessMessage();
                         Log.e("AuthenticationError", "Authentication request failed", t);
+                        t.printStackTrace();
+
                     }
 
                 });
             }
         });
-
-
-        //hyperlink za registraciju
         signUpLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -138,16 +99,12 @@ public class LoginScreen extends AppCompatActivity {
             }
         });
     }
-
-
     public void onForgotPasswordClick(View view) {
         //dodati kod
     }
-
     private void showSuccessMessage() {
         Toast.makeText(LoginScreen.this, "You successfully logged in!", Toast.LENGTH_SHORT).show();
     }
-
     private void showUnsuccessMessage() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Unsuccessful login\n")
