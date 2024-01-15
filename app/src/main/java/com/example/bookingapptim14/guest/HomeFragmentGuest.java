@@ -77,23 +77,23 @@ public class HomeFragmentGuest extends Fragment {
 
             int drawableResourceId = getResources().getIdentifier(accommodation.getImage(), "drawable", requireContext().getPackageName());
             accommodationImageView.setImageResource(drawableResourceId);
+            final boolean[] isFavorite = {false};
+            heartButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    isFavorite[0] = !isFavorite[0];
 
+                    heartButton.setSelected(isFavorite[0]);
+
+
+
+                }
+            });
 
 
                 linearLayout.addView(cardView);
         }
-        final boolean[] isFavorite = {false};
-        heartButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                isFavorite[0] = !isFavorite[0];
 
-                heartButton.setSelected(isFavorite[0]);
-
-
-
-            }
-        });
         ImageView filterIcon = view.findViewById(R.id.filterIcon);
 
         filterIcon.setOnClickListener(new View.OnClickListener() {
