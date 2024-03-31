@@ -20,6 +20,7 @@ import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
@@ -29,6 +30,10 @@ import com.example.bookingapptim14.R;
 import com.example.bookingapptim14.models.Accommodation;
 import com.example.bookingapptim14.models.SearchAccommodation;
 
+import org.osmdroid.config.Configuration;
+import org.osmdroid.util.GeoPoint;
+import org.osmdroid.views.MapView;
+
 import java.util.Calendar;
 
 
@@ -36,6 +41,7 @@ public class AccommodationDetailsActivityGuest extends Activity {
     private static final int MY_PERMISSIONS_REQUEST_NOTIFICATION = 1001;
     Button bookingButton;
 
+    private MapView mapView;
     private SearchAccommodation accommodation;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +53,21 @@ public class AccommodationDetailsActivityGuest extends Activity {
             accommodation = (SearchAccommodation) intent.getSerializableExtra("accommodation");
         }
 
+
         if (accommodation != null) {
+
+            Configuration.getInstance().load(this, getSharedPreferences("osmdroid", MODE_PRIVATE));
+
+            // Initialize MapView
+            mapView = findViewById(R.id.mapView);
+            mapView.setTileSource(org.osmdroid.tileprovider.tilesource.TileSourceFactory.MAPNIK);
+            mapView.setBuiltInZoomControls(true);
+            mapView.setMultiTouchControls(true);
+
+
+            GeoPoint startPoint = new GeoPoint(37.7749, -122.4194);
+            mapView.getController().setCenter(startPoint);
+            mapView.getController().setZoom(12.0);
 
             ImageView accommodationImageView = findViewById(R.id.rectangle_1);
             TextView nameTextView = findViewById(R.id.barcino);
@@ -190,4 +210,9 @@ public class AccommodationDetailsActivityGuest extends Activity {
         textViewRecap.setText(recap);
         textViewRecap.setVisibility(View.VISIBLE);
     }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
 }

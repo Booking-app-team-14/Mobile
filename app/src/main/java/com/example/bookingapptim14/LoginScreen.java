@@ -9,7 +9,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,13 +20,6 @@ import com.example.bookingapptim14.admin.MainActivityAdmin;
 import com.example.bookingapptim14.guest.AccommodationDetailsActivityGuest;
 import com.example.bookingapptim14.guest.MainActivityGuest;
 import com.example.bookingapptim14.host.MainActivityHost;
-import com.example.bookingapptim14.interfaces.AuthenticationService;
-import com.example.bookingapptim14.models.JwtAuthenticationRequest;
-import com.example.bookingapptim14.utils.RetrofitClient;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class LoginScreen extends AppCompatActivity {
 
@@ -51,46 +43,46 @@ public class LoginScreen extends AppCompatActivity {
         rotationAnimator.setTarget(imageView);
         rotationAnimator.start();
 
+        //podesavanje velicine ikonica
+        //Drawable emailIcon = getResources().getDrawable(R.drawable.img_4);
+        //emailIcon.setBounds(15, 1, (int) (emailIcon.getIntrinsicWidth() * 0.06), (int) (emailIcon.getIntrinsicHeight() * 0.06));
+        //usernameEditText.setCompoundDrawables(emailIcon, null, null, null);
+
         Drawable passwordIcon = getResources().getDrawable(R.drawable.img_3);
         passwordIcon.setBounds(15, 1, (int) (passwordIcon.getIntrinsicWidth() * 0.05), (int) (passwordIcon.getIntrinsicHeight() * 0.05));
         passwordEditText.setCompoundDrawables(null, null, passwordIcon, null);
 
+        //dugme za prijavu
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String username = usernameEditText.getText().toString();
-                String password = passwordEditText.getText().toString();
+                Intent intent = null;
+                if (usernameEditText.getText().toString().equals("tim14.guest@gmail.com") &&
+                        (passwordEditText.getText().toString().equals("12345678") || passwordEditText.getText().toString().equals("123456789"))) {
+                    showSuccessMessage();
+                    intent = new Intent(LoginScreen.this, MainActivityGuest.class);
+                }
+                else if (usernameEditText.getText().toString().equals("tim14.owner@gmail.com") &&
+                        (passwordEditText.getText().toString().equals("12345678") || passwordEditText.getText().toString().equals("123456789"))) {
+                    showSuccessMessage();
+                    intent = new Intent(LoginScreen.this, MainActivityHost.class);
+                }
+                else if (usernameEditText.getText().toString().equals("tim14.admin@gmail.com") &&
+                        (passwordEditText.getText().toString().equals("12345678") || passwordEditText.getText().toString().equals("123456789"))) {
+                    showSuccessMessage();
+                    intent = new Intent(LoginScreen.this, MainActivityAdmin.class);
+                }
 
-                AuthenticationService authService = RetrofitClient.getInstance().create(AuthenticationService.class);
-                JwtAuthenticationRequest authRequest = new JwtAuthenticationRequest(username, password);
-
-                Call<String> call = authService.createAuthenticationToken(authRequest);
-                call.enqueue(new Callback<String>() {
-                    @Override
-                    public void onResponse(Call<String> call, Response<String> response) {
-                        int statusCode = response.code();
-
-                        if (response.isSuccessful()) {
-                            String jwtToken = response.body();
-                            showSuccessMessage();
-                            Intent intent = new Intent(LoginScreen.this, MainActivityGuest.class);
-                            startActivity(intent);
-                        } else {
-                            showUnsuccessMessage();
-                            Log.e("AuthenticationError", "Authentication failed with status code: " + statusCode);
-                        }
-                    }
-                    @Override
-                    public void onFailure(Call<String> call, Throwable t) {
-                        showUnsuccessMessage();
-                        Log.e("AuthenticationError", "Authentication request failed", t);
-                        t.printStackTrace();
-
-                    }
-
-                });
+                else{
+                    showUnsuccessMessage();
+                    return;
+                }
+                startActivity(intent);
+                finish();
             }
         });
+
+        //hyperlink za registraciju
         signUpLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -99,12 +91,16 @@ public class LoginScreen extends AppCompatActivity {
             }
         });
     }
+
+
     public void onForgotPasswordClick(View view) {
         //dodati kod
     }
+
     private void showSuccessMessage() {
         Toast.makeText(LoginScreen.this, "You successfully logged in!", Toast.LENGTH_SHORT).show();
     }
+
     private void showUnsuccessMessage() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Unsuccessful login\n")
