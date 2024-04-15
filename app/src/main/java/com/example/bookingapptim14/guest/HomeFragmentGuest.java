@@ -41,6 +41,11 @@ public class HomeFragmentGuest extends Fragment {
     private List<SearchAccommodation> accommodationsList;
     private TextView textViewDateRange;
     private Button btnDateRangePicker;
+
+    private int minRating = 0;
+    private int minPrice = 0;
+    private int maxPrice = Integer.MAX_VALUE;
+    private int maxGuests = Integer.MAX_VALUE;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home_guest, container, false);
