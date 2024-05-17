@@ -24,13 +24,14 @@ public class Location implements Serializable {
     private void setCountry(String country){
         this.city = city;
     }
-    private String getCountry(){
+    String getCountry(){
         return this.country;
     }
     private void setCity(String city){
         this.city = city;
     }
-    private String getCity(){
+    String getCity(){
         return this.city;
     }
+    String getAddress(){return this.address;}
 }

@@ -101,4 +101,15 @@ public class SearchAccommodation implements Serializable {
     private boolean isApproved(){
         return this.approved;
     }
+
+    public String getCity() {
+        return this.location.getCity();
+    }
+    public String getCountry() {
+        return this.location.getCountry();
+    }
+    public String getAddress() {
+        return this.location.getAddress();
+    }
+
 }
