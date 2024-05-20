@@ -1,240 +1,41 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".host.ReservationsFragmentHost">
 
-    <!-- Search EditText -->
-    <com.google.android.material.textfield.TextInputLayout
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayoutHostReservations"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        android:background="@color/white"
+        app:tabIndicatorColor="@color/primary_blue"
+        app:tabMode="fixed"
+        app:tabSelectedTextColor="@color/primary_blue"
+        app:tabTextColor="@color/text_black"
+        android:elevation="4dp">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/editTextSearch"
-            android:layout_width="match_parent"
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/tabReservationsHostReservations"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="Search by Name" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:text="Reservations" />
 
-    <!-- Date Range Selection -->
-    <LinearLayout
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/tabRequestsHostReservations"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Requests" />
+    </com.google.android.material.tabs.TabLayout>
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPagerHostReservations"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical">
+        android:layout_height="match_parent"
+        android:layout_marginTop="50dp"
+        android:background="@color/background"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-        <TextView
-            android:id="@+id/textViewDateRange"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Select Date Range"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="8dp" />
-
-        <Button
-            android:id="@+id/buttonDateRange"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Select Date"
-            android:textColor="?attr/colorPrimary"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:paddingStart="16dp"
-            android:paddingTop="8dp"
-            android:paddingEnd="16dp"
-            android:paddingBottom="8dp" />
-    </LinearLayout>
-
-    <!-- RadioGroup for selecting confirmation method -->
-    <RadioGroup
-        android:id="@+id/radioGroupConfirmationMethod"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <RadioButton
-            android:id="@+id/radioButtonManual"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Manual Confirmation"
-            android:checked="true"
-            android:padding="8dp" />
-
-        <RadioButton
-            android:id="@+id/radioButtonAutomatic"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Automatic Confirmation"
-            android:padding="8dp" />
-    </RadioGroup>
-
-    <!-- Save Confirmation Method Button -->
-    <Button
-        android:id="@+id/buttonSaveConfirmationMethod"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Save Confirmation Method"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="16dp" />
-
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Filter by Status:"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="8dp"/>
-
-    <!-- Checkboxes for filtering reservation status -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <CheckBox
-            android:id="@+id/checkBoxOnWait"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="On Wait" />
-
-        <CheckBox
-            android:id="@+id/checkBoxAccepted"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Accepted"
-            android:layout_marginStart="16dp" />
-
-        <CheckBox
-            android:id="@+id/checkBoxDenied"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Denied"
-            android:layout_marginStart="16dp" />
-
-    </LinearLayout>
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:radius="8dp"
-        app:cardElevation="4dp">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
-
-            <!-- User information -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
-
-                <ImageView
-                    android:id="@+id/imageViewUserProfile"
-                    android:layout_width="56dp"
-                    android:layout_height="56dp"
-                    android:src="@drawable/ic_profile" />
-
-                <TextView
-                    android:id="@+id/textViewUserName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Nikola Mitrovic"
-                    android:textSize="18sp"
-                    android:layout_marginStart="16dp" />
-            </LinearLayout>
-
-            <!-- Apartment details -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="16dp">
-
-                <ImageView
-                    android:id="@+id/imageViewApartment"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:src="@drawable/rectangle" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginStart="16dp">
-
-                    <TextView
-                        android:id="@+id/textViewApartmentName"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Apartment Name"
-                        android:textSize="18sp"/>
-
-                    <TextView
-                        android:id="@+id/textViewApartmentType"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Apartment Type"
-                        android:textSize="16sp"/>
-
-                    <TextView
-                        android:id="@+id/textViewReservationStatus"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Status: Waiting"
-                        android:textSize="16sp"
-                        android:layout_marginTop="16dp"
-                        android:visibility="visible" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <!-- Date, Guests -->
-            <TextView
-                android:id="@+id/textViewDateGuests"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Start Date - End Date\nNumber of Guests"
-                android:textSize="16sp"
-                android:layout_marginTop="16dp"
-                android:lineSpacingMultiplier="1.2" />
-
-            <!-- Accept and Deny Buttons -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="end">
-
-
-                <Button
-                    android:id="@+id/buttonAccept"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Accept"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="8dp" />
-
-                <Button
-                    android:id="@+id/buttonDeny"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Deny"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="8dp" />
-            </LinearLayout>
-
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
-    </ScrollView>
-</LinearLayout>
+</FrameLayout>

@@ -1,5 +1,6 @@
 package com.example.bookingapptim14.host;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -30,6 +31,11 @@ public class MyAccommodationsFragment extends Fragment implements HostAccommodat
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_my_accommodations, container, false);
 
+        view.findViewById(R.id.addAccommodationButton).setOnClickListener(v -> {
+            Intent createAccommodationIntent = new Intent(getActivity(), CreateAccommodationScreen.class);
+            startActivity(createAccommodationIntent);
+        });
+
         accommodationsRecyclerView = view.findViewById(R.id.hostAccommodationsRecyclerView);
         adapter = new HostAccommodationsAdapter(new ArrayList<>(), this);
         accommodationsRecyclerView.setAdapter(adapter);
@@ -51,12 +57,29 @@ public class MyAccommodationsFragment extends Fragment implements HostAccommodat
     }
 
     @Override
-    public void onAccommodationDetailsRequested(OwnersAccommodationDTO request) {
+    public void onAccommodationDetailsRequested(OwnersAccommodationDTO accommodation) {
         // TODO: Open accommodation details fragment here
+        Long accommodationId = accommodation.getId();
+
+        // trenutno otvara template accommodation details
+        Intent intent = new Intent(getActivity(), AccomodationDetailsActivityHost.class);
+        startActivity(intent);
     }
 
     @Override
     public void onAccommodationUpdate(OwnersAccommodationDTO accommodation) {
         // TODO: Open accommodation update fragment here
+
+        Long accommodationId = accommodation.getId();
+
+//        Fragment fragment = new AccommodationDetailsUpdateFragment();
+//        Fragment fragment = new MyAccommodationsFragment();
+//        getActivity().getSupportFragmentManager().beginTransaction()
+//                .replace(R.id.frameLayout, fragment, fragment.getClass().getSimpleName()).addToBackStack(null).commit();
+
+        // trenutno otvara template update accommodation details
+        Intent updateAccommodationIntent = new Intent(getActivity(), UpdateAccommodationScreen.class);
+        startActivity(updateAccommodationIntent);
+
     }
 }
