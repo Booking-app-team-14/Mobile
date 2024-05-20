@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,6 +36,16 @@ public class ProfileFragmentHost extends Fragment {
 
         TextView changePasswordTextView = (TextView) view.findViewById(R.id.changePasswordTextView);
         changePasswordTextView.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { changePassword(); } });
+
+        LinearLayout myAccommodations = (LinearLayout) view.findViewById(R.id.myAccommodationsButton);
+        myAccommodations.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Fragment fragment = new MyAccommodationsFragment();
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.frameLayout, fragment, fragment.getClass().getSimpleName()).addToBackStack(null).commit();
+            }
+        });
 
         // TODO: Get logged in user from database
         GlobalData gd = GlobalData.getInstance();

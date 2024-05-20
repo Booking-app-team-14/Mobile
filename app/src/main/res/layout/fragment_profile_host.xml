@@ -107,12 +107,14 @@
                             android:orientation="horizontal">
 
                             <LinearLayout
+                                android:id="@+id/myAccommodationsButton"
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_margin="10dp"
                                 android:layout_weight="1"
                                 android:background="@drawable/gray_background_box"
                                 android:elevation="5dp"
+                                android:clickable="true"
                                 android:orientation="vertical">
 
                                 <androidx.constraintlayout.widget.ConstraintLayout

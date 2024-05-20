@@ -5,6 +5,7 @@ import com.example.bookingapptim14.models.AccommodationRequest;
 import com.example.bookingapptim14.models.Location;
 import com.example.bookingapptim14.models.SearchAccommodation;
 import com.example.bookingapptim14.models.User;
+import com.example.bookingapptim14.models.dtos.OwnersAccommodationDTO;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -16,6 +17,7 @@ public class GlobalData {
     private List<AccommodationRequest> accommodationRequest = new ArrayList<>();
     private User loggedInUser = new User();
     private List<SearchAccommodation> searchAccommodations = new ArrayList<>();
+    private List<OwnersAccommodationDTO> ownersAccommodations = new ArrayList<>();
 
     private GlobalData() {
         accommodationRequest.add(new AccommodationRequest(13L, "Novi apartman 1", "Apartment", "jpg", "", "owner_username", "1703451446", "new", "Lorem ipsum ... opis 1", 4, "jpg", ""));
@@ -38,6 +40,13 @@ public class GlobalData {
         searchAccommodations.add(new SearchAccommodation(10L, "Beachfront Resort", "Relaxing resort right by the beach.", AccommodationType.STUDIO, new Location(10l,"Norway","Oslo","Katunska 4"), "accommodation_9", 4.8, 4, 12,280.0,new HashSet<>(), true));
         searchAccommodations.add(new SearchAccommodation(11L, "Chic Urban Studio", "Stylish studio apartment in a trendy neighborhood.", AccommodationType.APARTMENT,new Location(11l,"Hungary","Budapest","Katunska 4"), "accommodation_10", 3.4, 1,3, 90.0,new HashSet<>(), true));
         searchAccommodations.add(new SearchAccommodation(12L, "Mountain Retreat Chalet", "Escape to this cozy chalet nestled in the mountains.", AccommodationType.VILLA,new Location(12l,"Serbia","Zlatibor","Katunska 543"), "accommodation_11", 2.6, 3,5, 210.0,new HashSet<>(), true));
+
+        ownersAccommodations.add(new OwnersAccommodationDTO(1L, "Sunny Beach House", "Hotel", 3, 4, "Katunska 4", 180, "jpg", ""));
+        ownersAccommodations.add(new OwnersAccommodationDTO(2L, "Mountain View Cabin", "Apartment", 4, 7, "Hilandarska 2", 150.0, "jpg", ""));
+        ownersAccommodations.add(new OwnersAccommodationDTO(3L, "Lakeside Villa", "Villa", 5, 10, "Mirijevska 51a", 250.0, "jpg", ""));
+        ownersAccommodations.add(new OwnersAccommodationDTO(4L, "Downtown Loft", "Apartment", 4, 6, "Katunska 4", 220.0, "jpg", ""));
+        ownersAccommodations.add(new OwnersAccommodationDTO(5L, "Rustic Country House", "Room", 5, 8, "Time Square", 210.0, "jpg", ""));
+        ownersAccommodations.add(new OwnersAccommodationDTO(6L, "Seaside Bungalow", "Studio", 4, 10, "Katunska 4", 160.0, "jpg", ""));
     }
 
     public static GlobalData getInstance() {
@@ -45,6 +54,10 @@ public class GlobalData {
             instance = new GlobalData();
         }
         return instance;
+    }
+
+    public List<OwnersAccommodationDTO> getOwnersAccommodations() {
+        return ownersAccommodations;
     }
 
     public List<AccommodationRequest> getAccommodationRequest() {
