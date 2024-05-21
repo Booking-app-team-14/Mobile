@@ -7,6 +7,7 @@ import com.example.bookingapptim14.models.SearchAccommodation;
 import com.example.bookingapptim14.models.User;
 import com.example.bookingapptim14.models.dtos.OwnersAccommodationDTO;
 import com.example.bookingapptim14.models.dtos.ReservationRequestDTO.ApprovedReservationData;
+import com.example.bookingapptim14.models.dtos.ReservationRequestDTO.ApprovedReservationGuestData;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ public class GlobalData {
     private List<SearchAccommodation> searchAccommodations = new ArrayList<>();
     private List<OwnersAccommodationDTO> ownersAccommodations = new ArrayList<>();
     private List<ApprovedReservationData> approvedReservations = new ArrayList<>();
+    private List<ApprovedReservationGuestData> approvedGuestReservations = new ArrayList<>();
 
     private GlobalData() {
         accommodationRequest.add(new AccommodationRequest(13L, "Novi apartman 1", "Apartment", "jpg", "", "owner_username", "1703451446", "new", "Lorem ipsum ... opis 1", 4, "jpg", ""));
@@ -51,7 +53,16 @@ public class GlobalData {
         ownersAccommodations.add(new OwnersAccommodationDTO(5L, "Rustic Country House", "Room", 5, 8, "Time Square", 210.0, "jpg", ""));
         ownersAccommodations.add(new OwnersAccommodationDTO(6L, "Seaside Bungalow", "Studio", 4, 10, "Katunska 4", 160.0, "jpg", ""));
 
-//        approvedReservations.add(new ApprovedReservationData(1L, 1L, 1L, LocalDate.now(), LocalDate.now(), 4, 540.0, ));
+        approvedReservations.add(new ApprovedReservationData(1L, 1L, 1L, LocalDate.now(), LocalDate.now(), 4, 540.0, "SENT", "Sunny Beach House", "Apartment", "owner1@owner.com", "1350574775", 4, "", "png", "", "png", "11.11.2024", "guest1@guest.com", "2"));
+        approvedReservations.add(new ApprovedReservationData(2L, 2L, 2L, LocalDate.now(), LocalDate.now(), 7, 1050.0, "SENT", "Mountain View Cabin", "Studio", "owner1@owner.com", "1350574775", 4, "", "png", "", "png", "11.11.2024", "guest1@guest.com", "2"));
+        approvedReservations.add(new ApprovedReservationData(3L, 3L, 3L, LocalDate.now(), LocalDate.now(), 10, 1750.0, "SENT", "Lakeside Villa", "Villa", "owner1@owner.com", "1350574775", 4, "", "png", "", "png", "11.11.2024", "guest2@guest.com", "2"));
+        approvedReservations.add(new ApprovedReservationData(4L, 4L, 4L, LocalDate.now(), LocalDate.now(), 6, 1320.0, "SENT", "Downtown Loft", "Apartment", "owner1@owner.com", "1350574775", 4, "", "png", "", "png", "11.11.2024", "guest2@guest.com", "2"));
+
+        approvedGuestReservations.add(new ApprovedReservationGuestData(1L, 1L, 1L, LocalDate.now().plusDays(4), LocalDate.now().plusDays(6), 4, 540.0, "SENT", "Sunny Beach House", "Apartment", "owner1@owner.com", "1350574775", 4, "", "png", "", "png", "11.11.2024", "guest1@guest.com", "2", "2"));
+        approvedGuestReservations.add(new ApprovedReservationGuestData(2L, 2L, 2L, LocalDate.now().plusDays(2), LocalDate.now().plusDays(4), 7, 1050.0, "SENT", "Mountain View Cabin", "Studio", "owner1@owner.com", "1350574775", 4, "", "png", "", "png", "11.11.2024", "guest1@guest.com", "2", "2"));
+        approvedGuestReservations.add(new ApprovedReservationGuestData(3L, 3L, 3L, LocalDate.now().plusDays(3), LocalDate.now().plusDays(4), 10, 1750.0, "SENT", "Lakeside Villa", "Villa", "owner1@owner.com", "1350574775", 4, "", "png", "", "png", "11.11.2024", "guest2@guest.com", "2", "2"));
+        approvedGuestReservations.add(new ApprovedReservationGuestData(4L, 4L, 4L, LocalDate.now().plusDays(1), LocalDate.now().plusDays(2), 6, 1320.0, "SENT", "Downtown Loft", "Apartment", "owner1@owner.com", "1350574775", 4, "", "png", "", "png", "11.11.2024", "guest2@guest.com", "2", "2"));
+
     }
 
     public static GlobalData getInstance() {
@@ -61,6 +72,9 @@ public class GlobalData {
         return instance;
     }
 
+    public List<ApprovedReservationGuestData> getApprovedGuestReservations() {
+        return approvedGuestReservations;
+    }
     public List<ApprovedReservationData> getApprovedReservations() { return approvedReservations; }
     public List<OwnersAccommodationDTO> getOwnersAccommodations() {
         return ownersAccommodations;

@@ -25,25 +25,6 @@ import java.util.List;
 
 public class ApprovedReservationsFragmentHost extends Fragment {
 
-    // /api /requests/owner/{username} -> ReservationReqeustDTO
-    // .requestStatus == "SENT"
-
-    // convert to ApprovedReservationData
-
-//    long epochMillis = Integer.parseInt(.dateRequested) * 1000L;
-//
-//    // Create a Date object
-//    Date date = new Date(epochMillis);
-//
-//    // Format the date using the specified pattern
-//    SimpleDateFormat formatter = new SimpleDateFormat("dd MMMM yyyy", Locale.US);
-//    String date = formatter.format(date);
-
-    // ili
-    // accommodations/{id}/nameType -> vraca string accommodationName + " | " + accommodationType
-
-    // /users/{id}/usernameAndNumberOfCancellations -> vraca string username + " | " + numberOfCancellationsString
-
     private RecyclerView reservationsRecyclerView;
     private ApprovedReservationsAdapter adapter;
 
@@ -60,6 +41,13 @@ public class ApprovedReservationsFragmentHost extends Fragment {
 
         return view;
     }
+
+    // /api /requests/owner/{username} -> ReservationReqeustDTO
+    // .requestStatus == "SENT"
+
+    // convert to ApprovedReservationData
+
+    // /users/{id}/usernameAndNumberOfCancellations -> vraca string username + " | " + numberOfCancellationsString
 
     private void fetchReservations() {
         // TODO: fetch data

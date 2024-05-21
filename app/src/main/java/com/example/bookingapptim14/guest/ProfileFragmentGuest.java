@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +20,7 @@ import com.example.bookingapptim14.LoginScreen;
 import com.example.bookingapptim14.R;
 import com.example.bookingapptim14.UpdateAccountFragment;
 import com.example.bookingapptim14.UpdateAccountPasswordFragment;
+import com.example.bookingapptim14.host.MyAccommodationsFragment;
 import com.example.bookingapptim14.models.User;
 
 import org.w3c.dom.Text;
@@ -37,6 +39,27 @@ public class ProfileFragmentGuest extends Fragment {
 
         TextView changePasswordTextView = (TextView) view.findViewById(R.id.changePasswordTextView);
         changePasswordTextView.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { changePassword(); } });
+
+        LinearLayout myReservations = (LinearLayout) view.findViewById(R.id.profileGuestReservations);
+        myReservations.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Fragment fragment = new ApprovedReservationsFragmentGuest();
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.frameLayout, fragment, fragment.getClass().getSimpleName()).addToBackStack(null).commit();
+            }
+        });
+
+        LinearLayout myReservationRequests = (LinearLayout) view.findViewById(R.id.profileGuestRequests);
+        myReservationRequests.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO
+//                Fragment fragment = new
+//                getActivity().getSupportFragmentManager().beginTransaction()
+//                        .replace(R.id.frameLayout, fragment, fragment.getClass().getSimpleName()).addToBackStack(null).commit();
+            }
+        });
 
         // TODO: Get logged in user from database
         GlobalData gd = GlobalData.getInstance();

@@ -107,6 +107,7 @@
                             android:orientation="horizontal">
 
                             <LinearLayout
+                                android:id="@+id/profileGuestRequests"
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_marginLeft="10dp"
@@ -116,7 +117,8 @@
                                 android:layout_weight="0.5"
                                 android:background="@drawable/gray_background_box"
                                 android:elevation="5dp"
-                                android:orientation="vertical">
+                                android:orientation="vertical"
+                                android:clickable="true">
 
                                 <androidx.constraintlayout.widget.ConstraintLayout
                                     android:layout_width="50dp"
@@ -151,6 +153,7 @@
                             </LinearLayout>
 
                             <LinearLayout
+                                android:id="@+id/profileGuestReservations"
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_marginLeft="5dp"
@@ -160,7 +163,8 @@
                                 android:layout_weight="0.5"
                                 android:background="@drawable/gray_background_box"
                                 android:elevation="5dp"
-                                android:orientation="vertical">
+                                android:orientation="vertical"
+                                android:clickable="true">
 
                                 <androidx.constraintlayout.widget.ConstraintLayout
                                     android:layout_width="50dp"
