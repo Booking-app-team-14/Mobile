@@ -77,6 +77,7 @@ public class AccommodationApprovalViewHolder extends RecyclerView.ViewHolder {
 //
 //        }
         ownerImage.setImageResource(R.drawable.default_profile_picture);
+        // ako ne radi stavi CircleImageView
     }
 
     public static String getPostedAgo(Instant date) {

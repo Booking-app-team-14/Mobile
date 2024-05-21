@@ -1,9 +1,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="16dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Filters"
+        android:textSize="22dp"
+        android:textStyle="bold"
+        android:layout_marginBottom="8dp"/>
 
     <!-- Search EditText -->
     <com.google.android.material.textfield.TextInputLayout
@@ -12,10 +20,11 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/editTextSearch"
+            android:id="@+id/editTextSearchReservationRequests"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Search by Name" />
+            android:hint="Search by Name"
+            android:padding="12dp"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <!-- Date Range Selection -->
@@ -29,97 +38,59 @@
             android:id="@+id/textViewDateRange"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Select Date Range"
+            android:text="Date Range"
             android:textSize="18sp"
-            android:textStyle="bold"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="8dp" />
+            android:textStyle="bold" />
 
         <Button
-            android:id="@+id/buttonDateRange"
+            android:id="@+id/buttonDateRangeReservationRequests"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Select Date"
-            android:textColor="?attr/colorPrimary"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:paddingStart="16dp"
-            android:paddingTop="8dp"
-            android:paddingEnd="16dp"
-            android:paddingBottom="8dp" />
+            android:textColor="@color/primary_blue"
+            android:textSize="16dp"
+            android:background="?attr/selectableItemBackgroundBorderless" />
+
     </LinearLayout>
-
-    <!-- RadioGroup for selecting confirmation method -->
-    <RadioGroup
-        android:id="@+id/radioGroupConfirmationMethod"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <RadioButton
-            android:id="@+id/radioButtonManual"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Manual Confirmation"
-            android:checked="true"
-            android:padding="8dp" />
-
-        <RadioButton
-            android:id="@+id/radioButtonAutomatic"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Automatic Confirmation"
-            android:padding="8dp" />
-    </RadioGroup>
-
-    <!-- Save Confirmation Method Button -->
-    <Button
-        android:id="@+id/buttonSaveConfirmationMethod"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Save Confirmation Method"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="16dp" />
-
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Filter by Status:"
+        android:text="Status:"
         android:textSize="18sp"
-        android:textStyle="bold"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="8dp"/>
+        android:textStyle="bold" />
 
-    <!-- Checkboxes for filtering reservation status -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <CheckBox
-            android:id="@+id/checkBoxOnWait"
-            android:layout_width="wrap_content"
+        <RadioGroup
+            android:id="@+id/radioGroupReservationRequestsStatus"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="On Wait" />
+            android:orientation="horizontal"
+            android:gravity="center">
 
-        <CheckBox
-            android:id="@+id/checkBoxAccepted"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Accepted"
-            android:layout_marginStart="16dp" />
+            <RadioButton
+                android:id="@+id/radioButtonOnWaitReservationRequests"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="On Wait"
+                android:checked="true"
+                android:padding="8dp"
+                android:textSize="16dp" />
 
-        <CheckBox
-            android:id="@+id/checkBoxDenied"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Denied"
-            android:layout_marginStart="16dp" />
 
-    </LinearLayout>
+            <RadioButton
+                android:id="@+id/radioButtonDeclinedReservationRequests"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Declined"
+                android:padding="8dp"
+                android:textSize="16dp"/>
+
+        </RadioGroup>
+
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
+
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -137,8 +108,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
                     <ImageView
                         android:id="@+id/imageViewUserProfile"
@@ -150,17 +121,17 @@
                         android:id="@+id/textViewUserName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
                         android:text="Nikola Mitrovic"
-                        android:textSize="18sp"
-                        android:layout_marginStart="16dp" />
+                        android:textSize="18sp" />
                 </LinearLayout>
 
                 <!-- Apartment details -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="16dp">
+                    android:layout_marginTop="16dp"
+                    android:orientation="horizontal">
 
                     <ImageView
                         android:id="@+id/imageViewApartment"
@@ -171,30 +142,30 @@
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_marginStart="16dp">
+                        android:layout_marginStart="16dp"
+                        android:orientation="vertical">
 
                         <TextView
                             android:id="@+id/textViewApartmentName"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Apartment Name"
-                            android:textSize="18sp"/>
+                            android:textSize="18sp" />
 
                         <TextView
                             android:id="@+id/textViewApartmentType"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Apartment Type"
-                            android:textSize="16sp"/>
+                            android:textSize="16sp" />
 
                         <TextView
                             android:id="@+id/textViewReservationStatus"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
                             android:text="Status: Waiting"
                             android:textSize="16sp"
-                            android:layout_marginTop="16dp"
                             android:visibility="visible" />
                     </LinearLayout>
                 </LinearLayout>
@@ -204,34 +175,36 @@
                     android:id="@+id/textViewDateGuests"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Start Date - End Date\nNumber of Guests"
-                    android:textSize="16sp"
                     android:layout_marginTop="16dp"
-                    android:lineSpacingMultiplier="1.2" />
+                    android:lineSpacingMultiplier="1.2"
+                    android:text="Start Date - End Date\nNumber of Guests"
+                    android:textSize="16sp" />
 
                 <!-- Accept and Deny Buttons -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="end">
+                    android:gravity="end"
+                    android:orientation="horizontal">
 
 
                     <Button
                         android:id="@+id/buttonAccept"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Accept"
                         android:layout_marginTop="16dp"
-                        android:layout_marginEnd="8dp" />
+                        android:layout_marginEnd="8dp"
+                        android:text="Accept"
+                        android:backgroundTint="@color/primary_blue"/>
 
                     <Button
                         android:id="@+id/buttonDeny"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Deny"
                         android:layout_marginTop="16dp"
-                        android:layout_marginEnd="8dp" />
+                        android:layout_marginEnd="8dp"
+                        android:text="Deny"
+                        android:backgroundTint="@color/red"/>
                 </LinearLayout>
 
             </LinearLayout>

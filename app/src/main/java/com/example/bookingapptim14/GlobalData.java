@@ -6,7 +6,9 @@ import com.example.bookingapptim14.models.Location;
 import com.example.bookingapptim14.models.SearchAccommodation;
 import com.example.bookingapptim14.models.User;
 import com.example.bookingapptim14.models.dtos.OwnersAccommodationDTO;
+import com.example.bookingapptim14.models.dtos.ReservationRequestDTO.ApprovedReservationData;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -18,6 +20,7 @@ public class GlobalData {
     private User loggedInUser = new User();
     private List<SearchAccommodation> searchAccommodations = new ArrayList<>();
     private List<OwnersAccommodationDTO> ownersAccommodations = new ArrayList<>();
+    private List<ApprovedReservationData> approvedReservations = new ArrayList<>();
 
     private GlobalData() {
         accommodationRequest.add(new AccommodationRequest(13L, "Novi apartman 1", "Apartment", "jpg", "", "owner_username", "1703451446", "new", "Lorem ipsum ... opis 1", 4, "jpg", ""));
@@ -47,6 +50,8 @@ public class GlobalData {
         ownersAccommodations.add(new OwnersAccommodationDTO(4L, "Downtown Loft", "Apartment", 4, 6, "Katunska 4", 220.0, "jpg", ""));
         ownersAccommodations.add(new OwnersAccommodationDTO(5L, "Rustic Country House", "Room", 5, 8, "Time Square", 210.0, "jpg", ""));
         ownersAccommodations.add(new OwnersAccommodationDTO(6L, "Seaside Bungalow", "Studio", 4, 10, "Katunska 4", 160.0, "jpg", ""));
+
+//        approvedReservations.add(new ApprovedReservationData(1L, 1L, 1L, LocalDate.now(), LocalDate.now(), 4, 540.0, ));
     }
 
     public static GlobalData getInstance() {
@@ -56,6 +61,7 @@ public class GlobalData {
         return instance;
     }
 
+    public List<ApprovedReservationData> getApprovedReservations() { return approvedReservations; }
     public List<OwnersAccommodationDTO> getOwnersAccommodations() {
         return ownersAccommodations;
     }
