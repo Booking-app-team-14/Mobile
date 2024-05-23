@@ -12,6 +12,8 @@ import com.example.bookingapptim14.models.dtos.ApproveReviewsDTO.ReviewStatus;
 import com.example.bookingapptim14.models.dtos.OwnersAccommodationDTO;
 import com.example.bookingapptim14.models.dtos.ReportsDTO.AccommodationReviewDTO;
 import com.example.bookingapptim14.models.dtos.ReportsDTO.AccommodationReviewReportsData;
+import com.example.bookingapptim14.models.dtos.ReportsDTO.OwnerReviewDTO;
+import com.example.bookingapptim14.models.dtos.ReportsDTO.OwnerReviewReportsData;
 import com.example.bookingapptim14.models.dtos.ReportsDTO.ReportStatus;
 import com.example.bookingapptim14.models.dtos.ReportsDTO.UserReportsData;
 import com.example.bookingapptim14.models.dtos.ReservationRequestDTO.ApprovedReservationData;
@@ -36,6 +38,7 @@ public class GlobalData {
     private List<ApproveOwnerReviewsData> ownerCommentsAndReviews = new ArrayList<>();
     private List<UserReportsData> userReports = new ArrayList<>();
     private List<AccommodationReviewReportsData> accommodationReviewReports = new ArrayList<>();
+    private List<OwnerReviewReportsData> ownerReviewReports = new ArrayList<>();
 
     private GlobalData() {
         accommodationRequest.add(new AccommodationRequest(13L, "Novi apartman 1", "Apartment", "jpg", "", "owner_username", "1703451446", "new", "Lorem ipsum ... opis 1", 4, "jpg", ""));
@@ -96,6 +99,14 @@ public class GlobalData {
         accommodationReviewReports.add(new AccommodationReviewReportsData(1L, 1L, "Inappropriate behavior", ReportStatus.PENDING, LocalDateTime.now(), accommodationReview1, "", "guest1@guest.com", "Sunny Beach House", "Apartment", ""));
         accommodationReviewReports.add(new AccommodationReviewReportsData(2L, 2L, "Inappropriate behavior", ReportStatus.PENDING, LocalDateTime.now(), accommodationReview2, "", "guest1@guest.com", "Mountain View Cabin", "Studio", ""));
         accommodationReviewReports.add(new AccommodationReviewReportsData(3L, 3L, "Inappropriate behavior", ReportStatus.PENDING, LocalDateTime.now(), accommodationReview3, "", "guest1@guuest.com", "Lakeside Villa", "Villa", ""));
+
+        OwnerReviewDTO ownerReview1 = new OwnerReviewDTO(1L,"bad person", 1, LocalDateTime.now(), true, true, 1L, 1L);
+        OwnerReviewDTO ownerReview2 = new OwnerReviewDTO(2L,"awful personality", 5, LocalDateTime.now(), true, true, 2L, 2L);
+        OwnerReviewDTO ownerReview3 = new OwnerReviewDTO(3L,"he is very unprofessional", 1, LocalDateTime.now(), true, true, 3L, 3L);
+
+        ownerReviewReports.add(new OwnerReviewReportsData(1L, 1L, "Inappropriate behavior", ReportStatus.PENDING, LocalDateTime.now(), ownerReview1, "guest1@guest.com", "", "owner1@owner.com", "", "4.2"));
+        ownerReviewReports.add(new OwnerReviewReportsData(2L, 2L, "Inappropriate behavior", ReportStatus.PENDING, LocalDateTime.now(), ownerReview2, "guest2@guest.com", "", "owner1@owner.com", "", "4.5"));
+        ownerReviewReports.add(new OwnerReviewReportsData(3L, 3L, "Inappropriate behavior", ReportStatus.PENDING, LocalDateTime.now(), ownerReview3, "guest3@guest.com", "", "owner2@owner.com", "", "4"));
     }
 
     public static GlobalData getInstance() {
@@ -105,6 +116,9 @@ public class GlobalData {
         return instance;
     }
 
+    public List<OwnerReviewReportsData> getOwnerReviewReports() {
+        return ownerReviewReports;
+    }
     public List<AccommodationReviewReportsData> getAccommodationReviewReports() {
         return accommodationReviewReports;
     }
