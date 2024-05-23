@@ -6,33 +6,57 @@ import androidx.core.app.NotificationManagerCompat;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings;
 import android.transition.Fade;
 import android.transition.TransitionManager;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 public class SplashScreen extends AppCompatActivity {
+
+    private boolean isRedirectedToSettings = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
         createNotificationChannel();
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
 
-
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Intent intent = new Intent(SplashScreen.this, LoginScreen.class);
-                startActivity(intent);
+        if (isInternetConnected()) {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Intent intent = new Intent(SplashScreen.this, LoginScreen.class);
+                    startActivity(intent);
+                    finish();
+                }
+            }, 5000);
+        } else {
+            if (isRedirectedToSettings) {
                 finish();
             }
-        }, 5000);
+            else {
+                Toast.makeText(SplashScreen.this, "No internet connection. Please connect to the internet.", Toast.LENGTH_SHORT).show();
+                // Offer the user the option to connect to the internet
+                Intent intent = new Intent(Settings.ACTION_WIRELESS_SETTINGS);
+                startActivity(intent);
+                isRedirectedToSettings = true;
+            }
+        }
     }
 
     private void createNotificationChannel() {
@@ -51,6 +75,12 @@ public class SplashScreen extends AppCompatActivity {
 
         notificationManager.createNotificationChannel(notificationChannel);
 
+    }
+
+    private boolean isInternetConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
     }
 
 }
