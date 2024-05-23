@@ -10,6 +10,10 @@ import com.example.bookingapptim14.models.dtos.ApproveReviewsDTO.ApproveOwnerRev
 import com.example.bookingapptim14.models.dtos.ApproveReviewsDTO.ApproveOwnerReviewsData;
 import com.example.bookingapptim14.models.dtos.ApproveReviewsDTO.ReviewStatus;
 import com.example.bookingapptim14.models.dtos.OwnersAccommodationDTO;
+import com.example.bookingapptim14.models.dtos.ReportsDTO.AccommodationReviewDTO;
+import com.example.bookingapptim14.models.dtos.ReportsDTO.AccommodationReviewReportsData;
+import com.example.bookingapptim14.models.dtos.ReportsDTO.ReportStatus;
+import com.example.bookingapptim14.models.dtos.ReportsDTO.UserReportsData;
 import com.example.bookingapptim14.models.dtos.ReservationRequestDTO.ApprovedReservationData;
 import com.example.bookingapptim14.models.dtos.ReservationRequestDTO.ApprovedReservationGuestData;
 
@@ -30,6 +34,8 @@ public class GlobalData {
     private List<ApprovedReservationGuestData> approvedGuestReservations = new ArrayList<>();
     private List<ApproveAccommodationReviewsData> accommodationCommentsAndReviews = new ArrayList<>();
     private List<ApproveOwnerReviewsData> ownerCommentsAndReviews = new ArrayList<>();
+    private List<UserReportsData> userReports = new ArrayList<>();
+    private List<AccommodationReviewReportsData> accommodationReviewReports = new ArrayList<>();
 
     private GlobalData() {
         accommodationRequest.add(new AccommodationRequest(13L, "Novi apartman 1", "Apartment", "jpg", "", "owner_username", "1703451446", "new", "Lorem ipsum ... opis 1", 4, "jpg", ""));
@@ -70,14 +76,26 @@ public class GlobalData {
         approvedGuestReservations.add(new ApprovedReservationGuestData(3L, 3L, 3L, LocalDate.now().plusDays(3), LocalDate.now().plusDays(4), 10, 1750.0, "SENT", "Lakeside Villa", "Villa", "owner1@owner.com", "1350574775", 4, "", "png", "", "png", "11.11.2024", "guest2@guest.com", "2", "2"));
         approvedGuestReservations.add(new ApprovedReservationGuestData(4L, 4L, 4L, LocalDate.now().plusDays(1), LocalDate.now().plusDays(2), 6, 1320.0, "SENT", "Downtown Loft", "Apartment", "owner1@owner.com", "1350574775", 4, "", "png", "", "png", "11.11.2024", "guest2@guest.com", "2", "2"));
 
-        accommodationCommentsAndReviews.add(new ApproveAccommodationReviewsData(1L, 1L, 1L, 4, "Great place to stay!", ReviewStatus.PENDING, LocalDateTime.now(), "guest1@guest.com", "jpg", "", "Sunny Beach House", "Apartment", "jpg", "4"));
-        accommodationCommentsAndReviews.add(new ApproveAccommodationReviewsData(2L, 2L, 2L, 5, "Amazing view!", ReviewStatus.PENDING, LocalDateTime.now(), "guest2@guest.com", "jpg", "", "Mountain View Cabin", "Studio", "jpg", "5"));
-        accommodationCommentsAndReviews.add(new ApproveAccommodationReviewsData(3L, 3L, 3L, 4, "Great place to stay!", ReviewStatus.PENDING, LocalDateTime.now(), "guest1@guest.com", "jpg", "", "Lakeside Villa", "Villa", "jpg", "4"));
-        accommodationCommentsAndReviews.add(new ApproveAccommodationReviewsData(4L, 4L, 4L, 5, "Amazing view!", ReviewStatus.PENDING, LocalDateTime.now(), "guest2@guest.com", "jpg", "", "Downtown Loft", "Apartment", "jpg", "5"));
+        accommodationCommentsAndReviews.add(new ApproveAccommodationReviewsData(1L, 1L, 1L, 4, "Great place to stay!", ReviewStatus.PENDING, LocalDateTime.now(), "guest1@guest.com", "jpg", "", "Sunny Beach House", "Apartment", "", "4"));
+        accommodationCommentsAndReviews.add(new ApproveAccommodationReviewsData(2L, 2L, 2L, 5, "Amazing view!", ReviewStatus.PENDING, LocalDateTime.now(), "guest2@guest.com", "jpg", "", "Mountain View Cabin", "Studio", "", "5"));
+        accommodationCommentsAndReviews.add(new ApproveAccommodationReviewsData(3L, 3L, 3L, 4, "Great place to stay!", ReviewStatus.PENDING, LocalDateTime.now(), "guest1@guest.com", "jpg", "", "Lakeside Villa", "Villa", "", "4"));
+        accommodationCommentsAndReviews.add(new ApproveAccommodationReviewsData(4L, 4L, 4L, 5, "Amazing view!", ReviewStatus.PENDING, LocalDateTime.now(), "guest2@guest.com", "jpg", "", "Downtown Loft", "Apartment", "", "5"));
 
         ownerCommentsAndReviews.add(new ApproveOwnerReviewsData(1L, "Great place to stay!", 4, LocalDateTime.now(), false, false, 1L, 1L, "guest1@guest.com", "jpg", "", "owner1@owner.com", "jpg", "", "4"));
         ownerCommentsAndReviews.add(new ApproveOwnerReviewsData(2L, "Amazing view!", 5, LocalDateTime.now(), false, false, 2L, 2L, "guest1@guest.com", "jpg", "", "owner1@owner.com", "jpg", "", "5"));
         ownerCommentsAndReviews.add(new ApproveOwnerReviewsData(3L, "Great place to stay!", 4, LocalDateTime.now(), false, false, 3L, 3L, "guest2@guest.com", "jpg", "", "owner2@owner.com", "jpg", "", "4"));
+
+        userReports.add(new UserReportsData(1L, 1L, 2L, 1, "Inappropriate behavior", LocalDateTime.now(), "guest1@guest.com", "jpg", "", "owner1@owner.com", "jpg", ""));
+        userReports.add(new UserReportsData(2L, 2L, 3L, 1, "Inappropriate behavior", LocalDateTime.now(), "owner1@owner.com", "jpg", "", "guest1@guest.com", "jpg", ""));
+        userReports.add(new UserReportsData(3L, 3L, 4L, 1, "Inappropriate behavior", LocalDateTime.now(), "guest2@guest.com", "jpg", "", "owner1@owner.com", "jpg", ""));
+
+        AccommodationReviewDTO accommodationReview1 = new AccommodationReviewDTO(1L, 1L, 1L, 4, "Great place to stay!", ReviewStatus.PENDING, LocalDateTime.now());
+        AccommodationReviewDTO accommodationReview2 = new AccommodationReviewDTO(2L, 2L, 2L, 5, "Amazing view!", ReviewStatus.PENDING, LocalDateTime.now());
+        AccommodationReviewDTO accommodationReview3 = new AccommodationReviewDTO(3L, 3L, 3L, 4, "Great place to stay!", ReviewStatus.PENDING, LocalDateTime.now());
+
+        accommodationReviewReports.add(new AccommodationReviewReportsData(1L, 1L, "Inappropriate behavior", ReportStatus.PENDING, LocalDateTime.now(), accommodationReview1, "", "guest1@guest.com", "Sunny Beach House", "Apartment", ""));
+        accommodationReviewReports.add(new AccommodationReviewReportsData(2L, 2L, "Inappropriate behavior", ReportStatus.PENDING, LocalDateTime.now(), accommodationReview2, "", "guest1@guest.com", "Mountain View Cabin", "Studio", ""));
+        accommodationReviewReports.add(new AccommodationReviewReportsData(3L, 3L, "Inappropriate behavior", ReportStatus.PENDING, LocalDateTime.now(), accommodationReview3, "", "guest1@guuest.com", "Lakeside Villa", "Villa", ""));
     }
 
     public static GlobalData getInstance() {
@@ -87,6 +105,12 @@ public class GlobalData {
         return instance;
     }
 
+    public List<AccommodationReviewReportsData> getAccommodationReviewReports() {
+        return accommodationReviewReports;
+    }
+    public List<UserReportsData> getUserReports() {
+        return userReports;
+    }
     public List<ApproveOwnerReviewsData> getOwnerCommentsAndReviews() {
         return ownerCommentsAndReviews;
     }
