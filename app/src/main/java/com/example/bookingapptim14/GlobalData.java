@@ -5,11 +5,16 @@ import com.example.bookingapptim14.models.AccommodationRequest;
 import com.example.bookingapptim14.models.Location;
 import com.example.bookingapptim14.models.SearchAccommodation;
 import com.example.bookingapptim14.models.User;
+import com.example.bookingapptim14.models.dtos.ApproveReviewsDTO.ApproveAccommodationReviewsData;
+import com.example.bookingapptim14.models.dtos.ApproveReviewsDTO.ApproveOwnerReviewsDTO;
+import com.example.bookingapptim14.models.dtos.ApproveReviewsDTO.ApproveOwnerReviewsData;
+import com.example.bookingapptim14.models.dtos.ApproveReviewsDTO.ReviewStatus;
 import com.example.bookingapptim14.models.dtos.OwnersAccommodationDTO;
 import com.example.bookingapptim14.models.dtos.ReservationRequestDTO.ApprovedReservationData;
 import com.example.bookingapptim14.models.dtos.ReservationRequestDTO.ApprovedReservationGuestData;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -23,6 +28,8 @@ public class GlobalData {
     private List<OwnersAccommodationDTO> ownersAccommodations = new ArrayList<>();
     private List<ApprovedReservationData> approvedReservations = new ArrayList<>();
     private List<ApprovedReservationGuestData> approvedGuestReservations = new ArrayList<>();
+    private List<ApproveAccommodationReviewsData> accommodationCommentsAndReviews = new ArrayList<>();
+    private List<ApproveOwnerReviewsData> ownerCommentsAndReviews = new ArrayList<>();
 
     private GlobalData() {
         accommodationRequest.add(new AccommodationRequest(13L, "Novi apartman 1", "Apartment", "jpg", "", "owner_username", "1703451446", "new", "Lorem ipsum ... opis 1", 4, "jpg", ""));
@@ -63,6 +70,14 @@ public class GlobalData {
         approvedGuestReservations.add(new ApprovedReservationGuestData(3L, 3L, 3L, LocalDate.now().plusDays(3), LocalDate.now().plusDays(4), 10, 1750.0, "SENT", "Lakeside Villa", "Villa", "owner1@owner.com", "1350574775", 4, "", "png", "", "png", "11.11.2024", "guest2@guest.com", "2", "2"));
         approvedGuestReservations.add(new ApprovedReservationGuestData(4L, 4L, 4L, LocalDate.now().plusDays(1), LocalDate.now().plusDays(2), 6, 1320.0, "SENT", "Downtown Loft", "Apartment", "owner1@owner.com", "1350574775", 4, "", "png", "", "png", "11.11.2024", "guest2@guest.com", "2", "2"));
 
+        accommodationCommentsAndReviews.add(new ApproveAccommodationReviewsData(1L, 1L, 1L, 4, "Great place to stay!", ReviewStatus.PENDING, LocalDateTime.now(), "guest1@guest.com", "jpg", "", "Sunny Beach House", "Apartment", "jpg", "4"));
+        accommodationCommentsAndReviews.add(new ApproveAccommodationReviewsData(2L, 2L, 2L, 5, "Amazing view!", ReviewStatus.PENDING, LocalDateTime.now(), "guest2@guest.com", "jpg", "", "Mountain View Cabin", "Studio", "jpg", "5"));
+        accommodationCommentsAndReviews.add(new ApproveAccommodationReviewsData(3L, 3L, 3L, 4, "Great place to stay!", ReviewStatus.PENDING, LocalDateTime.now(), "guest1@guest.com", "jpg", "", "Lakeside Villa", "Villa", "jpg", "4"));
+        accommodationCommentsAndReviews.add(new ApproveAccommodationReviewsData(4L, 4L, 4L, 5, "Amazing view!", ReviewStatus.PENDING, LocalDateTime.now(), "guest2@guest.com", "jpg", "", "Downtown Loft", "Apartment", "jpg", "5"));
+
+        ownerCommentsAndReviews.add(new ApproveOwnerReviewsData(1L, "Great place to stay!", 4, LocalDateTime.now(), false, false, 1L, 1L, "guest1@guest.com", "jpg", "", "owner1@owner.com", "jpg", "", "4"));
+        ownerCommentsAndReviews.add(new ApproveOwnerReviewsData(2L, "Amazing view!", 5, LocalDateTime.now(), false, false, 2L, 2L, "guest1@guest.com", "jpg", "", "owner1@owner.com", "jpg", "", "5"));
+        ownerCommentsAndReviews.add(new ApproveOwnerReviewsData(3L, "Great place to stay!", 4, LocalDateTime.now(), false, false, 3L, 3L, "guest2@guest.com", "jpg", "", "owner2@owner.com", "jpg", "", "4"));
     }
 
     public static GlobalData getInstance() {
@@ -72,6 +87,12 @@ public class GlobalData {
         return instance;
     }
 
+    public List<ApproveOwnerReviewsData> getOwnerCommentsAndReviews() {
+        return ownerCommentsAndReviews;
+    }
+    public List<ApproveAccommodationReviewsData> getAccommodationCommentsAndReviews() {
+        return accommodationCommentsAndReviews;
+    }
     public List<ApprovedReservationGuestData> getApprovedGuestReservations() {
         return approvedGuestReservations;
     }
