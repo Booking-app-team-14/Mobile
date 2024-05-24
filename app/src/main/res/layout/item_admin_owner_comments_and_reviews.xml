@@ -65,7 +65,7 @@
                 android:layout_width="64dp"
                 android:layout_height="64dp"
                 android:contentDescription="owner_avatar_image"
-                android:src="@color/primary_blue" />
+                android:src="@drawable/default_profile_picture" />
 
             <TextView
                 android:id="@+id/adminCommentsAndReviewsOwnerGuestUsername"
@@ -188,7 +188,7 @@
                     android:layout_width="64dp"
                     android:layout_height="64dp"
                     android:contentDescription="owner_avatar_image"
-                    android:src="@color/primary_blue" />
+                    android:src="@drawable/default_profile_picture" />
 
                 <LinearLayout
                     android:layout_width="match_parent"

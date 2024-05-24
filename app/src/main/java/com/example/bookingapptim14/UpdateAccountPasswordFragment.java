@@ -42,7 +42,6 @@ public class UpdateAccountPasswordFragment extends Fragment {
     }
 
     private void changePassword() {
-        // TODO: Change password
         TextView passwordTextView = getActivity().findViewById(R.id.editTextNewPassword);
         String newPassword = passwordTextView.getText().toString();
         TextView confirmPasswordTextView = getActivity().findViewById(R.id.editTextConfirmNewPassword);
@@ -51,9 +50,15 @@ public class UpdateAccountPasswordFragment extends Fragment {
             Toast.makeText(getContext(), "Passwords do not match", Toast.LENGTH_SHORT).show();
             return;
         }
-        GlobalData gd = GlobalData.getInstance();
-        User loggedUser = gd.getLoggedInUser();
-        loggedUser.setPassword(newPassword);
+        if (newPassword.length() < 8) {
+            Toast.makeText(getContext(), "Password needs to be at least 8 characters long", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // PUT /users/{id}/password, consumes String
+        // TODO: Change password
+        // newPassword
+
         Toast.makeText(getContext(), "Password successfully changed", Toast.LENGTH_SHORT).show();
         getActivity().getWindow().findViewById(R.id.bottomNavView).setVisibility(View.VISIBLE);
         getActivity().getOnBackPressedDispatcher().onBackPressed();

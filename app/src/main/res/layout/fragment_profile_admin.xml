@@ -39,7 +39,7 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/profilePictureImage"
+                        android:id="@+id/adminProfilePictureImage"
                         android:layout_width="120dp"
                         android:layout_height="120dp"
                         android:layout_marginTop="32dp"
@@ -52,7 +52,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/nameSurnameTextView"
+                        android:id="@+id/adminNameSurnameTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
@@ -60,23 +60,23 @@
                         android:text="Pera Peric"
                         android:textColor="@color/white"
                         android:textSize="20dp"
-                        app:layout_constraintEnd_toEndOf="@+id/profilePictureImage"
-                        app:layout_constraintStart_toStartOf="@+id/profilePictureImage"
-                        app:layout_constraintTop_toBottomOf="@+id/profilePictureImage" />
+                        app:layout_constraintEnd_toEndOf="@id/adminProfilePictureImage"
+                        app:layout_constraintStart_toStartOf="@id/adminProfilePictureImage"
+                        app:layout_constraintTop_toBottomOf="@id/adminProfilePictureImage" />
 
                     <TextView
-                        android:id="@+id/emailTextView"
+                        android:id="@+id/adminEmailTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="tim14.admin@gmail.com"
                         android:textColor="@color/white"
                         android:textSize="18dp"
-                        app:layout_constraintEnd_toEndOf="@+id/nameSurnameTextView"
-                        app:layout_constraintStart_toStartOf="@+id/nameSurnameTextView"
-                        app:layout_constraintTop_toBottomOf="@+id/nameSurnameTextView" />
+                        app:layout_constraintEnd_toEndOf="@id/adminNameSurnameTextView"
+                        app:layout_constraintStart_toStartOf="@id/adminNameSurnameTextView"
+                        app:layout_constraintTop_toBottomOf="@id/adminNameSurnameTextView" />
 
                     <ImageView
-                        android:id="@+id/imageView4"
+                        android:id="@+id/adminProfilePicture"
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:scaleType="centerCrop"
@@ -99,7 +99,7 @@
                         android:paddingBottom="6dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/emailTextView">
+                        app:layout_constraintTop_toBottomOf="@id/adminEmailTextView">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -159,7 +159,7 @@
                                 android:textSize="18dp" />
 
                             <TextView
-                                android:id="@+id/addressTextView"
+                                android:id="@+id/adminAddressTextView"
                                 android:layout_width="245dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -197,7 +197,7 @@
                                 android:textSize="18dp" />
 
                             <TextView
-                                android:id="@+id/phoneNumberTextView"
+                                android:id="@+id/adminPhoneNumberTextView"
                                 android:layout_width="190dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -225,23 +225,9 @@
                             android:layout_margin="10dp">
 
                             <Button
-                                android:id="@+id/buttonCloseAccount"
-                                android:onClick="closeAccount"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:layout_marginRight="5dp"
-                                android:text="Close Account"
-                                android:fontFamily="@font/inter_bold"
-                                android:backgroundTint="@color/primary_blue"/>
-
-                            <Button
                                 android:id="@+id/buttonUpdateAccountDetails"
-                                android:onClick="updateDetails"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:layout_marginLeft="5dp"
                                 android:text="Update Details"
                                 android:fontFamily="@font/inter_bold"
                                 android:backgroundTint="@color/primary_blue"/>
