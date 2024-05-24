@@ -1,16 +1,26 @@
 package com.example.bookingapptim14.guest;
 
+import static android.content.Context.SENSOR_SERVICE;
+import static android.content.Context.VIBRATOR_SERVICE;
+
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.example.bookingapptim14.Adapters.GuestNotificationsAdapter;
@@ -40,6 +50,10 @@ import java.util.List;
 
 public class NotificationsFragmentGuest extends Fragment implements GuestNotificationsAdapter.OnNotificationListener {
 
+    private Vibrator vibrator;
+    private SensorManager sensorManager;
+    private Sensor proximitySensor;
+    private SensorEventListener proximityEventListener;
     private RecyclerView notificationsRecyclerView;
     private GuestNotificationsAdapter guestNotificationsAdapter;
 
@@ -83,7 +97,43 @@ public class NotificationsFragmentGuest extends Fragment implements GuestNotific
 
         fetchNotifications();
 
+        sensorManager = (SensorManager) getContext().getSystemService(SENSOR_SERVICE);
+        vibrator = (Vibrator) getContext().getSystemService(VIBRATOR_SERVICE);
+        proximitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
+
+        if (proximitySensor != null) {
+            proximityEventListener = new SensorEventListener() {
+                @Override
+                public void onSensorChanged(SensorEvent event) {
+                    if(event.values[0] < proximitySensor.getMaximumRange()) {
+                        // Detected something nearby
+                        vibrator.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE));
+                        notificationsRecyclerView.smoothScrollBy(0, 1200);
+                    }
+                }
+
+                @Override
+                public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+                }
+            };
+        } else {
+            Toast.makeText(getContext(), "This device has no proximity sensor", Toast.LENGTH_SHORT).show();
+        }
+
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        sensorManager.registerListener(proximityEventListener, proximitySensor, SensorManager.SENSOR_DELAY_UI);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        sensorManager.unregisterListener(proximityEventListener);
     }
 
     public void fetchNotifications() {

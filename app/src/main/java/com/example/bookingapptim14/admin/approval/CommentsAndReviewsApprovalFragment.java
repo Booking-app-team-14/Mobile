@@ -1,11 +1,22 @@
 package com.example.bookingapptim14.admin.approval;
 
+import static android.content.Context.SENSOR_SERVICE;
+import static android.content.Context.VIBRATOR_SERVICE;
+
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.CompoundButton;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import androidx.fragment.app.Fragment;
@@ -21,12 +32,17 @@ import com.example.bookingapptim14.R;
 import com.example.bookingapptim14.models.AccommodationRequest;
 import com.example.bookingapptim14.models.dtos.ApproveReviewsDTO.ApproveAccommodationReviewsData;
 import com.example.bookingapptim14.models.dtos.ApproveReviewsDTO.ApproveOwnerReviewsData;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class CommentsAndReviewsApprovalFragment extends Fragment implements AdminApprovalAccommodationCommentsAndReviewsAdapter.OnAccommodationActionListener, AdminApprovalOwnerCommentsAndReviewsAdapter.OnOwnerActionListener {
 
+    private Vibrator vibrator;
+    private SensorManager sensorManager;
+    private Sensor proximitySensor;
+    private SensorEventListener proximityEventListener;
     private RecyclerView accommodationCommentsAndReviewsApprovalRecyclerView;
     private RecyclerView ownerCommentsAndReviewsApprovalRecyclerView;
     private AdminApprovalAccommodationCommentsAndReviewsAdapter accommodationCommentsAndReviewsAdapter;
@@ -77,7 +93,46 @@ public class CommentsAndReviewsApprovalFragment extends Fragment implements Admi
 
         fetchCommentsAndReviews();
 
+        sensorManager = (SensorManager) getContext().getSystemService(SENSOR_SERVICE);
+        vibrator = (Vibrator) getContext().getSystemService(VIBRATOR_SERVICE);
+        proximitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
+
+        if (proximitySensor != null) {
+            proximityEventListener = new SensorEventListener() {
+                @Override
+                public void onSensorChanged(SensorEvent event) {
+                    if(event.values[0] < proximitySensor.getMaximumRange()) {
+                        // Detected something nearby
+                        vibrator.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE));
+                        if (accommodationCommentsAndReviewsApprovalRecyclerView.getVisibility() == View.VISIBLE)
+                            accommodationCommentsAndReviewsApprovalRecyclerView.smoothScrollBy(0, 1200);
+                        else if (ownerCommentsAndReviewsApprovalRecyclerView.getVisibility() == View.VISIBLE)
+                            ownerCommentsAndReviewsApprovalRecyclerView.smoothScrollBy(0, 1200);
+                    }
+                }
+
+                @Override
+                public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+                }
+            };
+        } else {
+            Toast.makeText(getContext(), "This device has no proximity sensor", Toast.LENGTH_SHORT).show();
+        }
+
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        sensorManager.registerListener(proximityEventListener, proximitySensor, SensorManager.SENSOR_DELAY_UI);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        sensorManager.unregisterListener(proximityEventListener);
     }
 
 // Accommodation comments and reviews are fetched from the server
