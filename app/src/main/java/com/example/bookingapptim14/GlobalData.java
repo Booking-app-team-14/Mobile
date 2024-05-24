@@ -1,6 +1,8 @@
 package com.example.bookingapptim14;
 
 import com.example.bookingapptim14.enums.AccommodationType;
+import com.example.bookingapptim14.enums.NotificationType;
+import com.example.bookingapptim14.enums.RequestStatus;
 import com.example.bookingapptim14.models.AccommodationRequest;
 import com.example.bookingapptim14.models.Location;
 import com.example.bookingapptim14.models.SearchAccommodation;
@@ -9,6 +11,9 @@ import com.example.bookingapptim14.models.dtos.ApproveReviewsDTO.ApproveAccommod
 import com.example.bookingapptim14.models.dtos.ApproveReviewsDTO.ApproveOwnerReviewsDTO;
 import com.example.bookingapptim14.models.dtos.ApproveReviewsDTO.ApproveOwnerReviewsData;
 import com.example.bookingapptim14.models.dtos.ApproveReviewsDTO.ReviewStatus;
+import com.example.bookingapptim14.models.dtos.NotificationDTO.Guest.GuestNotificationsData;
+import com.example.bookingapptim14.models.dtos.NotificationDTO.Guest.ReservationRequestDTO;
+import com.example.bookingapptim14.models.dtos.NotificationDTO.NotificationDTO;
 import com.example.bookingapptim14.models.dtos.OwnersAccommodationDTO;
 import com.example.bookingapptim14.models.dtos.ReportsDTO.AccommodationReviewDTO;
 import com.example.bookingapptim14.models.dtos.ReportsDTO.AccommodationReviewReportsData;
@@ -39,6 +44,7 @@ public class GlobalData {
     private List<UserReportsData> userReports = new ArrayList<>();
     private List<AccommodationReviewReportsData> accommodationReviewReports = new ArrayList<>();
     private List<OwnerReviewReportsData> ownerReviewReports = new ArrayList<>();
+    private List<GuestNotificationsData> guestNotifications = new ArrayList<>();
 
     private GlobalData() {
         accommodationRequest.add(new AccommodationRequest(13L, "Novi apartman 1", "Apartment", "jpg", "", "owner_username", "1703451446", "new", "Lorem ipsum ... opis 1", 4, "jpg", ""));
@@ -107,7 +113,18 @@ public class GlobalData {
         ownerReviewReports.add(new OwnerReviewReportsData(1L, 1L, "Inappropriate behavior", ReportStatus.PENDING, LocalDateTime.now(), ownerReview1, "guest1@guest.com", "", "owner1@owner.com", "", "4.2"));
         ownerReviewReports.add(new OwnerReviewReportsData(2L, 2L, "Inappropriate behavior", ReportStatus.PENDING, LocalDateTime.now(), ownerReview2, "guest2@guest.com", "", "owner1@owner.com", "", "4.5"));
         ownerReviewReports.add(new OwnerReviewReportsData(3L, 3L, "Inappropriate behavior", ReportStatus.PENDING, LocalDateTime.now(), ownerReview3, "guest3@guest.com", "", "owner2@owner.com", "", "4"));
+
+//        NotificationDTO notificationDTO1 = new NotificationDTO(1L, 1L, 2L, "2022-03-01T10:30:00", false, NotificationType.RESERVATION_REQUEST_RESPONSE);
+        NotificationDTO notificationDTO = new NotificationDTO(1L, 1L, 2L, "1716558867", false, NotificationType.RESERVATION_REQUEST_RESPONSE);
+        ReservationRequestDTO request1 = new ReservationRequestDTO(1L, 1L, 2L, LocalDate.now(), LocalDate.now().plusDays(2), 4, 540.0, RequestStatus.SENT, "Sunny Beach House", "APARTMENT", "jpg", "", "owner1@owner.com", "1716558867", 4, "png", "");
+        ReservationRequestDTO request2 = new ReservationRequestDTO(2L, 2L, 3L, LocalDate.now(), LocalDate.now().plusDays(3), 7, 1050.0, RequestStatus.SENT, "Mountain View Cabin", "STUDIO", "jpg", "", "owner2@owner.com", "1716558867", 5, "png", "");
+        ReservationRequestDTO request3 = new ReservationRequestDTO(3L, 3L, 4L, LocalDate.now(), LocalDate.now().plusDays(4), 10, 1750.0, RequestStatus.SENT, "Lakeside Villa", "VILLA", "jpg", "", "owner1@owner.com", "1716558867", 4, "png", "");
+
+        guestNotifications.add(new GuestNotificationsData(notificationDTO, request1, true));
+        guestNotifications.add(new GuestNotificationsData(notificationDTO, request2, false));
+        guestNotifications.add(new GuestNotificationsData(notificationDTO, request3, true));
     }
+
 
     public static GlobalData getInstance() {
         if (instance == null) {
@@ -116,6 +133,9 @@ public class GlobalData {
         return instance;
     }
 
+    public List<GuestNotificationsData> getGuestNotifications() {
+        return guestNotifications;
+    }
     public List<OwnerReviewReportsData> getOwnerReviewReports() {
         return ownerReviewReports;
     }
