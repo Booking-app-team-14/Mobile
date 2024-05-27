@@ -34,6 +34,7 @@ public class GuestNotificationsViewHolder extends RecyclerView.ViewHolder {
     private TextView guests;
     private TextView dateFrom;
     private TextView dateTo;
+    private CircleImageView guestNotificationAlertIcon;
     public Button deleteButton;
 
     public GuestNotificationsViewHolder(@NonNull View itemView) {
@@ -50,6 +51,7 @@ public class GuestNotificationsViewHolder extends RecyclerView.ViewHolder {
         guests = itemView.findViewById(R.id.guestNotificationAcommodationGuests);
         dateFrom = itemView.findViewById(R.id.guestNotificationAccommodationFromDate);
         dateTo = itemView.findViewById(R.id.guestNotificationAccommodationToDate);
+        guestNotificationAlertIcon = itemView.findViewById(R.id.guestNotificationAlertIcon);
         deleteButton = itemView.findViewById(R.id.guestNotificationDeleteNotificationButton);
     }
 
@@ -96,6 +98,7 @@ public class GuestNotificationsViewHolder extends RecyclerView.ViewHolder {
         String endDate = notification.getReservation().getEndDate().format(formatterDate);
         dateTo.setText(endDate);
         ownerUsername.setText(notification.getReservation().getUserUsername());
+        guestNotificationAlertIcon.setVisibility(notification.isSeen() ? View.GONE : View.VISIBLE);
         String base64OwnerImage = notification.getReservation().getUserProfilePictureBytes();
         if (base64OwnerImage != null && !base64OwnerImage.isEmpty()) {
             byte[] decodedString = Base64.getDecoder().decode(base64OwnerImage);

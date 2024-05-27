@@ -4,13 +4,19 @@ import com.example.bookingapptim14.enums.AccommodationType;
 import com.example.bookingapptim14.enums.NotificationType;
 import com.example.bookingapptim14.enums.RequestStatus;
 import com.example.bookingapptim14.models.AccommodationRequest;
+import com.example.bookingapptim14.models.Amenity;
 import com.example.bookingapptim14.models.Location;
 import com.example.bookingapptim14.models.SearchAccommodation;
 import com.example.bookingapptim14.models.User;
+import com.example.bookingapptim14.models.dtos.AccommodationDTO.AccommodationUpdateDTO;
+import com.example.bookingapptim14.models.dtos.AccommodationDTO.AmenityDTO;
+import com.example.bookingapptim14.models.dtos.AccommodationDTO.LocationDTO;
+import com.example.bookingapptim14.models.dtos.AccommodationDTO.UpdateAvailabilityDTO;
 import com.example.bookingapptim14.models.dtos.ApproveReviewsDTO.ApproveAccommodationReviewsData;
 import com.example.bookingapptim14.models.dtos.ApproveReviewsDTO.ApproveOwnerReviewsDTO;
 import com.example.bookingapptim14.models.dtos.ApproveReviewsDTO.ApproveOwnerReviewsData;
 import com.example.bookingapptim14.models.dtos.ApproveReviewsDTO.ReviewStatus;
+import com.example.bookingapptim14.models.dtos.Image;
 import com.example.bookingapptim14.models.dtos.NotificationDTO.Guest.GuestNotificationsData;
 import com.example.bookingapptim14.models.dtos.NotificationDTO.Guest.ReservationRequestDTO;
 import com.example.bookingapptim14.models.dtos.NotificationDTO.NotificationDTO;
@@ -45,6 +51,7 @@ public class GlobalData {
     private List<AccommodationReviewReportsData> accommodationReviewReports = new ArrayList<>();
     private List<OwnerReviewReportsData> ownerReviewReports = new ArrayList<>();
     private List<GuestNotificationsData> guestNotifications = new ArrayList<>();
+    private AccommodationUpdateDTO accommodationUpdateDTO = new AccommodationUpdateDTO();
 
     private GlobalData() {
         accommodationRequest.add(new AccommodationRequest(13L, "Novi apartman 1", "Apartment", "jpg", "", "owner_username", "1703451446", "new", "Lorem ipsum ... opis 1", 4, "jpg", ""));
@@ -123,6 +130,35 @@ public class GlobalData {
         guestNotifications.add(new GuestNotificationsData(notificationDTO, request1, true));
         guestNotifications.add(new GuestNotificationsData(notificationDTO, request2, false));
         guestNotifications.add(new GuestNotificationsData(notificationDTO, request3, true));
+
+        accommodationUpdateDTO.setId(1L);
+        accommodationUpdateDTO.setName("Sunny Beach House");
+        accommodationUpdateDTO.setDescription("Enjoy the sun and sea at this delightful beach house.\nAmazing views!\nGreat location!\nPerfect for a family vacation!\nCome now!");
+        accommodationUpdateDTO.setType("APARTMENT");
+        accommodationUpdateDTO.setMinNumberOfGuests(2);
+        accommodationUpdateDTO.setMaxNumberOfGuests(4);
+        HashSet<Image> accommodationUpdateImages = new HashSet<>();
+        accommodationUpdateImages.add(new Image("iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAIAAADTED8xAAADMElEQVR4nOzVwQnAIBQFQYXff81RUkQCOyDj1YOPnbXWPmeTRef+/3O/OyBjzh3CD95BfqICMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMO0TAAD//2Anhf4QtqobAAAAAElFTkSuQmCC", "jpg"));
+        accommodationUpdateImages.add(new Image("iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAIAAADTED8xAAADMElEQVR4nOzVwQnAIBQFQYXff81RUkQCOyDj1YOPnbXWPmeTRef+/3O/OyBjzh3CD95BfqICMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMO0TAAD//2Anhf4QtqobAAAAAElFTkSuQmCC", "jpg"));
+        accommodationUpdateImages.add(new Image("iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAIAAADTED8xAAADMElEQVR4nOzVwQnAIBQFQYXff81RUkQCOyDj1YOPnbXWPmeTRef+/3O/OyBjzh3CD95BfqICMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMO0TAAD//2Anhf4QtqobAAAAAElFTkSuQmCC", "jpg"));
+        accommodationUpdateDTO.setImages(accommodationUpdateImages);
+        HashSet<Long> accommodationUpdateAmenityIds = new HashSet<>();
+        accommodationUpdateAmenityIds.add(2L);
+        accommodationUpdateAmenityIds.add(4L);
+        accommodationUpdateAmenityIds.add(5L);
+        accommodationUpdateAmenityIds.add(7L);
+        accommodationUpdateDTO.setAmenities(accommodationUpdateAmenityIds);
+        accommodationUpdateDTO.setLocation(new LocationDTO("Serbia","Zlatibor","Katunska 4"));
+        accommodationUpdateDTO.setPricePerGuest(false);
+        accommodationUpdateDTO.setDefaultPrice(180.0);
+        accommodationUpdateDTO.setCancellationDeadline(2);
+        accommodationUpdateDTO.setMessage("");
+        accommodationUpdateDTO.setAutomaticHandling(false);
+        HashSet<UpdateAvailabilityDTO> accommodationUpdateAvailability = new HashSet<>();
+        accommodationUpdateAvailability.add(new UpdateAvailabilityDTO(LocalDate.now(), LocalDate.now().plusDays(2), 300.0));
+        accommodationUpdateAvailability.add(new UpdateAvailabilityDTO(LocalDate.now().plusDays(3), LocalDate.now().plusDays(3), 320.0));
+        accommodationUpdateAvailability.add(new UpdateAvailabilityDTO(LocalDate.now().plusDays(4), LocalDate.now().plusDays(8), 220.0));
+        accommodationUpdateDTO.setAvailability(accommodationUpdateAvailability);
     }
 
 
@@ -133,6 +169,9 @@ public class GlobalData {
         return instance;
     }
 
+    public AccommodationUpdateDTO getAccommodationUpdateDTO() {
+        return accommodationUpdateDTO;
+    }
     public List<GuestNotificationsData> getGuestNotifications() {
         return guestNotifications;
     }

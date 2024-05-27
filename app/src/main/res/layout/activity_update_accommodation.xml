@@ -1,411 +1,511 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F4F4F4">
+    android:background="@color/background"
+    android:orientation="vertical">
 
-    <RelativeLayout
+    <com.example.bookingapptim14.CustomScrollView
+        android:id="@+id/updateAccommodationScrollView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="16dp">
+        android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/imageViewLogo"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:src="@drawable/ic_logo"
-            android:contentDescription="Logo" />
-
-        <TextView
-            android:id="@+id/textViewTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Update Accommodation"
-            android:textStyle="bold"
-            android:textSize="32sp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="60dp"
-            android:layout_marginStart="16dp"
-            android:layout_below="@+id/imageViewLogo"/>
-
-
-        <TextView
-            android:id="@+id/textViewAccommodationNameLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Name"
-            android:textColor="#000000"
-            android:layout_below="@+id/textViewTitle"
-            android:layout_alignParentStart="true"
-            android:layout_marginTop="16dp" />
-
-        <EditText
-            android:id="@+id/editTextAccommodationName"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:hint="Accommodation Name"
-            android:layout_below="@+id/textViewAccommodationNameLabel"
-            android:layout_marginTop="8dp"
-            android:textColorHint="#777777"
-            android:background="@drawable/edit_text_border" />
-
-        <!-- Description -->
-        <TextView
-            android:id="@+id/textViewDescriptionLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Description"
-            android:textColor="#000000"
-            android:layout_below="@+id/editTextAccommodationName"
-            android:layout_alignParentStart="true"
-            android:layout_marginTop="16dp" />
-
-        <EditText
-            android:id="@+id/editTextDescription"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:hint="Description"
-            android:layout_below="@+id/textViewDescriptionLabel"
-            android:layout_marginTop="8dp"
-            android:textColorHint="#777777"
-            android:background="@drawable/edit_text_border" />
-
-        <!-- Location -->
-        <TextView
-            android:id="@+id/textViewLocationLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Location"
-            android:textColor="#000000"
-            android:layout_below="@+id/editTextDescription"
-            android:layout_alignParentStart="true"
-            android:layout_marginTop="16dp" />
-
-        <EditText
-            android:id="@+id/editTextLocation"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Location"
-            android:layout_below="@+id/textViewLocationLabel"
-            android:layout_marginTop="8dp"
-            android:textColorHint="#777777"
-            android:background="@drawable/edit_text_border" />
+            android:orientation="vertical">
 
-        <!-- Amenities -->
-
-        <TextView
-            android:id="@+id/textViewAmenitiesLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Facilities"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="8dp"
-            android:layout_below="@+id/editTextLocation"/>
-
-        <GridLayout
-            android:id="@+id/amenities"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:columnCount="3"
-            android:rowCount="2"
-            android:layout_below="@+id/textViewAmenitiesLabel">
-
-            <CheckBox
-                android:id="@+id/checkbox_wifi"
+            <ImageButton
+                android:id="@+id/updateAccommodationBackButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Wi-Fi" />
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/transparent"
+                android:src="@drawable/ic_back_arrow"
+                app:tint="@color/text_black" />
 
-            <CheckBox
-                android:id="@+id/checkbox_parking"
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="18dp"
+                android:fontFamily="@font/inter_bold"
+                android:gravity="center"
+                android:text="Update accommodation\ninformation"
+                android:textColor="@color/text_black"
+                android:textSize="24sp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/updateAccommodationImageRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginLeft="24dp"
+                android:layout_marginRight="24dp"
+                android:background="@drawable/spinner_background"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:padding="4dp"/>
+
+            <Button
+                android:id="@+id/updateAccommodationOpenGalleryButton"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="24dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Parking" />
+                android:backgroundTint="@color/primary_blue"
+                android:fontFamily="@font/inter_medium"
+                android:textSize="14dp"
+                android:text="Add photos" />
 
-            <CheckBox
-                android:id="@+id/checkbox_pool"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="24dp"
+                android:layout_marginRight="24dp"
+                android:layout_marginTop="5dp"
+                android:textColorHint="@color/text_gray"
+                app:boxBackgroundColor="@color/white">
+
+                <EditText
+                    android:id="@+id/updateAccommodationEditTextName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Accommodation name"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:textColor="@color/text_black" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayout2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="24dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="24dp"
+                android:textColorHint="@color/text_gray"
+                app:boxBackgroundColor="@color/white">
+
+                <EditText
+                    android:id="@+id/updateAccommodationEditTextDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="top"
+                    android:hint="Accommodation description"
+                    android:imeOptions="actionNext"
+                    android:inputType="textMultiLine"
+                    android:maxLines="3"
+                    android:minLines="3"
+                    android:scrollbars="vertical"
+                    android:textColor="@color/text_black" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="24dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="24dp"
+                android:fontFamily="@font/inter"
+                android:justificationMode="inter_word"
+                android:maxHeight="48dp"
+                android:scrollbars="vertical"
+                android:text="Accommodation type:"
+                android:textColor="@color/text_black"
+                android:textSize="16dp" />
+
+            <Spinner
+                android:id="@+id/updateAccommodationSpinnerType"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="24dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="24dp"
+                android:background="@drawable/spinner_background"
+                android:padding="10dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="24dp"
+                        android:layout_marginRight="5dp"
+                        android:textColorHint="@color/text_gray"
+                        app:boxBackgroundColor="@color/white">
+
+                        <EditText
+                            android:id="@+id/updateAccommodationEditTextMinGuests"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Min guests"
+                            android:imeOptions="actionNext"
+                            android:inputType="number"
+                            android:textColor="@color/text_black" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="24dp"
+                        android:textColorHint="@color/text_gray"
+                        app:boxBackgroundColor="@color/white">
+
+                        <EditText
+                            android:id="@+id/updateAccommodationEditTextMaxGuests"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Max guests"
+                            android:imeOptions="actionNext"
+                            android:inputType="number"
+                            android:textColor="@color/text_black" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="24dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="24dp"
+                android:fontFamily="@font/inter"
+                android:justificationMode="inter_word"
+                android:maxHeight="48dp"
+                android:scrollbars="vertical"
+                android:text="Amenities"
+                android:textColor="@color/text_black"
+                android:textSize="16dp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/updateAccommodationRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="24dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="24dp"
+                android:background="@drawable/spinner_background"
+                android:padding="4dp"
+                android:scrollbarAlwaysDrawHorizontalTrack="true"
+                android:scrollbars="horizontal" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="24dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="24dp"
+                android:fontFamily="@font/inter"
+                android:justificationMode="inter_word"
+                android:maxHeight="48dp"
+                android:scrollbars="vertical"
+                android:text="Location"
+                android:textColor="@color/text_black"
+                android:textSize="16dp" />
+
+            <org.osmdroid.views.MapView
+                android:id="@+id/updateAccommodationMap"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_marginLeft="24dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="24dp"
+                app:civ_border_color="#79747E"
+                app:civ_border_width="1dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/updateAccommodationButtonLocateOnMap"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/primary_blue"
+                    android:fontFamily="@font/inter_medium"
+                    android:text="Locate on map"
+                    android:textSize="14dp" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="24dp"
+                    android:layout_weight="2"
+                    android:textColorHint="@color/text_gray"
+                    app:boxBackgroundColor="@color/white">
+
+                    <EditText
+                        android:id="@+id/updateAccommodationEditTextAddress"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Location"
+                        android:imeOptions="actionNext"
+                        android:inputType="text"
+                        android:textColor="@color/text_black" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="24dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="24dp"
+                android:fontFamily="@font/inter"
+                android:justificationMode="inter_word"
+                android:maxHeight="48dp"
+                android:scrollbars="vertical"
+                android:text="Confirmation of reservations"
+                android:textColor="@color/text_black"
+                android:textSize="16dp" />
+
+            <RadioGroup
+                android:id="@+id/updateAccommodationConfirmationRadioGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="24dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/updateAccommodationRadioButtonAutomatic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="20dp"
+                    android:text="Automatic" />
+
+                <RadioButton
+                    android:id="@+id/updateAccommodationRadioButtonManual"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Manual" />
+
+            </RadioGroup>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="24dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="24dp"
+                android:fontFamily="@font/inter"
+                android:justificationMode="inter_word"
+                android:maxHeight="48dp"
+                android:scrollbars="vertical"
+                android:text="Availability and prices"
+                android:textColor="@color/text_black"
+                android:textSize="16dp" />
+
+            <View
+                android:id="@+id/updateAccommodationDivider"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="24dp"
+                android:background="@color/icon_gray" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="24dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="24dp"
+                android:fontFamily="@font/inter"
+                android:justificationMode="inter_word"
+                android:maxHeight="48dp"
+                android:scrollbars="vertical"
+                android:text="Define price"
+                android:textColor="@color/text_black"
+                android:textSize="16dp" />
+
+            <RadioGroup
+                android:id="@+id/updateAccommodationDefinePriceRadioGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="24dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/updateAccommodationRadioButtonPerNight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Per night"
+                    android:layout_marginEnd="20dp"/>
+
+                <RadioButton
+                    android:id="@+id/updateAccommodationRadioButtonPerGuest"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Per guest" />
+
+            </RadioGroup>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginTop="5dp"
+                android:textColorHint="@color/text_gray"
+                app:boxBackgroundColor="@color/white">
+
+                <EditText
+                    android:id="@+id/updateAccommodationEditTextPrice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Default price"
+                    android:imeOptions="actionNext"
+                    android:inputType="numberDecimal"
+                    android:textColor="@color/text_black" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginTop="5dp"
+                android:textColorHint="@color/text_gray"
+                app:boxBackgroundColor="@color/white">
+
+                <EditText
+                    android:id="@+id/updateAccommodationEditTextCancellationDeadline"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Cancellation deadline"
+                    android:imeOptions="actionNext"
+                    android:inputType="number"
+                    android:textColor="@color/text_black" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:id="@+id/updateAccommodationAvailabilitiesAndSpecialPricesContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:orientation="vertical">
+
+                <!-- Availabilities and special prices views will be added here programmatically -->
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/updateAccommodationAddAvailabilityAndSpecialPriceButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Pool" />
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="5dp"
+                android:backgroundTint="@color/primary_blue"
+                android:fontFamily="@font/inter_medium"
+                android:textSize="14dp"
+                android:text="Add Availability" />
 
-            <CheckBox
-                android:id="@+id/checkbox_breakfast"
-                android:layout_width="wrap_content"
+            <View
+                android:id="@+id/updateAccommodationDivider2"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="24dp"
+                android:background="@color/icon_gray" />
+
+            <TextView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Breakfast" />
+                android:layout_marginLeft="24dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="24dp"
+                android:fontFamily="@font/inter"
+                android:justificationMode="inter_word"
+                android:maxHeight="48dp"
+                android:scrollbars="vertical"
+                android:text="Reason for updating:"
+                android:textColor="@color/text_black"
+                android:textSize="16dp" />
 
-            <CheckBox
-                android:id="@+id/checkbox_dinner"
-                android:layout_width="wrap_content"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayout5"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Dinner" />
+                android:layout_marginLeft="24dp"
+                android:layout_marginRight="24dp"
+                android:nextFocusForward="@+id/buttonUpdateDetails"
+                android:textColorHint="@color/text_gray"
+                app:boxBackgroundColor="@color/white">
 
-            <CheckBox
-                android:id="@+id/checkbox_sauna"
-                android:layout_width="wrap_content"
+                <EditText
+                    android:id="@+id/updateAccommodationEditTextReason"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="top"
+                    android:imeOptions="actionNext"
+                    android:inputType="textMultiLine"
+                    android:maxLines="3"
+                    android:minLines="3"
+                    android:scrollbars="vertical"
+                    android:textColor="@color/text_black" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/updateAccommodationButtonUpdateDetails"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Sauna" />
-            <CheckBox
-                android:id="@+id/checkbox_karaoke_room"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Karaoke Room" />
+                android:layout_marginLeft="24dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginRight="24dp"
+                android:layout_marginBottom="10dp"
+                android:backgroundTint="@color/primary_blue"
+                android:fontFamily="@font/inter_bold"
+                android:text="Update accommodation information" />
 
-            <CheckBox
-                android:id="@+id/checkbox_lunch"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Lunch" />
-            <CheckBox
-                android:id="@+id/checkbox_Spa"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Spa" />
+        </LinearLayout>
+    </com.example.bookingapptim14.CustomScrollView>
 
-            <CheckBox
-                android:id="@+id/checkbox_rent"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Rent A Car" />
-            <CheckBox
-                android:id="@+id/checkbox_air_condition"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Air Condition" />
-
-            <CheckBox
-                android:id="@+id/checkbox_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="TV" />
-
-        </GridLayout>
-
-
-
-        <!-- Photos -->
-        <!-- Add Photo-related fields -->
-
-        <!-- Capacity -->
-
-        <TextView
-            android:id="@+id/textViewCapacityLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Upload Photos"
-            android:textColor="#000000"
-            android:layout_below="@+id/amenities"
-            android:layout_alignParentStart="true"
-            android:layout_marginTop="16dp" />
-
-        <!-- Kontrola za upload fotografija -->
-        <Button
-            android:id="@+id/editTextCapacity"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:text="Select Photos"
-            android:layout_below="@+id/textViewCapacityLabel"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/edit_text_border" />
-
-
-        <TextView
-            android:id="@+id/textViewMinCapacityLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Min Guests"
-            android:textColor="#000000"
-            android:layout_alignParentStart="true"
-            android:layout_marginTop="16dp"
-            android:layout_below="@+id/editTextCapacity"/>
-
-        <!-- Unos za minimalan broj gostiju -->
-        <EditText
-            android:id="@+id/editTextMinCapacity"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:hint="Min Number Of Guests"
-            android:layout_below="@+id/textViewMinCapacityLabel"
-            android:layout_marginTop="8dp"
-            android:inputType="number"
-            android:textColorHint="#777777"
-            android:background="@drawable/edit_text_border" />
-
-        <!-- Labela za maksimalan broj gostiju -->
-        <TextView
-            android:id="@+id/textViewMaxCapacityLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Max Guests"
-            android:textColor="#000000"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_below="@+id/editTextMinCapacity"/>
-
-        <!-- Unos za maksimalan broj gostiju -->
-        <EditText
-            android:id="@+id/editTextMaxCapacity"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:hint="Max Number Of Guests"
-            android:layout_below="@+id/textViewMaxCapacityLabel"
-            android:layout_marginTop="8dp"
-            android:inputType="number"
-            android:textColorHint="#777777"
-            android:background="@drawable/edit_text_border" />
-
-
-        <!-- Type -->
-        <TextView
-            android:id="@+id/textViewTypeLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Type"
-            android:textColor="#000000"
-            android:layout_below="@+id/editTextMaxCapacity"
-            android:layout_alignParentStart="true"
-            android:layout_marginTop="16dp" />
-
-        <Spinner
-            android:id="@+id/spinnerType"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_below="@+id/textViewTypeLabel"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/edit_text_border"/>
-
-        <TextView
-            android:id="@+id/textViewTitle1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Availability And Prices"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:layout_below="@+id/spinnerType"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="16dp"/>
-
-        <!-- Radio Group -->
-        <RadioGroup
-            android:id="@+id/radioGroupPriceType"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/textViewTitle1"
-            android:layout_marginTop="16dp">
-
-            <!-- Price Per Night -->
-            <RadioButton
-                android:id="@+id/radioButtonPricePerNight"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Price Per Night"/>
-
-            <!-- Price Per Guest -->
-            <RadioButton
-                android:id="@+id/radioButtonPricePerGuest"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Price Per Guest"/>
-        </RadioGroup>
-
-        <!-- From Date -->
-        <TextView
-            android:id="@+id/textViewFromDateLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="From Date"
-            android:textColor="#000000"
-            android:layout_below="@+id/radioGroupPriceType"
-            android:layout_alignParentStart="true"
-            android:layout_marginTop="16dp" />
-
-        <DatePicker
-            android:id="@+id/datePickerFrom"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/textViewFromDateLabel"
-            android:layout_marginTop="8dp"
-            android:calendarViewShown="false"
-            android:datePickerMode="spinner"/>
-
-        <!-- To Date -->
-        <TextView
-            android:id="@+id/textViewToDateLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="To Date"
-            android:textColor="#000000"
-            android:layout_below="@+id/datePickerFrom"
-            android:layout_alignParentStart="true"
-            android:layout_marginTop="16dp" />
-
-        <DatePicker
-            android:id="@+id/datePickerTo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/textViewToDateLabel"
-            android:layout_marginTop="8dp"
-            android:calendarViewShown="false"
-            android:datePickerMode="spinner"/>
-
-        <!-- Price -->
-        <TextView
-            android:id="@+id/textViewPriceLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Price"
-            android:textColor="#000000"
-            android:layout_below="@+id/datePickerTo"
-            android:layout_alignParentStart="true"
-            android:layout_marginTop="16dp" />
-
-        <EditText
-            android:id="@+id/editTextPrice"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:hint="Price"
-            android:layout_below="@+id/textViewPriceLabel"
-            android:layout_marginTop="8dp"
-            android:inputType="numberDecimal"
-            android:textColorHint="#777777"
-            android:background="@drawable/edit_text_border" />
-
-        <Button
-            android:id="@+id/plusButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="+"
-            android:layout_below="@+id/buttonCreateAccommodation"
-            android:layout_marginTop="16dp"
-            android:layout_centerHorizontal="true"/>
-
-        <!-- Button to create accommodation -->
-
-        <Button
-            android:id="@+id/buttonCreateAccommodation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="UPDATE ACCOMMODATION"
-            android:layout_below="@+id/editTextPrice"
-            android:layout_marginTop="16dp" />
-
-
-        <ViewStub
-            android:id="@+id/viewStub"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/plusButton"
-            android:layout_marginTop="16dp"
-            android:layout="@layout/custom_layout"
-            android:visibility="gone" />
-
-
-
-    </RelativeLayout>
-
-</ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>
