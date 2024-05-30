@@ -110,62 +110,22 @@
             android:text="Parking" />
 
         <CheckBox
-            android:id="@+id/checkbox_pool"
+            android:id="@+id/checkbox_sauna"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Pool" />
 
         <CheckBox
-            android:id="@+id/checkbox_breakfast"
+            android:id="@+id/checkbox_gym"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Breakfast" />
 
         <CheckBox
-            android:id="@+id/checkbox_dinner"
+            android:id="@+id/checkbox_games"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Dinner" />
-
-        <CheckBox
-            android:id="@+id/checkbox_sauna"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Sauna" />
-        <CheckBox
-            android:id="@+id/checkbox_karaoke_room"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Karaoke Room" />
-
-        <CheckBox
-            android:id="@+id/checkbox_lunch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Lunch" />
-        <CheckBox
-            android:id="@+id/checkbox_Spa"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Spa" />
-
-        <CheckBox
-            android:id="@+id/checkbox_rent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Rent A Car" />
-        <CheckBox
-            android:id="@+id/checkbox_air_condition"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Air Condition" />
-
-        <CheckBox
-            android:id="@+id/checkbox_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="TV" />
-
     </GridLayout>
     <TextView
         android:layout_width="wrap_content"

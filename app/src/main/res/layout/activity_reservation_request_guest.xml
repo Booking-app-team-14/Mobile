@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -60,13 +59,34 @@
             android:layout_below="@id/textViewGuests"
             android:layout_marginTop="10dp"
             android:layout_marginStart="20dp"/>
+
+        <!-- Available Dates Caption -->
+        <TextView
+            android:id="@+id/textViewAvailableDatesCaption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Available Dates"
+            android:layout_below="@id/numberPickerGuests"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="20dp"/>
+
+        <!-- ListView for Availabilities -->
+        <ListView
+            android:id="@+id/listViewAvailabilities"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textViewAvailableDatesCaption"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"/>
+
         <!-- CALCULATE Button -->
         <Button
             android:id="@+id/buttonCalculate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="CALCULATE"
-            android:layout_below="@id/numberPickerGuests"
+            android:layout_below="@id/listViewAvailabilities"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="20dp"/>
 

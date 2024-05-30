@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,7 +29,12 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 
+import com.example.bookingapptim14.Adapters.AvailabilityAdapter;
+import com.example.bookingapptim14.GlobalData;
 import com.example.bookingapptim14.R;
+import com.example.bookingapptim14.enums.RequestStatus;
+import com.example.bookingapptim14.models.Availability;
+import com.example.bookingapptim14.models.ReservationRequest;
 import com.example.bookingapptim14.models.SearchAccommodation;
 
 import org.osmdroid.config.Configuration;
@@ -39,6 +45,7 @@ import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
@@ -143,6 +150,10 @@ public class AccommodationDetailsActivityGuest extends Activity {
         View dialogView = inflater.inflate(R.layout.activity_reservation_request_guest, null);
         builder.setView(dialogView);
 
+        ListView listViewAvailabilities = dialogView.findViewById(R.id.listViewAvailabilities); // Corrected line
+        AvailabilityAdapter adapter = new AvailabilityAdapter(this, GlobalData.getInstance().getAvailabilities());
+        listViewAvailabilities.setAdapter(adapter);
+
         DatePicker datePickerStart = dialogView.findViewById(R.id.datePickerStart);
         DatePicker datePickerEnd = dialogView.findViewById(R.id.datePickerEnd);
         NumberPicker numberPickerGuests = dialogView.findViewById(R.id.numberPickerGuests);
@@ -174,13 +185,51 @@ public class AccommodationDetailsActivityGuest extends Activity {
         buttonCalculate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                calculateAndDisplayRecap(datePickerStart, datePickerEnd, numberPickerGuests, textViewRecap);
+                int startDay = datePickerStart.getDayOfMonth();
+                int startMonth = datePickerStart.getMonth() + 1;
+                int startYear = datePickerStart.getYear();
+
+                int endDay = datePickerEnd.getDayOfMonth();
+                int endMonth = datePickerEnd.getMonth() + 1;
+                int endYear = datePickerEnd.getYear();
+
+                LocalDate startDate = LocalDate.of(startYear, startMonth, startDay);
+                LocalDate endDate = LocalDate.of(endYear, endMonth, endDay);
+
+                if (isDateRangeAvailable(startDate, endDate)) {
+                    int numOfGuests = numberPickerGuests.getValue();
+                    double totalPrice = calculateTotalAmount(startDate, endDate, numOfGuests);
+                    String recap = "Start Date: " + startDay + "/" + startMonth + "/" + startYear +
+                            "\nEnd Date: " + endDay + "/" + endMonth + "/" + endYear +
+                            "\nNumber of Guests: " + numOfGuests +
+                            "\nTotal Amount: $" + totalPrice;
+
+                    textViewRecap.setText(recap);
+                    textViewRecap.setVisibility(View.VISIBLE);
+                } else {
+                    Toast.makeText(AccommodationDetailsActivityGuest.this, "Selected dates are not available.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
         builder.setPositiveButton("Reserve", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                int startDay = datePickerStart.getDayOfMonth();
+                int startMonth = datePickerStart.getMonth() + 1;
+                int startYear = datePickerStart.getYear();
+
+                int endDay = datePickerEnd.getDayOfMonth();
+                int endMonth = datePickerEnd.getMonth() + 1;
+                int endYear = datePickerEnd.getYear();
+
+                Long accommodationId = accommodation.getId();
+                int numOfGuests = numberPickerGuests.getValue();
+                LocalDate startDate = LocalDate.of(startYear, startMonth, startDay);
+                LocalDate endDate = LocalDate.of(endYear, endMonth, endDay);
+                double totalPrice = calculateTotalAmount(startDate, endDate, numOfGuests);
+                ReservationRequest reservationRequest = new ReservationRequest(1L, accommodationId, totalPrice, startDate, endDate, numOfGuests, RequestStatus.SENT);
+
                 Toast.makeText(AccommodationDetailsActivityGuest.this, "Reservation Successfully Sent", Toast.LENGTH_SHORT).show();
 
                 Context context = AccommodationDetailsActivityGuest.this;
@@ -220,36 +269,28 @@ public class AccommodationDetailsActivityGuest extends Activity {
         alertDialog.show();
     }
 
-    private void calculateAndDisplayRecap(DatePicker datePickerStart, DatePicker datePickerEnd, NumberPicker numberPickerGuests, TextView textViewRecap) {
-        int startDay = datePickerStart.getDayOfMonth();
-        int startMonth = datePickerStart.getMonth() + 1;
-        int startYear = datePickerStart.getYear();
-
-        int endDay = datePickerEnd.getDayOfMonth();
-        int endMonth = datePickerEnd.getMonth() + 1;
-        int endYear = datePickerEnd.getYear();
-
-        int numOfGuests = numberPickerGuests.getValue();
-        String recap = "Start Date: " + startDay + "/" + startMonth + "/" + startYear +
-                "\nEnd Date: " + endDay + "/" + endMonth + "/" + endYear +
-                "\nNumber of Guests: " + numOfGuests +
-                "\nTotal Amount: $" + calculateTotalAmount(startDay, startMonth, startYear, endDay, endMonth, endYear, numOfGuests);
-
-        textViewRecap.setText(recap);
-        textViewRecap.setVisibility(View.VISIBLE);
+    private boolean isDateRangeAvailable(LocalDate startDate, LocalDate endDate) {
+        for (Availability availability : GlobalData.getInstance().getAvailabilities()) {
+            if (!startDate.isBefore(availability.getStartDate()) && !endDate.isAfter(availability.getEndDate())) {
+                return true;
+            }
+        }
+        return false;
     }
 
-    private double calculateTotalAmount(int startDay, int startMonth, int startYear, int endDay, int endMonth, int endYear, int numOfGuests) {
-        // Calculate the total amount based on the number of guests and nights stayed
-        double pricePerNight = accommodation.getPricePerNight();
-        Calendar startCalendar = Calendar.getInstance();
-        startCalendar.set(startYear, startMonth - 1, startDay);
-        Calendar endCalendar = Calendar.getInstance();
-        endCalendar.set(endYear, endMonth - 1, endDay);
+    private double calculateTotalAmount(LocalDate startDate, LocalDate endDate, int numOfGuests) {
+        double totalAmount = 0.0;
+        LocalDate currentDate = startDate;
 
-        long diffInMillis = endCalendar.getTimeInMillis() - startCalendar.getTimeInMillis();
-        long diffInDays = diffInMillis / (1000 * 60 * 60 * 24);
-        double totalAmount = (int) diffInDays * pricePerNight * numOfGuests;
+        while (!currentDate.isAfter(endDate)) {
+            for (Availability availability :  GlobalData.getInstance().getAvailabilities()) {
+                if (!currentDate.isBefore(availability.getStartDate()) && !currentDate.isAfter(availability.getEndDate())) {
+                    totalAmount += availability.getSpecialPrice() * numOfGuests;
+                    break;
+                }
+            }
+            currentDate = currentDate.plusDays(1);
+        }
 
         return totalAmount;
     }

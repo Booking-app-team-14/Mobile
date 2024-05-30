@@ -8,6 +8,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
 
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ import android.widget.NumberPicker;
 import android.widget.RatingBar;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.bookingapptim14.GlobalData;
 import com.example.bookingapptim14.R;
@@ -28,10 +30,14 @@ import com.example.bookingapptim14.models.SearchAccommodation;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.slider.RangeSlider;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -43,6 +49,16 @@ public class HomeFragmentGuest extends Fragment {
     private TextView textViewDateRange;
     private Button btnDateRangePicker;
 
+    LocalDate startDateSelected;
+    LocalDate endDateSelected;
+    String startDate;
+    String endDate;
+    RangeSlider priceRangeSlider;
+    NumberPicker numberPickerGuests;
+    RatingBar ratingBar;
+    CheckBox checkboxWifi, checkboxParking, checkboxSauna, checkboxGym, checkboxGames;
+    CheckBox checkboxApartment, checkboxStudio, checkboxHotel, checkboxVilla, checkboxRoom;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home_guest, container, false);
@@ -52,12 +68,14 @@ public class HomeFragmentGuest extends Fragment {
 
         linearLayout = view.findViewById(R.id.linearView);
 
+
         for (SearchAccommodation accommodation : accommodationsList) {
             View cardView = getLayoutInflater().inflate(R.layout.card_vew, null);
 
             cardView.setOnClickListener(v -> {
                 Intent intent = new Intent(getActivity(), AccommodationDetailsActivityGuest.class);
                 intent.putExtra("accommodation", accommodation);
+
                 startActivity(intent);
             });
 
@@ -120,7 +138,8 @@ public class HomeFragmentGuest extends Fragment {
         NumberPicker numberPicker = dialogView.findViewById(R.id.numberPickerGuests);
         numberPicker.setMinValue(1);
         numberPicker.setMaxValue(100);
-
+        startDate = "";
+        endDate = "";
         TextView textViewDateRange = dialogView.findViewById(R.id.textViewDateRange);
         Button btnDateRangePicker = dialogView.findViewById(R.id.btnDateRangePicker);
 
@@ -129,16 +148,9 @@ public class HomeFragmentGuest extends Fragment {
 
         CheckBox checkboxWifi = dialogView.findViewById(R.id.checkbox_wifi);
         CheckBox checkboxParking = dialogView.findViewById(R.id.checkbox_parking);
-        CheckBox checkboxPool = dialogView.findViewById(R.id.checkbox_pool);
-        CheckBox checkboxBreakfast = dialogView.findViewById(R.id.checkbox_breakfast);
-        CheckBox checkboxDinner = dialogView.findViewById(R.id.checkbox_dinner);
         CheckBox checkboxSauna = dialogView.findViewById(R.id.checkbox_sauna);
-        CheckBox checkboxKaraokeRoom = dialogView.findViewById(R.id.checkbox_karaoke_room);
-        CheckBox checkboxLunch = dialogView.findViewById(R.id.checkbox_lunch);
-        CheckBox checkboxSpa = dialogView.findViewById(R.id.checkbox_Spa);
-        CheckBox checkboxRent = dialogView.findViewById(R.id.checkbox_rent);
-        CheckBox checkboxAirCondition = dialogView.findViewById(R.id.checkbox_air_condition);
-        CheckBox checkboxTV = dialogView.findViewById(R.id.checkbox_tv);
+        CheckBox checkboxGym = dialogView.findViewById(R.id.checkbox_gym);
+        CheckBox checkboxGames = dialogView.findViewById(R.id.checkbox_games);
 
         CheckBox checkboxApartment = dialogView.findViewById(R.id.checkbox_apartment);
         CheckBox checkboxStudio = dialogView.findViewById(R.id.checkbox_studio);
@@ -158,16 +170,10 @@ public class HomeFragmentGuest extends Fragment {
 
                     boolean wifi = checkboxWifi.isChecked();
                     boolean parking = checkboxParking.isChecked();
-                    boolean pool = checkboxPool.isChecked();
-                    boolean breakfast = checkboxBreakfast.isChecked();
-                    boolean dinner = checkboxDinner.isChecked();
                     boolean sauna = checkboxSauna.isChecked();
-                    boolean karaokeRoom = checkboxKaraokeRoom.isChecked();
-                    boolean lunch = checkboxLunch.isChecked();
-                    boolean spa = checkboxSpa.isChecked();
-                    boolean rent = checkboxRent.isChecked();
-                    boolean airCondition = checkboxAirCondition.isChecked();
-                    boolean tv = checkboxTV.isChecked();
+                    boolean gym = checkboxGym.isChecked();
+                    boolean games = checkboxGames.isChecked();
+
 
                     boolean apartment = checkboxApartment.isChecked();
                     boolean studio = checkboxStudio.isChecked();
@@ -182,23 +188,18 @@ public class HomeFragmentGuest extends Fragment {
                     filters.put("minRating", minRating);
                     filters.put("wifi", wifi);
                     filters.put("parking", parking);
-                    filters.put("pool", pool);
-                    filters.put("breakfast", breakfast);
-                    filters.put("dinner", dinner);
                     filters.put("sauna", sauna);
-                    filters.put("karaokeRoom", karaokeRoom);
-                    filters.put("lunch", lunch);
-                    filters.put("spa", spa);
-                    filters.put("rent", rent);
-                    filters.put("airCondition", airCondition);
-                    filters.put("tv", tv);
+                    filters.put("gym", gym);
+                    filters.put("games", games);
+
 
                     filters.put("apartment", apartment);
                     filters.put("studio", studio);
                     filters.put("hotel", hotel);
                     filters.put("villa", villa);
                     filters.put("room", room);
-
+                    filters.put("startDate", startDateSelected);
+                    filters.put("endDate", endDateSelected);
                     filterAccommodations(filters);
                 })
                 .setNegativeButton("Cancel", (dialog, id) -> dialog.dismiss());
@@ -206,7 +207,40 @@ public class HomeFragmentGuest extends Fragment {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+    public void collectValues() {
 
+        List<Float> priceRange = priceRangeSlider.getValues();
+        double minPrice = priceRange.get(0);
+        double maxPrice = priceRange.get(1);
+
+
+        double minRating = ratingBar.getRating();
+
+
+        int minGuests = numberPickerGuests.getValue();
+
+
+        Set<Long> amenityIds = new HashSet<>();
+        if (checkboxWifi.isChecked()) amenityIds.add(2L);
+        if (checkboxParking.isChecked()) amenityIds.add(1L);
+        if (checkboxSauna.isChecked()) amenityIds.add(3L);
+        if (checkboxGym.isChecked()) amenityIds.add(4L);
+        if (checkboxGames.isChecked()) amenityIds.add(5L);
+
+
+        Set<String> accommodationTypes = new HashSet<>();
+        if (checkboxApartment.isChecked()) accommodationTypes.add("APARTMENT");
+        if (checkboxStudio.isChecked()) accommodationTypes.add("STUDIO");
+        if (checkboxHotel.isChecked()) accommodationTypes.add("HOTEL");
+        if (checkboxVilla.isChecked()) accommodationTypes.add("VILLA");
+        if (checkboxRoom.isChecked()) accommodationTypes.add("ROOM");
+
+       if (startDateSelected != null)
+           startDate = startDateSelected.toString();
+       if (endDateSelected != null)
+           endDate = endDateSelected.toString();
+
+    }
     private void openDateRangePicker(TextView textViewDateRange) {
         MaterialDatePicker.Builder<Pair<Long, Long>> builder = MaterialDatePicker.Builder.dateRangePicker();
         builder.setTitleText("Select Dates");
@@ -222,8 +256,12 @@ public class HomeFragmentGuest extends Fragment {
         picker.addOnPositiveButtonClickListener(selection -> {
             long startMillis = selection.first;
             long endMillis = selection.second;
-            Date startDateSelected = new Date(startMillis);
-            Date endDateSelected = new Date(endMillis);
+             startDateSelected = Instant.ofEpochMilli(startMillis)
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDate();
+             endDateSelected = Instant.ofEpochMilli(endMillis)
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDate();
             textViewDateRange.setText(startDateSelected.toString() + " - " + endDateSelected.toString());
         });
     }
@@ -236,16 +274,10 @@ public class HomeFragmentGuest extends Fragment {
 
         boolean wifi = (boolean) filters.get("wifi");
         boolean parking = (boolean) filters.get("parking");
-        boolean pool = (boolean) filters.get("pool");
-        boolean breakfast = (boolean) filters.get("breakfast");
-        boolean dinner = (boolean) filters.get("dinner");
+
+        boolean games = (boolean) filters.get("games");
+        boolean gym = (boolean) filters.get("gym");
         boolean sauna = (boolean) filters.get("sauna");
-        boolean karaokeRoom = (boolean) filters.get("karaokeRoom");
-        boolean lunch = (boolean) filters.get("lunch");
-        boolean spa = (boolean) filters.get("spa");
-        boolean rent = (boolean) filters.get("rent");
-        boolean airCondition = (boolean) filters.get("airCondition");
-        boolean tv = (boolean) filters.get("tv");
 
         boolean apartment = (boolean) filters.get("apartment");
         boolean studio = (boolean) filters.get("studio");

@@ -2,10 +2,12 @@ package com.example.bookingapptim14;
 
 import com.example.bookingapptim14.enums.AccommodationType;
 import com.example.bookingapptim14.models.AccommodationRequest;
+import com.example.bookingapptim14.models.Availability;
 import com.example.bookingapptim14.models.Location;
 import com.example.bookingapptim14.models.SearchAccommodation;
 import com.example.bookingapptim14.models.User;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -15,6 +17,8 @@ public class GlobalData {
     private static GlobalData instance;
     private List<AccommodationRequest> accommodationRequest = new ArrayList<>();
     private User loggedInUser = new User();
+
+    private List<Availability> availabilities = new ArrayList<>();
     private List<SearchAccommodation> searchAccommodations = new ArrayList<>();
 
     private GlobalData() {
@@ -38,7 +42,17 @@ public class GlobalData {
         searchAccommodations.add(new SearchAccommodation(10L, "Beachfront Resort", "Relaxing resort right by the beach.", AccommodationType.STUDIO, new Location(10l,"Serbia","Zlatibor","Katunska 8"), "accommodation_9", 4.8, 4, 12,280.0,new HashSet<>(), true));
         searchAccommodations.add(new SearchAccommodation(11L, "Chic Urban Studio", "Stylish studio apartment in a trendy neighborhood.", AccommodationType.APARTMENT,new Location(11l,"Serbia","Novi Sad","Hilandarska 4"), "accommodation_10", 3.4, 1,3, 90.0,new HashSet<>(), true));
         searchAccommodations.add(new SearchAccommodation(12L, "Mountain Retreat Chalet", "Escape to this cozy chalet nestled in the mountains.", AccommodationType.VILLA,new Location(12l,"Serbia","Zlatibor","Katunska 10"), "accommodation_11", 2.6, 3,5, 210.0,new HashSet<>(), true));
+
+        availabilities.add(new Availability(1L, LocalDate.of(2024,10,1), LocalDate.of(2024,10,3),150.00, 1L));
+        availabilities.add(new Availability(1L, LocalDate.of(2024,10,4), LocalDate.of(2024,10,6),100.00, 1L));
+        availabilities.add(new Availability(1L, LocalDate.of(2024,10,8), LocalDate.of(2024,10,10),150.00, 1L));
+        availabilities.add(new Availability(1L, LocalDate.of(2024,10,11), LocalDate.of(2024,10,15),120.00, 1L));
+        availabilities.add(new Availability(1L, LocalDate.of(2024,10,29), LocalDate.of(2024,11,2),150.00, 1L));
+        availabilities.add(new Availability(1L, LocalDate.of(2024,11,6), LocalDate.of(2024,10,28),150.00, 1L));
+
+
     }
+
 
     public static GlobalData getInstance() {
         if (instance == null) {
@@ -62,6 +76,8 @@ public class GlobalData {
     public List<SearchAccommodation> getSearchAccommodations() {
         return searchAccommodations;
     }
+
+    public List<Availability> getAvailabilities(){return  availabilities;}
 
     public void addAccommodation(AccommodationRequest request) {
         // TODO: Add accommodation

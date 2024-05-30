@@ -26,20 +26,20 @@ public class Availability {
     private void setStartDate(LocalDate startDate){
         this.startDate = startDate;
     }
-    private LocalDate getStartDate(){
+    public LocalDate getStartDate(){
         return this.startDate;
     }
     private void setEndDate(LocalDate endDate){
         this.endDate = endDate;
     }
-    private LocalDate getEndDate(){
+    public LocalDate getEndDate(){
         return this.endDate;
     }
 
     private void setSpecialPrice(Double specialPrice){
         this.specialPrice = specialPrice;
     }
-    private Double getSpecialPrice(){
+    public Double getSpecialPrice(){
         return this.specialPrice;
     }
     private void setAccommodation_Id(Long id){

@@ -40,7 +40,7 @@ public class SearchAccommodation implements Serializable {
     private void setId(Long id){
         this.id = id;
     }
-    private Long getId(){
+    public Long getId(){
         return this.id;
     }
 
