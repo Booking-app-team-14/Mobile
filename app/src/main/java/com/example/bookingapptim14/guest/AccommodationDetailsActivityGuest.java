@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageView;
@@ -153,6 +154,17 @@ public class AccommodationDetailsActivityGuest extends Activity {
         ListView listViewAvailabilities = dialogView.findViewById(R.id.listViewAvailabilities); // Corrected line
         AvailabilityAdapter adapter = new AvailabilityAdapter(this, GlobalData.getInstance().getAvailabilities());
         listViewAvailabilities.setAdapter(adapter);
+        int totalHeight = 0;
+        for (int i = 0; i < adapter.getCount(); i++) {
+            View listItem = adapter.getView(i, null, listViewAvailabilities);
+            listItem.measure(0, 0);
+            totalHeight += listItem.getMeasuredHeight();
+        }
+
+        // Set the height of the ListView dynamically
+        ViewGroup.LayoutParams params = listViewAvailabilities.getLayoutParams();
+        params.height = totalHeight + (listViewAvailabilities.getDividerHeight() * (adapter.getCount() - 1));
+        listViewAvailabilities.setLayoutParams(params);
 
         DatePicker datePickerStart = dialogView.findViewById(R.id.datePickerStart);
         DatePicker datePickerEnd = dialogView.findViewById(R.id.datePickerEnd);

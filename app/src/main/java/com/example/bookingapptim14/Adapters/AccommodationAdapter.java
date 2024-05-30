@@ -31,11 +31,11 @@ public class AccommodationAdapter extends RecyclerView.Adapter<AccommodationAdap
     @Override
     public void onBindViewHolder(@NonNull AccommodationViewHolder holder, int position) {
         Accommodation currentAccommodation = accommodations.get(position);
-        // Popunite UI elemente u kartici sa podacima iz currentAccommodation
+
         // holder.descriptionTextView.setText(currentAccommodation.getDescription());
         // holder.ratingTextView.setText("Rating: " + currentAccommodation.getRating());
         // holder.priceTextView.setText("Price/Night: $" + currentAccommodation.getPricePerNight());
-        // Postavite slike ili ikonice
+
     }
 
     @Override
@@ -44,12 +44,12 @@ public class AccommodationAdapter extends RecyclerView.Adapter<AccommodationAdap
     }
 
     static class AccommodationViewHolder extends RecyclerView.ViewHolder {
-        // Definišite UI elemente za prikaz podataka o smeštaju
+
         // TextView descriptionTextView, ratingTextView, priceTextView;
 
         public AccommodationViewHolder(@NonNull View itemView) {
             super(itemView);
-            // Inicijalizacija UI elemenata
+
         }
     }
 }
