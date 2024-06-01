@@ -7,7 +7,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ClientUtils {
 
-    private static final String SERVICE_API_PATH = "http://192.168.0.108:8080";
+    private static final String SERVICE_API_PATH = "http://192.168.26.19:8080";
     public static Retrofit retrofit = createRetrofitClient();
 
     private static Retrofit createRetrofitClient() {

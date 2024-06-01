@@ -5,9 +5,11 @@ import com.example.bookingapptim14.enums.NotificationType;
 import com.example.bookingapptim14.enums.RequestStatus;
 import com.example.bookingapptim14.models.AccommodationRequest;
 import com.example.bookingapptim14.models.Amenity;
+import com.example.bookingapptim14.models.Availability;
 import com.example.bookingapptim14.models.Location;
 import com.example.bookingapptim14.models.SearchAccommodation;
 import com.example.bookingapptim14.models.User;
+import com.example.bookingapptim14.models.dtos.AccommodationDTO.AccommodationReportDTO;
 import com.example.bookingapptim14.models.dtos.AccommodationDTO.AccommodationUpdateDTO;
 import com.example.bookingapptim14.models.dtos.AccommodationDTO.AmenityDTO;
 import com.example.bookingapptim14.models.dtos.AccommodationDTO.LocationDTO;
@@ -41,6 +43,7 @@ public class GlobalData {
     private static GlobalData instance;
     private List<AccommodationRequest> accommodationRequest = new ArrayList<>();
     private User loggedInUser = new User();
+    private List<Availability> availabilities = new ArrayList<>();
     private List<SearchAccommodation> searchAccommodations = new ArrayList<>();
     private List<OwnersAccommodationDTO> ownersAccommodations = new ArrayList<>();
     private List<ApprovedReservationData> approvedReservations = new ArrayList<>();
@@ -52,6 +55,8 @@ public class GlobalData {
     private List<OwnerReviewReportsData> ownerReviewReports = new ArrayList<>();
     private List<GuestNotificationsData> guestNotifications = new ArrayList<>();
     private AccommodationUpdateDTO accommodationUpdateDTO = new AccommodationUpdateDTO();
+
+    private List<AccommodationReportDTO> accommodationReportDTOS = new ArrayList<AccommodationReportDTO>();
 
     private GlobalData() {
         accommodationRequest.add(new AccommodationRequest(13L, "Novi apartman 1", "Apartment", "jpg", "", "owner_username", "1703451446", "new", "Lorem ipsum ... opis 1", 4, "jpg", ""));
@@ -74,6 +79,13 @@ public class GlobalData {
         searchAccommodations.add(new SearchAccommodation(10L, "Beachfront Resort", "Relaxing resort right by the beach.", AccommodationType.STUDIO, new Location(10l,"Norway","Oslo","Katunska 4"), "accommodation_9", 4.8, 4, 12,280.0,new HashSet<>(), true));
         searchAccommodations.add(new SearchAccommodation(11L, "Chic Urban Studio", "Stylish studio apartment in a trendy neighborhood.", AccommodationType.APARTMENT,new Location(11l,"Hungary","Budapest","Katunska 4"), "accommodation_10", 3.4, 1,3, 90.0,new HashSet<>(), true));
         searchAccommodations.add(new SearchAccommodation(12L, "Mountain Retreat Chalet", "Escape to this cozy chalet nestled in the mountains.", AccommodationType.VILLA,new Location(12l,"Serbia","Zlatibor","Katunska 543"), "accommodation_11", 2.6, 3,5, 210.0,new HashSet<>(), true));
+
+        availabilities.add(new Availability(1L, LocalDate.of(2024,10,1), LocalDate.of(2024,10,3),150.00, 1L));
+        availabilities.add(new Availability(1L, LocalDate.of(2024,10,4), LocalDate.of(2024,10,6),100.00, 1L));
+        availabilities.add(new Availability(1L, LocalDate.of(2024,10,8), LocalDate.of(2024,10,10),150.00, 1L));
+        availabilities.add(new Availability(1L, LocalDate.of(2024,10,11), LocalDate.of(2024,10,15),120.00, 1L));
+        availabilities.add(new Availability(1L, LocalDate.of(2024,10,29), LocalDate.of(2024,11,2),150.00, 1L));
+        availabilities.add(new Availability(1L, LocalDate.of(2024,11,6), LocalDate.of(2024,10,28),150.00, 1L));
 
         ownersAccommodations.add(new OwnersAccommodationDTO(1L, "Sunny Beach House", "Hotel", 3, 4, "Katunska 4", 180, "jpg", ""));
         ownersAccommodations.add(new OwnersAccommodationDTO(2L, "Mountain View Cabin", "Apartment", 4, 7, "Hilandarska 2", 150.0, "jpg", ""));
@@ -120,6 +132,13 @@ public class GlobalData {
         ownerReviewReports.add(new OwnerReviewReportsData(1L, 1L, "Inappropriate behavior", ReportStatus.PENDING, LocalDateTime.now(), ownerReview1, "guest1@guest.com", "", "owner1@owner.com", "", "4.2"));
         ownerReviewReports.add(new OwnerReviewReportsData(2L, 2L, "Inappropriate behavior", ReportStatus.PENDING, LocalDateTime.now(), ownerReview2, "guest2@guest.com", "", "owner1@owner.com", "", "4.5"));
         ownerReviewReports.add(new OwnerReviewReportsData(3L, 3L, "Inappropriate behavior", ReportStatus.PENDING, LocalDateTime.now(), ownerReview3, "guest3@guest.com", "", "owner2@owner.com", "", "4"));
+
+        accommodationReportDTOS.add(new AccommodationReportDTO("a1",AccommodationType.ROOM,3.5,1,6,150.0,11,10));
+        accommodationReportDTOS.add(new AccommodationReportDTO("a2",AccommodationType.STUDIO,3.0,1,6,150.0,10,10));
+        accommodationReportDTOS.add(new AccommodationReportDTO("a3",AccommodationType.VILLA,4.5,1,6,150.0,9,10));
+        accommodationReportDTOS.add(new AccommodationReportDTO("a4",AccommodationType.ROOM,2.5,1,6,150.0,10,10));
+        accommodationReportDTOS.add(new AccommodationReportDTO("a5",AccommodationType.APARTMENT,3.6,1,6,150.0,9,10));
+
 
 //        NotificationDTO notificationDTO1 = new NotificationDTO(1L, 1L, 2L, "2022-03-01T10:30:00", false, NotificationType.RESERVATION_REQUEST_RESPONSE);
         NotificationDTO notificationDTO = new NotificationDTO(1L, 1L, 2L, "1716558867", false, NotificationType.RESERVATION_REQUEST_RESPONSE);
@@ -219,4 +238,11 @@ public class GlobalData {
         searchAccommodations.add(new SearchAccommodation(request.getAccommodationId(), request.getName(), "Lorem ipsum ...", AccommodationType.valueOf(request.getType().toUpperCase()), new Location(1L,"Serbia","Zlatibor","Katunska 4"), "accommodation_6", (double) request.getStars(),2,4, 180.0, new HashSet<>(),true));
     }
 
+    public List<Availability> getAvailabilities() {
+        return availabilities;
+    }
+
+    public List<AccommodationReportDTO> getAccommodationReports() {
+        return accommodationReportDTOS;
+    }
 }

@@ -22,7 +22,7 @@ public class SearchAccommodation implements Serializable {
     private boolean approved;
 
     public SearchAccommodation(Long id, String name, String description, AccommodationType accommodationType, Location location,
-                                  String image, Double rating,Integer minNumberOfGuests, Integer maxNumberOfGuests, Double pricePerNight, Set<Amenity> amenities, boolean approved) {
+                               String image, Double rating,Integer minNumberOfGuests, Integer maxNumberOfGuests, Double pricePerNight, Set<Amenity> amenities, boolean approved) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -40,7 +40,7 @@ public class SearchAccommodation implements Serializable {
     private void setId(Long id){
         this.id = id;
     }
-    private Long getId(){
+    public Long getId(){
         return this.id;
     }
 
@@ -101,4 +101,15 @@ public class SearchAccommodation implements Serializable {
     private boolean isApproved(){
         return this.approved;
     }
+
+    public String getCity() {
+        return this.location.getCity();
+    }
+    public String getCountry() {
+        return this.location.getCountry();
+    }
+    public String getAddress() {
+        return this.location.getAddress();
+    }
+
 }

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <EditText
+        android:id="@+id/startDateEditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Start Date"
+        android:inputType="date"
+        app:layout_constraintEnd_toStartOf="@+id/endDateEditText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.45"/>
+
+    <EditText
+        android:id="@+id/endDateEditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="End Date"
+        android:inputType="date"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/startDateEditText"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.45"
+        android:layout_marginStart="8dp"/>
+
+    <Button
+        android:id="@+id/showReportsButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Show Reports"
+        android:backgroundTint="@color/primary_blue"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toStartOf="@+id/generatePdfButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/startDateEditText"
+        app:layout_constraintWidth_percent="0.45"/>
+
+    <Button
+        android:id="@+id/generatePdfButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Generate PDF"
+        android:backgroundTint="@color/primary_blue"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/showReportsButton"
+        app:layout_constraintTop_toBottomOf="@+id/endDateEditText"
+        app:layout_constraintWidth_percent="0.45"
+        android:layout_marginStart="8dp"/>
+
+
+    <View
+        android:id="@+id/myAccommodationsDivider"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/icon_gray"
+        app:layout_constraintTop_toBottomOf="@+id/showReportsButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+    
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/hostAccommodationsRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/myAccommodationsDivider" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

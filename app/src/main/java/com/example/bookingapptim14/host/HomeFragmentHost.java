@@ -22,6 +22,8 @@ import android.widget.TextView;
 import androidx.appcompat.widget.PopupMenu;
 
 import androidx.cardview.widget.CardView;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.bookingapptim14.GlobalData;
 import com.example.bookingapptim14.R;
@@ -152,6 +154,7 @@ public class HomeFragmentHost extends Fragment {
                     startActivity(createAccommodationIntent);
                     return true;
                 case "Generate a report for all your accommodation":
+                   navigateToAccommodationReports();
                     return true;
                 default:
                     return false;
@@ -162,6 +165,11 @@ public class HomeFragmentHost extends Fragment {
         popupMenu.show();
     }
 
+    public void navigateToAccommodationReports() {
+        Fragment fragment = new AccommodationReportsFragment();
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.frameLayout, fragment, fragment.getClass().getSimpleName()).addToBackStack(null).commit();
+    }
     private void openDateRangePicker() {
         MaterialDatePicker.Builder<Pair<Long, Long>> builder = MaterialDatePicker.Builder.dateRangePicker();
         builder.setTitleText("Select Dates");
