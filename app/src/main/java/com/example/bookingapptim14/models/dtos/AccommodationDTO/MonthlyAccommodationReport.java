@@ -18,21 +18,16 @@ public class MonthlyAccommodationReport {
         this.totalProfit = totalProfit;
     }
 
-    public Map<String, MonthlyAccommodationReport> getMonthlyReportMap() {
-        Map<String, MonthlyAccommodationReport> monthlyReportMap = new LinkedHashMap<>();
-        Integer year =2024;
-        for (int month = 1; month <= 12; month++) {
-            LocalDate startDate = LocalDate.of(year, month, 1);
-            LocalDate endDate = startDate.plusMonths(1).minusDays(1);
+public int getNumberOfReservations(){
+        return this.numberOfReservations;
+}
+public double getTotalProfit(){
+        return this.totalProfit;
+}
 
-            int numberOfReservations = 10;
-            double totalProfit = 233.3;
-
-            MonthlyAccommodationReport monthlyReportDTO = new MonthlyAccommodationReport(startDate.getMonth().toString(), numberOfReservations, totalProfit);
-            monthlyReportMap.put(startDate.getMonth().toString(), monthlyReportDTO);
-        }
-        return monthlyReportMap;
-    }
+public String getMonth(){
+        return this.month;
+}
 
 
 

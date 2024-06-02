@@ -60,7 +60,7 @@ public class Accommodation {
     private void setName(String name){
         this.name = name;
     }
-    private String getName(){
+    public String getName(){
         return this.name;
     }
     private void setDescription(String description){
@@ -72,8 +72,8 @@ public class Accommodation {
     private void setRating(Double rating){
         this.rating = rating;
     }
-    public Double getRating(){
-        return this.rating;
+    public float getRating(){
+        return this.rating.floatValue();
     }
     private void setAmenities(Set<Amenity> amenities){
         this.amenities = amenities;
@@ -98,7 +98,7 @@ public class Accommodation {
     private void setType(AccommodationType type){
         this.type = type;
     }
-    private AccommodationType getType(){
+    public AccommodationType getType(){
         return this.type;
     }
     private void setImages(Set<String> images){
@@ -111,14 +111,14 @@ public class Accommodation {
     private void setMaxNumberOfGuests(Integer maxNumberOfGuests){
         this.maxNumberOfGuests = maxNumberOfGuests;
     }
-    private Integer getMaxNumberOfGuests(){
+    public Integer getMaxNumberOfGuests(){
         return this.maxNumberOfGuests;
     }
 
     private void setMinNumberOfGuests(Integer minNumberOfGuests){
         this.minNumberOfGuests = minNumberOfGuests;
     }
-    private Integer getMinNumberOfGuests(){
+    public Integer getMinNumberOfGuests(){
         return this.minNumberOfGuests;
     }
     private void setPricePerNight(Double pricePerNight){

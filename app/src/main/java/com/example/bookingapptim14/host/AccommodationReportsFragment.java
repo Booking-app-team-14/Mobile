@@ -31,7 +31,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
-import androidx.core.util.Pair;
+
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -287,27 +287,22 @@ public class AccommodationReportsFragment extends Fragment {
             pageNumber++;
         }
 
-        String fileName = "AccommodationReports.pdf";
-        File pdfFile;
+        // Save the PDF to external storage
+        String fileName = "AccommodationReports1.pdf";
+        File pdfFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), fileName);
 
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
-            // For Android 10 and above
-            pdfFile = new File(context.getExternalFilesDir(null), fileName);
-        } else {
-            // For Android 9 and below
-            pdfFile = new File(Environment.getExternalStorageDirectory(), fileName);
-        }
-
-        try (FileOutputStream fos = new FileOutputStream(pdfFile)) {
-            pdfDocument.writeTo(fos);
-            Toast.makeText(context, "PDF saved successfully to " + pdfFile.getAbsolutePath(), Toast.LENGTH_SHORT).show();
+        try {
+            pdfDocument.writeTo(new FileOutputStream(pdfFile));
+            Toast.makeText(context, "PDF downloaded successfully to " + pdfFile.getName(), Toast.LENGTH_SHORT).show();
         } catch (IOException e) {
-            Log.e(TAG, "Error saving PDF", e);
-            Toast.makeText(context, "Error saving PDF: " + e.getMessage(), Toast.LENGTH_LONG).show();
+            e.printStackTrace();
+            Toast.makeText(context, "Error downloading PDF: " + e.getMessage(), Toast.LENGTH_LONG).show();
         } finally {
             pdfDocument.close();
         }
     }
+
+
 
     @Override
     public void onResume() {

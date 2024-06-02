@@ -46,6 +46,13 @@ public class HostAccommodationsAdapter extends RecyclerView.Adapter<MyAccommodat
             }
         });
 
+        holder.monthlyAccommodationReportsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onMonthlyReportsRequested(accommodation);
+            }
+        });
+
         holder.updateAccommodationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,6 +82,8 @@ public class HostAccommodationsAdapter extends RecyclerView.Adapter<MyAccommodat
     }
 
     public interface OnAccommodationListener {
+
+        void onMonthlyReportsRequested(OwnersAccommodationDTO accommodation);
         void onAccommodationDetailsRequested(OwnersAccommodationDTO request);
         void onAccommodationUpdate(OwnersAccommodationDTO accommodation);
     }

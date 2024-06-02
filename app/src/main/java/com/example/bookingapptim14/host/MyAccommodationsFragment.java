@@ -108,6 +108,21 @@ public class MyAccommodationsFragment extends Fragment implements HostAccommodat
     }
 
     @Override
+    public void onMonthlyReportsRequested(OwnersAccommodationDTO accommodation) {
+        Long accommodationId = accommodation.getId();
+
+        Fragment fragment = new MonthlyAccommodationsReportFragment();
+        Bundle bundle = new Bundle();
+        bundle.putLong("accommodationId", accommodationId);
+        fragment.setArguments(bundle);
+
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.frameLayout, fragment, fragment.getClass().getSimpleName())
+                .addToBackStack(null)
+                .commit();
+    }
+
+    @Override
     public void onAccommodationDetailsRequested(OwnersAccommodationDTO accommodation) {
         // TODO: Open accommodation details fragment here
         Long accommodationId = accommodation.getId();
@@ -116,6 +131,8 @@ public class MyAccommodationsFragment extends Fragment implements HostAccommodat
         Intent intent = new Intent(getActivity(), AccomodationDetailsActivityHost.class);
         startActivity(intent);
     }
+
+
 
     @Override
     public void onAccommodationUpdate(OwnersAccommodationDTO accommodation) {

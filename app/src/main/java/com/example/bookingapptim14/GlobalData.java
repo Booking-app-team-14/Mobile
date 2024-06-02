@@ -13,6 +13,7 @@ import com.example.bookingapptim14.models.dtos.AccommodationDTO.AccommodationRep
 import com.example.bookingapptim14.models.dtos.AccommodationDTO.AccommodationUpdateDTO;
 import com.example.bookingapptim14.models.dtos.AccommodationDTO.AmenityDTO;
 import com.example.bookingapptim14.models.dtos.AccommodationDTO.LocationDTO;
+import com.example.bookingapptim14.models.dtos.AccommodationDTO.MonthlyAccommodationReport;
 import com.example.bookingapptim14.models.dtos.AccommodationDTO.UpdateAvailabilityDTO;
 import com.example.bookingapptim14.models.dtos.ApproveReviewsDTO.ApproveAccommodationReviewsData;
 import com.example.bookingapptim14.models.dtos.ApproveReviewsDTO.ApproveOwnerReviewsDTO;
@@ -36,7 +37,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public class GlobalData {
 
@@ -140,6 +143,8 @@ public class GlobalData {
         accommodationReportDTOS.add(new AccommodationReportDTO("a5",AccommodationType.APARTMENT,3.6,1,6,150.0,9,10));
 
 
+
+
 //        NotificationDTO notificationDTO1 = new NotificationDTO(1L, 1L, 2L, "2022-03-01T10:30:00", false, NotificationType.RESERVATION_REQUEST_RESPONSE);
         NotificationDTO notificationDTO = new NotificationDTO(1L, 1L, 2L, "1716558867", false, NotificationType.RESERVATION_REQUEST_RESPONSE);
         ReservationRequestDTO request1 = new ReservationRequestDTO(1L, 1L, 2L, LocalDate.now(), LocalDate.now().plusDays(2), 4, 540.0, RequestStatus.SENT, "Sunny Beach House", "APARTMENT", "jpg", "", "owner1@owner.com", "1716558867", 4, "png", "");
@@ -181,6 +186,22 @@ public class GlobalData {
     }
 
 
+
+    public Map<String, MonthlyAccommodationReport> getMonthlyReportMap() {
+        Map<String, MonthlyAccommodationReport> monthlyReportMap = new LinkedHashMap<>();
+        Integer year =2024;
+        for (int month = 1; month <= 12; month++) {
+            LocalDate startDate = LocalDate.of(year, month, 1);
+            LocalDate endDate = startDate.plusMonths(1).minusDays(1);
+
+            int numberOfReservations = 10;
+            double totalProfit = 233.3;
+
+            MonthlyAccommodationReport monthlyReportDTO = new MonthlyAccommodationReport(startDate.getMonth().toString(), numberOfReservations, totalProfit);
+            monthlyReportMap.put(startDate.getMonth().toString(), monthlyReportDTO);
+        }
+        return monthlyReportMap;
+    }
     public static GlobalData getInstance() {
         if (instance == null) {
             instance = new GlobalData();

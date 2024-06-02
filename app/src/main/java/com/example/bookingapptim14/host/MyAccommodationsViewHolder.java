@@ -35,6 +35,8 @@ public class MyAccommodationsViewHolder extends RecyclerView.ViewHolder {
     public Button updateAccommodationButton;
     public Button viewDetailsButton;
 
+    public Button monthlyAccommodationReportsButton;
+
     public MyAccommodationsViewHolder(@NonNull View itemView) {
         super(itemView);
         mainAccommodationImage = itemView.findViewById(R.id.hostAccommodationImageView);
@@ -46,6 +48,7 @@ public class MyAccommodationsViewHolder extends RecyclerView.ViewHolder {
         maxGuests = itemView.findViewById(R.id.hostAccommodationsMaxGuests);
         updateAccommodationButton = itemView.findViewById(R.id.hostAccommodationsUpdateAccommodationButton);
         viewDetailsButton = itemView.findViewById(R.id.hostAccommodationsViewDetailsButton);
+        monthlyAccommodationReportsButton = itemView.findViewById(R.id.monthlyReport);
     }
 
     public void bind(OwnersAccommodationDTO accommodation) {
