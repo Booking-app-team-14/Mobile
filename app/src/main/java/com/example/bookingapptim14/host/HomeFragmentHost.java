@@ -28,6 +28,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.bookingapptim14.GlobalData;
 import com.example.bookingapptim14.R;
 import com.example.bookingapptim14.enums.AccommodationType;
+import com.example.bookingapptim14.guest.AccommodationDetailsActivityGuest;
 import com.example.bookingapptim14.models.Location;
 import com.example.bookingapptim14.models.SearchAccommodation;
 import com.google.android.material.datepicker.MaterialDatePicker;
@@ -54,7 +55,7 @@ public class HomeFragmentHost extends Fragment {
 
 
         for (SearchAccommodation accommodation : accommodationsList) {
-            View cardView = getLayoutInflater().inflate(R.layout.card_vew, null);
+            View cardView = getLayoutInflater().inflate(R.layout.host_card_view, null);
 
             TextView descriptionTextView = cardView.findViewById(R.id.descriptionTextView);
             TextView ratingTextView = cardView.findViewById(R.id.ratingTextView);
@@ -70,9 +71,13 @@ public class HomeFragmentHost extends Fragment {
             int drawableResourceId = getResources().getIdentifier(accommodation.getImage(), "drawable", requireContext().getPackageName());
             accommodationImageView.setImageResource(drawableResourceId);
 
-
-
             linearLayout.addView(cardView);
+            cardView.setOnClickListener(v -> {
+                Intent intent = new Intent(getActivity(), AccomodationDetailsActivityHost.class);
+                intent.putExtra("accommodation", accommodation);
+
+                startActivity(intent);
+            });
         }
 
 
@@ -85,16 +90,7 @@ public class HomeFragmentHost extends Fragment {
                 showFilterDialog();
             }
         });
-        CardView cardView = view.findViewById(R.id.cardView);
 
-        cardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent intent = new Intent(getActivity(), AccomodationDetailsActivityHost.class);
-                startActivity(intent);
-            }
-        });
 
         return view;
     }

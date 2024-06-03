@@ -51,6 +51,13 @@ public class MyAccommodationsFragment extends Fragment implements HostAccommodat
             startActivity(createAccommodationIntent);
         });
 
+        view.findViewById(R.id.generateReportsButton).setOnClickListener(v -> {
+            Fragment fragment = new AccommodationReportsFragment();
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.frameLayout, fragment, fragment.getClass().getSimpleName()).addToBackStack(null).commit();
+
+        });
+
         accommodationsRecyclerView = view.findViewById(R.id.hostAccommodationsRecyclerView);
         adapter = new HostAccommodationsAdapter(new ArrayList<>(), this);
         accommodationsRecyclerView.setAdapter(adapter);

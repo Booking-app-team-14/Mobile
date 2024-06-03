@@ -64,7 +64,10 @@ public class AccommodationDetailsActivityGuest extends Activity {
 
         Intent intent = getIntent();
         if (intent != null) {
+            //TODO get through id from GET request: /api/accommodations/{id}
+
             accommodation = (SearchAccommodation) intent.getSerializableExtra("accommodation");
+            long id = accommodation.getId();
         }
 
         if (accommodation != null) {
@@ -152,6 +155,7 @@ public class AccommodationDetailsActivityGuest extends Activity {
         builder.setView(dialogView);
 
         ListView listViewAvailabilities = dialogView.findViewById(R.id.listViewAvailabilities); // Corrected line
+        //TODO availabilities through List<AvailabilityDTO> from Accommodation object  GET request api/availabilities/accommodations/{id}
         AvailabilityAdapter adapter = new AvailabilityAdapter(this, GlobalData.getInstance().getAvailabilities());
         listViewAvailabilities.setAdapter(adapter);
         int totalHeight = 0;
@@ -241,7 +245,7 @@ public class AccommodationDetailsActivityGuest extends Activity {
                 LocalDate endDate = LocalDate.of(endYear, endMonth, endDay);
                 double totalPrice = calculateTotalAmount(startDate, endDate, numOfGuests);
                 ReservationRequest reservationRequest = new ReservationRequest(1L, accommodationId, totalPrice, startDate, endDate, numOfGuests, RequestStatus.SENT);
-
+                //TODO POST request to api/requests
                 Toast.makeText(AccommodationDetailsActivityGuest.this, "Reservation Successfully Sent", Toast.LENGTH_SHORT).show();
 
                 Context context = AccommodationDetailsActivityGuest.this;
@@ -297,6 +301,8 @@ public class AccommodationDetailsActivityGuest extends Activity {
         while (!currentDate.isAfter(endDate)) {
             for (Availability availability :  GlobalData.getInstance().getAvailabilities()) {
                 if (!currentDate.isBefore(availability.getStartDate()) && !currentDate.isAfter(availability.getEndDate())) {
+                    //TODO if request perGuest or perNight
+
                     totalAmount += availability.getSpecialPrice() * numOfGuests;
                     break;
                 }

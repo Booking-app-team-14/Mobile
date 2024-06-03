@@ -204,6 +204,7 @@ public class AccommodationReportsFragment extends Fragment {
     private List<AccommodationReportDTO> fetchReports(String startDate, String endDate) {
         // For now, use test data
         GlobalData data = GlobalData.getInstance();
+        //TODO GET request from api/accommodation-reports/{ownerId}
         List<AccommodationReportDTO> testAccommodations = data.getAccommodationReports();
         adapter.setAccommodations(testAccommodations);
         if (testAccommodations.isEmpty()) {

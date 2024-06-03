@@ -227,7 +227,7 @@ public class MonthlyAccommodationsReportFragment extends Fragment {
 
     private List<MonthlyAccommodationReport> fetchMonthlyReservations(String year) {
         Map<String, MonthlyAccommodationReport> monthlyAccommodationReportMap = GlobalData.getInstance().getMonthlyReportMap();
-
+        //TODO GET request from api/accommodation-reports/{accommodationId}/monthly-report"
         for (Map.Entry<String, MonthlyAccommodationReport> entry : monthlyAccommodationReportMap.entrySet()) {
             String month = entry.getKey();
             MonthlyAccommodationReport report1 = entry.getValue();

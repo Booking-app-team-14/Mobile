@@ -95,7 +95,7 @@ public class SavedFragmentGuest extends Fragment implements FavouritesAdapter.On
     }
 
     private void fetchAccommodations() {
-        // TODO: fetch data
+        // TODO: fetch data through GET request List<FavouriteAccommodationDTO> guest.getFavouriteAccommodations()
 
         // For now, use test data
         GlobalData data = GlobalData.getInstance();

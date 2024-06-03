@@ -1,7 +1,12 @@
 package com.example.bookingapptim14.guest;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AlertDialog;
@@ -35,6 +40,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -42,13 +48,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class HomeFragmentGuest extends Fragment {
+public class HomeFragmentGuest extends Fragment implements SensorEventListener {
 
     private LinearLayout linearLayout;
     private List<SearchAccommodation> accommodationsList;
     private TextView textViewDateRange;
     private Button btnDateRangePicker;
+    private SensorManager sensorManager;
+    private Sensor accelerometer;
+    private static final int SHAKE_THRESHOLD = 800;
+    private long lastUpdate = 0;
+    private float last_x, last_y, last_z;
 
+    private Map<Long, Boolean> favoriteStatusMap = new HashMap<>();
     LocalDate startDateSelected;
     LocalDate endDateSelected;
     String startDate;
@@ -60,41 +72,65 @@ public class HomeFragmentGuest extends Fragment {
     CheckBox checkboxApartment, checkboxStudio, checkboxHotel, checkboxVilla, checkboxRoom;
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        sensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
+        accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home_guest, container, false);
-        ImageButton heartButton = view.findViewById(R.id.heartButton);
 
+        //TODO accommodation list = api/accommodations/sort/rating/desc (GET)
         accommodationsList = GlobalData.getInstance().getSearchAccommodations();
 
         linearLayout = view.findViewById(R.id.linearView);
 
-
         for (SearchAccommodation accommodation : accommodationsList) {
             View cardView = getLayoutInflater().inflate(R.layout.card_vew, null);
-
-            cardView.setOnClickListener(v -> {
-                Intent intent = new Intent(getActivity(), AccommodationDetailsActivityGuest.class);
-                intent.putExtra("accommodation", accommodation);
-
-                startActivity(intent);
-            });
 
             TextView descriptionTextView = cardView.findViewById(R.id.descriptionTextView);
             TextView ratingTextView = cardView.findViewById(R.id.ratingTextView);
             TextView priceTextView = cardView.findViewById(R.id.priceTextView);
             ImageView accommodationImageView = cardView.findViewById(R.id.imageView);
+            ImageButton heartButton = cardView.findViewById(R.id.heartButton);
 
             descriptionTextView.setText(accommodation.getName());
             ratingTextView.setText("Rating: " + accommodation.getRating());
             priceTextView.setText("Price/Night: $" + accommodation.getPricePerNight());
-
             int drawableResourceId = getResources().getIdentifier(accommodation.getImage(), "drawable", requireContext().getPackageName());
             accommodationImageView.setImageResource(drawableResourceId);
 
-            final boolean[] isFavorite = {false};
+            // Set the initial favorite status
+            Boolean isFavorite = favoriteStatusMap.get(accommodation.getId());
+            if (isFavorite == null) {
+                favoriteStatusMap.put(accommodation.getId(), false);
+                heartButton.setSelected(false);
+            } else {
+                heartButton.setSelected(isFavorite);
+            }
+
+            // Set click listener on heart button
             heartButton.setOnClickListener(v -> {
-                isFavorite[0] = !isFavorite[0];
-                heartButton.setSelected(isFavorite[0]);
+                Boolean currentFavoriteStatus = favoriteStatusMap.get(accommodation.getId());
+                boolean newFavoriteStatus = !currentFavoriteStatus;
+                favoriteStatusMap.put(accommodation.getId(), newFavoriteStatus);
+                heartButton.setSelected(newFavoriteStatus);
+                if (newFavoriteStatus) {
+                    //TODO PUT Request to: api/users/{id}/favorite-accommodations/{accommodationId}
+                } else {
+                    // TODO DELETE Request TO api/users/{id}/favorite-accommodations/{accommodationId}
+                }
+            });
+
+            // Set click listener on card view to open accommodation details activity
+            cardView.setOnClickListener(v -> {
+                Intent intent = new Intent(getActivity(), AccommodationDetailsActivityGuest.class);
+                intent.putExtra("accommodation", accommodation);
+                //TODO send an accommodation id instead of the whole object
+                startActivity(intent);
             });
 
             linearLayout.addView(cardView);
@@ -121,13 +157,49 @@ public class HomeFragmentGuest extends Fragment {
             }
         });
 
-        View cardView1 = view.findViewById(R.id.cardView);
-        cardView1.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), AccommodationDetailsActivityGuest.class);
-            startActivity(intent);
-        });
-
         return view;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        sensorManager.unregisterListener(this);
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+            long curTime = System.currentTimeMillis();
+            if ((curTime - lastUpdate) > 100) {
+                long diffTime = (curTime - lastUpdate);
+                lastUpdate = curTime;
+
+                float x = event.values[0];
+                float y = event.values[1];
+                float z = event.values[2];
+
+                float speed = Math.abs(x + y + z - last_x - last_y - last_z) / diffTime * 10000;
+
+                if (speed > SHAKE_THRESHOLD) {
+                    filterAccommodationsByPriceDesc();
+                }
+
+                last_x = x;
+                last_y = y;
+                last_z = z;
+            }
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+    }
+
+    private void filterAccommodationsByPriceDesc() {
+        List<SearchAccommodation> sortedList = new ArrayList<>(accommodationsList);
+        //TODO GET request price/desc
+        Collections.sort(sortedList, (a1, a2) -> Float.compare(a2.getPricePerNight().floatValue(), a1.getPricePerNight().floatValue()));
+        updateUI(sortedList);
     }
 
     public void showFilterDialog() {
@@ -174,7 +246,6 @@ public class HomeFragmentGuest extends Fragment {
                     boolean gym = checkboxGym.isChecked();
                     boolean games = checkboxGames.isChecked();
 
-
                     boolean apartment = checkboxApartment.isChecked();
                     boolean studio = checkboxStudio.isChecked();
                     boolean hotel = checkboxHotel.isChecked();
@@ -192,7 +263,6 @@ public class HomeFragmentGuest extends Fragment {
                     filters.put("gym", gym);
                     filters.put("games", games);
 
-
                     filters.put("apartment", apartment);
                     filters.put("studio", studio);
                     filters.put("hotel", hotel);
@@ -207,40 +277,7 @@ public class HomeFragmentGuest extends Fragment {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
-    public void collectValues() {
 
-        List<Float> priceRange = priceRangeSlider.getValues();
-        double minPrice = priceRange.get(0);
-        double maxPrice = priceRange.get(1);
-
-
-        double minRating = ratingBar.getRating();
-
-
-        int minGuests = numberPickerGuests.getValue();
-
-
-        Set<Long> amenityIds = new HashSet<>();
-        if (checkboxWifi.isChecked()) amenityIds.add(2L);
-        if (checkboxParking.isChecked()) amenityIds.add(1L);
-        if (checkboxSauna.isChecked()) amenityIds.add(3L);
-        if (checkboxGym.isChecked()) amenityIds.add(4L);
-        if (checkboxGames.isChecked()) amenityIds.add(5L);
-
-
-        Set<String> accommodationTypes = new HashSet<>();
-        if (checkboxApartment.isChecked()) accommodationTypes.add("APARTMENT");
-        if (checkboxStudio.isChecked()) accommodationTypes.add("STUDIO");
-        if (checkboxHotel.isChecked()) accommodationTypes.add("HOTEL");
-        if (checkboxVilla.isChecked()) accommodationTypes.add("VILLA");
-        if (checkboxRoom.isChecked()) accommodationTypes.add("ROOM");
-
-        if (startDateSelected != null)
-            startDate = startDateSelected.toString();
-        if (endDateSelected != null)
-            endDate = endDateSelected.toString();
-
-    }
     private void openDateRangePicker(TextView textViewDateRange) {
         MaterialDatePicker.Builder<Pair<Long, Long>> builder = MaterialDatePicker.Builder.dateRangePicker();
         builder.setTitleText("Select Dates");
@@ -284,6 +321,8 @@ public class HomeFragmentGuest extends Fragment {
         boolean hotel = (boolean) filters.get("hotel");
         boolean villa = (boolean) filters.get("villa");
         boolean room = (boolean) filters.get("room");
+
+        //TODO send to GET request: api/accommodations/filter with all the parameters
 
         List<SearchAccommodation> filteredList = new ArrayList<>();
 
@@ -373,9 +412,9 @@ public class HomeFragmentGuest extends Fragment {
             }
         }
 
-
         updateUI(filteredList);
     }
+
     private void updateUI(List<SearchAccommodation> filteredList) {
         linearLayout.removeAllViews();
         for (SearchAccommodation accommodation : filteredList) {
@@ -384,6 +423,7 @@ public class HomeFragmentGuest extends Fragment {
             cardView.setOnClickListener(v -> {
                 Intent intent = new Intent(getActivity(), AccommodationDetailsActivityGuest.class);
                 intent.putExtra("accommodation", accommodation);
+                //TODO id instead of the whole object
                 startActivity(intent);
             });
 
@@ -400,10 +440,26 @@ public class HomeFragmentGuest extends Fragment {
             accommodationImageView.setImageResource(drawableResourceId);
 
             ImageButton heartButton = cardView.findViewById(R.id.heartButton);
-            final boolean[] isFavorite = {false};
+            Boolean isFavorite = favoriteStatusMap.get(accommodation.getId());
+            if (isFavorite == null) {
+                favoriteStatusMap.put(accommodation.getId(), false);
+                heartButton.setSelected(false);
+            } else {
+                heartButton.setSelected(isFavorite);
+            }
+
+            // Set click listener on heart button
             heartButton.setOnClickListener(v -> {
-                isFavorite[0] = !isFavorite[0];
-                heartButton.setSelected(isFavorite[0]);
+                Boolean currentFavoriteStatus = favoriteStatusMap.get(accommodation.getId());
+                boolean newFavoriteStatus = !currentFavoriteStatus;
+                favoriteStatusMap.put(accommodation.getId(), newFavoriteStatus);
+                heartButton.setSelected(newFavoriteStatus);
+                if (newFavoriteStatus) {
+                    //TODO PUT Request to: api/users/{id}/favorite-accommodations/{accommodationId}
+                } else {
+                    // TODO DELETE Request TO api/users/{id}/favorite-accommodations/{accommodationId}
+                }
+
             });
 
             linearLayout.addView(cardView);

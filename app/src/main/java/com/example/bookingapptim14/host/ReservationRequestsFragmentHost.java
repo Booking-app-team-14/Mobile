@@ -2,6 +2,8 @@ package com.example.bookingapptim14.host;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 
 import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
@@ -12,93 +14,117 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-
+import com.example.bookingapptim14.Adapters.ReservationRequestsAdapter;
+import com.example.bookingapptim14.GlobalData;
 import com.example.bookingapptim14.R;
 import com.example.bookingapptim14.enums.ConfirmationMethod;
 import com.example.bookingapptim14.models.ReservationRequest;
+import com.example.bookingapptim14.models.dtos.ReservationRequestDTO.ApprovedReservationData;
+import com.example.bookingapptim14.models.dtos.ReservationRequestDTO.ApprovedReservationGuestData;
 import com.google.android.material.datepicker.MaterialDatePicker;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ReservationRequestsFragmentHost extends Fragment {
-    /*
-        private RecyclerView recyclerViewRequests;
-        private ReservationRequestsAdapter requestsAdapter;
-        private List<ReservationRequest> requestList;
-        private ConfirmationMethod confirmationMethod;
-
-       */
     private Button btnDateRangePicker;
     private TextView textViewDateRange;
+    private EditText editTextSearch;
+    private RadioGroup radioGroupStatus;
+    private RecyclerView recyclerViewRequests;
+    public ReservationRequestsAdapter requestsAdapter;
+    private List<ApprovedReservationData> requestList;
+    private List<ApprovedReservationData> filteredList;
+    private ConfirmationMethod confirmationMethod;
+    private LocalDate selectedStartDate;
+    private LocalDate selectedEndDate;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_reservation_requests_host, container, false);
         btnDateRangePicker = view.findViewById(R.id.buttonDateRangeReservationRequests);
-
-        // Set OnClickListener to open Date Range Picker
         textViewDateRange = view.findViewById(R.id.textViewDateRange);
-        btnDateRangePicker.setOnClickListener(v -> openDateRangePicker());
-        //recyclerViewRequests = view.findViewById(R.id.recyclerViewRequests);
-    /*    // Set layout manager for RecyclerView
+        editTextSearch = view.findViewById(R.id.editTextSearchReservationRequests);
+        radioGroupStatus = view.findViewById(R.id.radioGroupReservationRequestsStatus);
+        recyclerViewRequests = view.findViewById(R.id.recyclerViewRequests);
         recyclerViewRequests.setLayoutManager(new LinearLayoutManager(getContext()));
-
-        // Set up the list of requests (replace this with your data)
-        requestList = generateDummyRequests();
-
-        // Set confirmation method (replace this with your actual method)
-        confirmationMethod = ConfirmationMethod.MANUAL;
-
-        // Initialize and set the adapter for RecyclerView
-        requestsAdapter = new ReservationRequestsAdapter(requestList, confirmationMethod);
+        requestsAdapter = new ReservationRequestsAdapter(filteredList);
         recyclerViewRequests.setAdapter(requestsAdapter);
-*/
+
+        fetchRequests();
+        filteredList = new ArrayList<>(requestList);
+        btnDateRangePicker.setOnClickListener(v -> openDateRangePicker());
+
+        editTextSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                filterRequests();
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {}
+        });
+
+        radioGroupStatus.setOnCheckedChangeListener((group, checkedId) -> filterRequests());
+
         return view;
     }
 
-    // Method to generate sample reservation requests (replace with actual data retrieval logic)
-    private List<ReservationRequest> generateDummyRequests() {
-        // Generate dummy requests for testing
-        // Replace this with your actual logic to fetch requests
-        List<ReservationRequest> dummyList = new ArrayList<>();
-        // dummyList.add(new ReservationRequest("User 1"));
-        //dummyList.add(new ReservationRequest("User 2"));
-        // ... Add more requests as needed
-        return dummyList;
-    }
     private void openDateRangePicker() {
         MaterialDatePicker.Builder<Pair<Long, Long>> builder = MaterialDatePicker.Builder.dateRangePicker();
         builder.setTitleText("Select Dates");
 
-        Calendar startDate = Calendar.getInstance();
-        Calendar endDate = Calendar.getInstance();
-        endDate.add(Calendar.DAY_OF_MONTH, 1); // Default range of 1 day
-        builder.setSelection(new Pair<>(startDate.getTimeInMillis(), endDate.getTimeInMillis()));
-
         MaterialDatePicker<Pair<Long, Long>> picker = builder.build();
 
         picker.addOnPositiveButtonClickListener(selection -> {
-            long startMillis = selection.first;
-            long endMillis = selection.second;
-
-            Calendar startCal = Calendar.getInstance();
-            startCal.setTimeInMillis(startMillis);
-            Calendar endCal = Calendar.getInstance();
-            endCal.setTimeInMillis(endMillis);
+            selectedStartDate = Instant.ofEpochMilli(selection.first).atZone(ZoneId.systemDefault()).toLocalDate();
+            selectedEndDate = Instant.ofEpochMilli(selection.second).atZone(ZoneId.systemDefault()).toLocalDate();
 
             String dateRange = String.format(
                     "Check-in: %s\nCheck-out: %s",
-                    android.text.format.DateFormat.format("dd/MM/yyyy", startCal),
-                    android.text.format.DateFormat.format("dd/MM/yyyy", endCal)
+                    android.text.format.DateFormat.format("dd/MM/yyyy", selection.first),
+                    android.text.format.DateFormat.format("dd/MM/yyyy", selection.second)
             );
             textViewDateRange.setText(dateRange);
+            filterRequests();
         });
 
         picker.show(getChildFragmentManager(), picker.toString());
     }
 
+    private void fetchRequests() {
+        // TODO: fetch data
+
+        GlobalData data = GlobalData.getInstance();
+        requestList = data.getApprovedReservations();
+
+        requestsAdapter.setReservations(requestList);
+    }
+
+    @SuppressLint("DefaultLocale")
+    private void filterRequests() {
+        String query = editTextSearch.getText().toString().toLowerCase();
+        int selectedStatusId = radioGroupStatus.getCheckedRadioButtonId();
+        RadioButton selectedRadioButton = radioGroupStatus.findViewById(selectedStatusId);
+        String selectedStatus = selectedRadioButton.getText().toString();
+
+        filteredList = requestList.stream()
+                .filter(request -> (query.isEmpty() || request.getGuestUsername().toLowerCase().contains(query))
+                        && (selectedStatus.equals("All") || request.getRequestStatus().equalsIgnoreCase(selectedStatus))
+                        && (selectedStartDate == null || (request.getStartDate().compareTo(selectedStartDate) >= 0 && request.getEndDate().compareTo(selectedEndDate) <= 0)))
+                .collect(Collectors.toList());
+
+        requestsAdapter.setReservations(filteredList);
+    }
 }
