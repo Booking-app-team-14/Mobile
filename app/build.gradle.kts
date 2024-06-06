@@ -1,5 +1,13 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
+}
+
+fun getIpAddress(): String {
+    val properties = Properties()
+    properties.load(project.rootProject.file("local.properties").inputStream())
+    return properties.getProperty("server.ip")
 }
 
 android {
@@ -12,8 +20,12 @@ android {
         targetSdk = 33
         versionCode = 1
         versionName = "1.0"
-
+        buildConfigField("String", "SERVER_IP", "\"${getIpAddress()}\"")
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildFeatures {
+        buildConfig = true
     }
 
     buildTypes {
@@ -26,7 +38,6 @@ android {
         }
     }
 
-
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -35,7 +46,7 @@ android {
 
 dependencies {
     implementation("de.hdodenhof:circleimageview:2.2.0")
-    implementation ("androidx.core:core-ktx:1.7.0")
+    implementation("androidx.core:core-ktx:1.7.0")
     implementation("com.google.code.gson:gson:2.8.7")
     implementation("com.squareup.retrofit2:retrofit:2.3.0")
     implementation("com.squareup.retrofit2:converter-gson:2.3.0")

@@ -12,7 +12,7 @@ public interface ApiService {
             "User-Agent: Mobile-Android",
             "Content-Type:application/json"
     })
-    @POST("/api/login")
+    @POST("login")
     Call<String> login(@Body JwtAuthenticationRequest request);
 }
 

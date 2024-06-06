@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,16 +18,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.bookingapptim14.utils.ClientUtils;
 import com.example.bookingapptim14.dtos.JwtAuthenticationRequest;
 import com.example.bookingapptim14.guest.MainActivityGuest;
 import com.example.bookingapptim14.interfaces.ApiService;
 
-import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LoginScreen extends AppCompatActivity {
     private EditText usernameEditText;
@@ -55,14 +54,8 @@ public class LoginScreen extends AppCompatActivity {
         passwordIcon.setBounds(15, 1, (int) (passwordIcon.getIntrinsicWidth() * 0.05), (int) (passwordIcon.getIntrinsicHeight() * 0.05));
         passwordEditText.setCompoundDrawables(null, null, passwordIcon, null);
 
-        // Initialize Retrofit
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://localhost:8080")
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(new OkHttpClient.Builder().build())
-                .build();
-
-        apiService = retrofit.create(ApiService.class);
+        // Initialize ApiService
+        apiService = ClientUtils.apiService;
 
         // Set login button click listener
         loginButton.setOnClickListener(new View.OnClickListener() {
@@ -83,9 +76,9 @@ public class LoginScreen extends AppCompatActivity {
     }
 
     private void login() {
-        String username = usernameEditText.getText().toString();
-        String password = passwordEditText.getText().toString();
-
+        String username = usernameEditText.getText().toString().trim();
+        String password = passwordEditText.getText().toString().trim();
+        Log.e("LOGIN", username + " " + password);
         JwtAuthenticationRequest request = new JwtAuthenticationRequest(username, password);
 
         apiService.login(request).enqueue(new Callback<String>() {
@@ -103,6 +96,8 @@ public class LoginScreen extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
+                Log.e("LOGIN", "Failure: " + t.getMessage());
+                t.printStackTrace();
                 showUnsuccessMessage();
             }
         });
