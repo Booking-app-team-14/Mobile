@@ -7,6 +7,7 @@ import android.animation.AnimatorInflater;
 import android.animation.ObjectAnimator;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
@@ -16,23 +17,29 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.bookingapptim14.admin.MainActivityAdmin;
-import com.example.bookingapptim14.guest.AccommodationDetailsActivityGuest;
+import com.example.bookingapptim14.dtos.JwtAuthenticationRequest;
 import com.example.bookingapptim14.guest.MainActivityGuest;
-import com.example.bookingapptim14.host.MainActivityHost;
+import com.example.bookingapptim14.interfaces.ApiService;
+
+import okhttp3.OkHttpClient;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LoginScreen extends AppCompatActivity {
-
     private EditText usernameEditText;
     private EditText passwordEditText;
     private Button loginButton;
+    private ApiService apiService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_screen);
 
-        // inicijalizacija elemenata sa layouta
+        // Initialize layout elements
         usernameEditText = findViewById(R.id.editTextEmail);
         passwordEditText = findViewById(R.id.editTextPassword);
         loginButton = findViewById(R.id.buttonLogin);
@@ -43,46 +50,29 @@ public class LoginScreen extends AppCompatActivity {
         rotationAnimator.setTarget(imageView);
         rotationAnimator.start();
 
-        //podesavanje velicine ikonica
-        //Drawable emailIcon = getResources().getDrawable(R.drawable.img_4);
-        //emailIcon.setBounds(15, 1, (int) (emailIcon.getIntrinsicWidth() * 0.06), (int) (emailIcon.getIntrinsicHeight() * 0.06));
-        //usernameEditText.setCompoundDrawables(emailIcon, null, null, null);
-
+        // Set icon for password field
         Drawable passwordIcon = getResources().getDrawable(R.drawable.img_3);
         passwordIcon.setBounds(15, 1, (int) (passwordIcon.getIntrinsicWidth() * 0.05), (int) (passwordIcon.getIntrinsicHeight() * 0.05));
         passwordEditText.setCompoundDrawables(null, null, passwordIcon, null);
 
-        //dugme za prijavu
+        // Initialize Retrofit
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://localhost:8080")
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(new OkHttpClient.Builder().build())
+                .build();
+
+        apiService = retrofit.create(ApiService.class);
+
+        // Set login button click listener
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = null;
-                if (usernameEditText.getText().toString().equals("tim14.guest@gmail.com") &&
-                        (passwordEditText.getText().toString().equals("12345678") || passwordEditText.getText().toString().equals("123456789"))) {
-                    showSuccessMessage();
-                    intent = new Intent(LoginScreen.this, MainActivityGuest.class);
-                }
-                else if (usernameEditText.getText().toString().equals("tim14.owner@gmail.com") &&
-                        (passwordEditText.getText().toString().equals("12345678") || passwordEditText.getText().toString().equals("123456789"))) {
-                    showSuccessMessage();
-                    intent = new Intent(LoginScreen.this, MainActivityHost.class);
-                }
-                else if (usernameEditText.getText().toString().equals("tim14.admin@gmail.com") &&
-                        (passwordEditText.getText().toString().equals("12345678") || passwordEditText.getText().toString().equals("123456789"))) {
-                    showSuccessMessage();
-                    intent = new Intent(LoginScreen.this, MainActivityAdmin.class);
-                }
-
-                else{
-                    showUnsuccessMessage();
-                    return;
-                }
-                startActivity(intent);
-                finish();
+                login();
             }
         });
 
-        //hyperlink za registraciju
+        // Set sign-up link click listener
         signUpLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -92,9 +82,43 @@ public class LoginScreen extends AppCompatActivity {
         });
     }
 
+    private void login() {
+        String username = usernameEditText.getText().toString();
+        String password = passwordEditText.getText().toString();
 
-    public void onForgotPasswordClick(View view) {
-        //dodati kod
+        JwtAuthenticationRequest request = new JwtAuthenticationRequest(username, password);
+
+        apiService.login(request).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                if (response.isSuccessful()) {
+                    String token = response.body();
+                    saveToken(token);
+                    showSuccessMessage();
+                    navigateToMainActivityGuest();
+                } else {
+                    showUnsuccessMessage();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                showUnsuccessMessage();
+            }
+        });
+    }
+
+    private void saveToken(String token) {
+        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("jwt_token", token);
+        editor.apply();
+    }
+
+    private void navigateToMainActivityGuest() {
+        Intent intent = new Intent(LoginScreen.this, MainActivityGuest.class);
+        startActivity(intent);
+        finish();
     }
 
     private void showSuccessMessage() {
@@ -104,8 +128,7 @@ public class LoginScreen extends AppCompatActivity {
     private void showUnsuccessMessage() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Unsuccessful login\n")
-                .setMessage("Bad credentials! Try again!"
-                )
+                .setMessage("Bad credentials! Try again!")
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.dismiss();
@@ -114,5 +137,9 @@ public class LoginScreen extends AppCompatActivity {
 
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    public void onForgotPasswordClick(View view) {
+        // Add code for forgot password
     }
 }
