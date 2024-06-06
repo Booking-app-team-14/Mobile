@@ -1,5 +1,4 @@
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -8,16 +7,11 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- Accommodation Image -->
-
-        <!-- Accommodation Name and Price -->
-        <ImageView
-            android:id="@+id/rectangle_1"
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewPager"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:contentDescription="rectangle_1"
-            android:src="@drawable/accommodation_1"
-            android:scaleType="centerCrop" />
+            android:layout_height="200dp"
+            android:layout_marginBottom="16dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"

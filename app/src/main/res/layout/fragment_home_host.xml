@@ -26,22 +26,8 @@
                 android:layout_weight="1"
                 android:layout_height="?attr/actionBarSize"
                 android:elevation="4dp"
-                app:title="Accommodation"
+                app:title="Accommodations"
                 app:titleTextColor="@color/text_black" />
-
-
-            <ImageButton
-                android:id="@+id/toolbarButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end|center_vertical"
-                android:layout_marginEnd="16dp"
-                android:clickable="true"
-                android:contentDescription="Menu Icon"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:src="@drawable/baseline_more_horiz_24" />
-
         </LinearLayout>
 
 

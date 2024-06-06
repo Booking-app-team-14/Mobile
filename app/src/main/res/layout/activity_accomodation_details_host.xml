@@ -135,19 +135,7 @@
                 android:textSize="18sp"
                 android:paddingTop="8dp"/>
         </LinearLayout>
-
-        <Button
-            android:id="@+id/update_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="UPDATE ACCOMMODATION"
-            android:layout_margin="16dp"/>
-        <Button
-            android:id="@+id/common_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="GENERATE A REPORT"
-            android:layout_margin="16dp"/>
+        
         <!-- Accommodation Details -->
         <TextView
             android:id="@+id/details"

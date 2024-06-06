@@ -133,6 +133,13 @@ public class HomeFragmentGuest extends Fragment implements SensorEventListener {
                 startActivity(intent);
             });
 
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+            );
+            params.setMargins(0, 0, 0, 16); // Add margin bottom of 16dp
+            cardView.setLayoutParams(params);
+
             linearLayout.addView(cardView);
         }
 
@@ -459,8 +466,15 @@ public class HomeFragmentGuest extends Fragment implements SensorEventListener {
                 } else {
                     // TODO DELETE Request TO api/users/{id}/favorite-accommodations/{accommodationId}
                 }
-
             });
+
+            // Set margin for each card view
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+            );
+            params.setMargins(0, 0, 0, 16); // Add margin bottom of 16dp
+            cardView.setLayoutParams(params);
 
             linearLayout.addView(cardView);
         }

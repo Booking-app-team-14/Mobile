@@ -18,7 +18,7 @@ import com.example.bookingapptim14.R;
 
 public class ConnectivityReceiver extends BroadcastReceiver {
 
-    private static final int MY_PERMISSIONS_REQUEST_NOTIFICATION = 121;
+    public static final int MY_PERMISSIONS_REQUEST_NOTIFICATION = 121;
 
     @Override
     public void onReceive(Context context, Intent intent) {
