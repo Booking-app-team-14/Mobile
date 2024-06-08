@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -104,8 +105,15 @@ public class MainActivityAdmin extends AppCompatActivity {
     }
 
     public void signOut(View view) {
+        // TODO: remove global data
         GlobalData gd = GlobalData.getInstance();
         gd.setLoggedInUser(new User());
+        //
+        SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove("jwtToken");
+        editor.remove("userId");
+        editor.apply();
         Intent intent = new Intent(MainActivityAdmin.this, LoginScreen.class);
         startActivity(intent);
         finish();
