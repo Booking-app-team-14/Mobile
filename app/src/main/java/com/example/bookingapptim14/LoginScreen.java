@@ -21,12 +21,14 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 import com.example.bookingapptim14.admin.MainActivityAdmin;
 import com.example.bookingapptim14.guest.AccommodationDetailsActivityGuest;
 import com.example.bookingapptim14.guest.MainActivityGuest;
 import com.example.bookingapptim14.host.MainActivityHost;
+import com.example.bookingapptim14.notifications.WebSocketManager;
 
 import org.json.JSONObject;
 
@@ -65,6 +67,9 @@ public class LoginScreen extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                WebSocketManager.getInstance(getApplicationContext());
+
                 new Thread(new Runnable() {
                     @Override
                     public void run() {

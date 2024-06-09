@@ -40,6 +40,8 @@ android {
 dependencies {
     implementation("de.hdodenhof:circleimageview:2.2.0")
     implementation("org.java-websocket:Java-WebSocket:1.5.2")
+    implementation("com.github.NaikSoftware:StompProtocolAndroid:1.6.4")
+    implementation("io.reactivex.rxjava2:rxjava:2.2.21")
     implementation ("androidx.core:core-ktx:1.7.0")
     implementation("com.google.code.gson:gson:2.8.7")
     implementation("com.squareup.retrofit2:retrofit:2.3.0")

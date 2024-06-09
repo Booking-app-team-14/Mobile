@@ -70,6 +70,7 @@ import java.util.Set;
 
 public class UpdateAccommodationScreen extends AppCompatActivity {
 
+    // TODO: [VUK] prosledi id smestaja da se zna kome se menjaju podaci
     MapView map = null;
     boolean automaticHandling;
     boolean perGuest;

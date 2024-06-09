@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.example.bookingapptim14.models.dtos.UserBasicInfoDTO;
 import com.example.bookingapptim14.models.dtos.UserBasicInfoNoImageDTO;
+import com.example.bookingapptim14.notifications.WebSocketManager;
 
 import org.json.JSONObject;
 
@@ -39,7 +40,7 @@ import java.util.regex.Pattern;
 
 public class UpdateAccountFragment extends Fragment {
 
-    private UserBasicInfoDTO userInfo;
+    private UserBasicInfoDTO userInfo = new UserBasicInfoDTO();
     private Bitmap selectedImageBitmap;
     private Long userId;
     private String jwtToken;
@@ -160,19 +161,19 @@ public class UpdateAccountFragment extends Fragment {
         String address = ((EditText) getActivity().getWindow().findViewById(R.id.editTextAddress)).getText().toString();
         String phoneNumber = ((EditText) getActivity().getWindow().findViewById(R.id.editTextPhone)).getText().toString();
 
-        if (firstName.length() < 2){
+        if (!firstName.isEmpty() && firstName.length() < 2){
             Toast.makeText(getContext(), "First name must be at least 2 characters long", Toast.LENGTH_SHORT).show();
             return;
         }
-        if (lastName.length() < 2){
+        if (!lastName.isEmpty() && lastName.length() < 2){
             Toast.makeText(getContext(), "Last name must be at least 2 characters long", Toast.LENGTH_SHORT).show();
             return;
         }
-        if (address.length() < 5){
+        if (!address.isEmpty() && address.length() < 5){
             Toast.makeText(getContext(), "Address must be at least 5 characters long", Toast.LENGTH_SHORT).show();
             return;
         }
-        if (!isPhoneNumberValid(phoneNumber)) {
+        if (!phoneNumber.isEmpty() && !isPhoneNumberValid(phoneNumber)) {
             Toast.makeText(getContext(), "Invalid phone number. Example: +381012345678", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -189,7 +190,7 @@ public class UpdateAccountFragment extends Fragment {
                         conn.setRequestMethod("POST");
                         conn.setDoInput(true);
                         conn.setDoOutput(true);
-                        conn.setRequestProperty("Content-Type", "text/plain; charset=utf-8");
+                        conn.setRequestProperty("Content-Type", "text/plain");
                         conn.setRequestProperty("Authorization", "Bearer " + jwtToken);
 
                         try(DataOutputStream os = new DataOutputStream(conn.getOutputStream())) {
