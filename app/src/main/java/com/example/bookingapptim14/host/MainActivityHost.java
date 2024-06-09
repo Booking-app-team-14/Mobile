@@ -103,10 +103,6 @@ public class MainActivityHost extends AppCompatActivity {
     }
 
     public void signOut(View view) {
-        // TODO: remove global data
-        GlobalData gd = GlobalData.getInstance();
-        gd.setLoggedInUser(new User());
-        //
         SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.remove("jwtToken");

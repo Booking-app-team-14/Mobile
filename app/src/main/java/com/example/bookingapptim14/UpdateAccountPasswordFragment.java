@@ -1,5 +1,8 @@
 package com.example.bookingapptim14;
 
+import static android.content.Context.MODE_PRIVATE;
+
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -14,14 +17,15 @@ import android.widget.Toast;
 import com.example.bookingapptim14.models.User;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import org.json.JSONObject;
+
+import java.io.DataOutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
 public class UpdateAccountPasswordFragment extends Fragment {
 
-    // private User loggedInUser;
-
-    public UpdateAccountPasswordFragment() { //User loggedInUser) {
-        // TODO: Pass user to fragment
-        // this.loggedInUser = loggedInUser;
-    }
+    public UpdateAccountPasswordFragment() { }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -55,13 +59,46 @@ public class UpdateAccountPasswordFragment extends Fragment {
             return;
         }
 
-        // PUT /users/{id}/password, consumes String
-        // TODO: Change password
-        // newPassword
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("MySharedPref", MODE_PRIVATE);
+        Long userId = sharedPreferences.getLong("userId", -1);
+        String jwtToken = sharedPreferences.getString("jwtToken", "");
 
-        Toast.makeText(getContext(), "Password successfully changed", Toast.LENGTH_SHORT).show();
-        getActivity().getWindow().findViewById(R.id.bottomNavView).setVisibility(View.VISIBLE);
-        getActivity().getOnBackPressedDispatcher().onBackPressed();
+        // PUT /users/{id}/password, consumes String
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    URL url = new URL(BuildConfig.IP_ADDR + "/api/users/" + userId + "/password");
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    conn.setRequestMethod("PUT");
+                    conn.setDoInput(true);
+                    conn.setDoOutput(true);
+                    conn.setRequestProperty("Content-Type", "text/plain; charset=utf-8");
+                    conn.setRequestProperty("Authorization", "Bearer " + jwtToken);
+
+                    try(DataOutputStream os = new DataOutputStream(conn.getOutputStream())) {
+                        os.writeBytes(newPassword);
+                        os.flush();
+                    }
+
+                    int responseCode = conn.getResponseCode();
+                    if (responseCode == HttpURLConnection.HTTP_OK) {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(getContext(), "Password successfully changed", Toast.LENGTH_SHORT).show();
+                                getActivity().getWindow().findViewById(R.id.bottomNavView).setVisibility(View.VISIBLE);
+                                getActivity().getOnBackPressedDispatcher().onBackPressed();
+                            }
+                        });
+                    } else {
+                        System.out.println("PUT request failed!");
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 
 }

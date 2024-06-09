@@ -46,7 +46,7 @@ import java.util.List;
 
 // true i false parameters are String values even though they are boolean values on the server
 
-// TODO: also use websockets and push notifications for real-time notifications
+// TODO: [SVI] also use websockets and push notifications for real-time notifications
 
 public class NotificationsFragmentGuest extends Fragment implements GuestNotificationsAdapter.OnNotificationListener {
 
@@ -68,7 +68,7 @@ public class NotificationsFragmentGuest extends Fragment implements GuestNotific
 
         ToggleButton toggleButton = view.findViewById(R.id.guestNotificationsToggleButton);
 
-        // TODO: get the preference from the server
+        // TODO: [VUK] get the preference from the server
         // GET api/users/{userId}/not-wanted-notifications
         // if empty array, user wants notifications -> toggleButton.setChecked(false);
         // else -> toggleButton.setChecked(true);

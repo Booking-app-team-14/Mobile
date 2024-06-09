@@ -100,7 +100,7 @@ public class ApprovedReservationsFragmentGuest extends Fragment implements Appro
     // /users/{id}/usernameAndNumberOfCancellations -> vraca string username + " | " + numberOfCancellationsString
 
     private void fetchReservations() {
-        // TODO: fetch data
+        // TODO: [VUK] fetch data
 
         // process all the DTOs and make ApprovedReservationGuestData
 

@@ -255,7 +255,6 @@ public class GlobalData {
     }
 
     public void addAccommodation(AccommodationRequest request) {
-        // TODO: Add accommodation
         searchAccommodations.add(new SearchAccommodation(request.getAccommodationId(), request.getName(), "Lorem ipsum ...", AccommodationType.valueOf(request.getType().toUpperCase()), new Location(1L,"Serbia","Zlatibor","Katunska 4"), "accommodation_6", (double) request.getStars(),2,4, 180.0, new HashSet<>(),true));
     }
 

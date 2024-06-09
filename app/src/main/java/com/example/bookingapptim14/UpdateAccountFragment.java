@@ -1,8 +1,10 @@
 package com.example.bookingapptim14;
 
 import static android.app.Activity.RESULT_OK;
+import static android.content.Context.MODE_PRIVATE;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -23,8 +25,15 @@ import android.widget.Toast;
 import com.example.bookingapptim14.models.dtos.UserBasicInfoDTO;
 import com.example.bookingapptim14.models.dtos.UserBasicInfoNoImageDTO;
 
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 import java.io.FileNotFoundException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -32,12 +41,10 @@ public class UpdateAccountFragment extends Fragment {
 
     private UserBasicInfoDTO userInfo;
     private Bitmap selectedImageBitmap;
-    // private User loggedInUser;
+    private Long userId;
+    private String jwtToken;
 
-    public UpdateAccountFragment() { //User loggedInUser) {
-        // TODO: Pass user to fragment
-        // this.loggedInUser = loggedInUser;
-    }
+    public UpdateAccountFragment() { }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -54,15 +61,59 @@ public class UpdateAccountFragment extends Fragment {
 
         getActivity().getWindow().findViewById(R.id.bottomNavView).setVisibility(View.GONE);
 
-        // GET api/users/{id}/basicInfo -> UserBasicInfoDTO
-        // TODO: Get logged in user from database
-        userInfo = new UserBasicInfoDTO("John", "Doe", "admin.john@gmail.com", "123 Main St, NY, USA", "+381000000000","");
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("MySharedPref", MODE_PRIVATE);
+        userId = sharedPreferences.getLong("userId", -1);
+        jwtToken = sharedPreferences.getString("jwtToken", "");
 
-        ImageView imageView = view.findViewById(R.id.newProfilePictureImageView);
-        if (!userInfo.getProfilePictureBytes().isEmpty()) {
-            byte[] decodedString = java.util.Base64.getDecoder().decode(userInfo.getProfilePictureBytes());
-            imageView.setImageBitmap(BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length));
-        }
+        // GET api/users/{id}/basicInfo -> UserBasicInfoDTO
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    URL url = new URL(BuildConfig.IP_ADDR + "/api/users/" + userId + "/basicInfo");
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    conn.setRequestMethod("GET");
+                    conn.setDoInput(true);
+                    conn.setRequestProperty("Authorization", "Bearer " + jwtToken);
+
+                    int responseCode = conn.getResponseCode();
+                    if (responseCode == HttpURLConnection.HTTP_OK) {
+                        BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                        String inputLine;
+                        StringBuilder content = new StringBuilder();
+                        while ((inputLine = in.readLine()) != null) {
+                            content.append(inputLine);
+                        }
+                        in.close();
+                        conn.disconnect();
+
+                        // Parse the JSON response into a UserBasicInfoDTO object
+                        JSONObject jsonObject = new JSONObject(content.toString());
+                        userInfo.setFirstName(jsonObject.getString("firstName"));
+                        userInfo.setLastName(jsonObject.getString("lastName"));
+                        userInfo.setEmail(jsonObject.getString("email"));
+                        userInfo.setAddress(jsonObject.getString("address"));
+                        userInfo.setPhoneNumber(jsonObject.getString("phoneNumber"));
+                        userInfo.setProfilePictureBytes(jsonObject.getString("profilePictureBytes"));
+
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                ImageView imageView = view.findViewById(R.id.newProfilePictureImageView);
+                                if (!userInfo.getProfilePictureBytes().isEmpty()) {
+                                    byte[] decodedString = java.util.Base64.getDecoder().decode(userInfo.getProfilePictureBytes());
+                                    imageView.setImageBitmap(BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length));
+                                }
+                            }
+                        });
+                    } else {
+                        System.out.println("GET request failed!");
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
 
         Button loadPictureButton = view.findViewById(R.id.newProfilePictureImageViewButtonLoadPicture);
 
@@ -126,11 +177,37 @@ public class UpdateAccountFragment extends Fragment {
             return;
         }
 
-        // TODO: Update profile picture
-        // POST users/{userId}/image, consumes String
         String newProfilePictureBytesString = getBase64StringFromBitmap(selectedImageBitmap);
         if (newProfilePictureBytesString != null && !newProfilePictureBytesString.isEmpty()) {
-//            newProfilePictureBytesString
+            // POST users/{userId}/image, consumes String
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        URL url = new URL(BuildConfig.IP_ADDR + "/api/users/" + userId + "/image");
+                        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                        conn.setRequestMethod("POST");
+                        conn.setDoInput(true);
+                        conn.setDoOutput(true);
+                        conn.setRequestProperty("Content-Type", "text/plain; charset=utf-8");
+                        conn.setRequestProperty("Authorization", "Bearer " + jwtToken);
+
+                        try(DataOutputStream os = new DataOutputStream(conn.getOutputStream())) {
+                            os.writeBytes(newProfilePictureBytesString);
+                            os.flush();
+                        }
+
+                        int responseCode = conn.getResponseCode();
+                        if (responseCode == HttpURLConnection.HTTP_CREATED) {
+                            System.out.println("Profile picture updated successfully!");
+                        } else {
+                            System.out.println("POST request failed!");
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
         }
 
         UserBasicInfoNoImageDTO user = new UserBasicInfoNoImageDTO();
@@ -155,13 +232,48 @@ public class UpdateAccountFragment extends Fragment {
             user.setPhoneNumber(userInfo.getPhoneNumber());
         }
 
-        // TODO: Update account details
-        // send PUT request
         // PUT /users/{id}/basicInfo, consumes UserBasicInfoNoImageDTO
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    URL url = new URL(BuildConfig.IP_ADDR + "/api/users/" + userId + "/basicInfo");
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    conn.setRequestMethod("PUT");
+                    conn.setDoInput(true);
+                    conn.setDoOutput(true);
+                    conn.setRequestProperty("Content-Type", "application/json; utf-8");
+                    conn.setRequestProperty("Authorization", "Bearer " + jwtToken);
 
-        Toast.makeText(getContext(), "Account details successfully updated", Toast.LENGTH_SHORT).show();
-        getActivity().getWindow().findViewById(R.id.bottomNavView).setVisibility(View.VISIBLE);
-        getActivity().getOnBackPressedDispatcher().onBackPressed();
+                    JSONObject jsonObject = new JSONObject();
+                    jsonObject.put("firstName", user.getFirstName());
+                    jsonObject.put("lastName", user.getLastName());
+                    jsonObject.put("address", user.getAddress());
+                    jsonObject.put("phoneNumber", user.getPhoneNumber());
+
+                    try(DataOutputStream os = new DataOutputStream(conn.getOutputStream())) {
+                        os.writeBytes(jsonObject.toString());
+                        os.flush();
+                    }
+
+                    int responseCode = conn.getResponseCode();
+                    if (responseCode == HttpURLConnection.HTTP_OK) {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(getContext(), "Account details successfully updated", Toast.LENGTH_SHORT).show();
+                                getActivity().getWindow().findViewById(R.id.bottomNavView).setVisibility(View.VISIBLE);
+                                getActivity().getOnBackPressedDispatcher().onBackPressed();
+                            }
+                        });
+                    } else {
+                        System.out.println("PUT request failed!");
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 
     public static boolean isPhoneNumberValid(String phoneNumber) {

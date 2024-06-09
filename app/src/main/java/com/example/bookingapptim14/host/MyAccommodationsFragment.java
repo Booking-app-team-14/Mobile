@@ -105,7 +105,7 @@ public class MyAccommodationsFragment extends Fragment implements HostAccommodat
     }
 
     private void fetchAccommodations() {
-        // TODO: fetch data
+        // TODO: [VUK] fetch data
 
         // For now, use test data
         GlobalData data = GlobalData.getInstance();
