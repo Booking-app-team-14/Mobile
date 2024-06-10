@@ -1,8 +1,10 @@
 package com.example.bookingapptim14.guest;
 
+import static android.content.Context.MODE_PRIVATE;
 import static android.content.Context.SENSOR_SERVICE;
 import static android.content.Context.VIBRATOR_SERVICE;
 
+import android.content.SharedPreferences;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -24,10 +26,22 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.example.bookingapptim14.Adapters.GuestNotificationsAdapter;
+import com.example.bookingapptim14.BuildConfig;
 import com.example.bookingapptim14.GlobalData;
 import com.example.bookingapptim14.R;
+import com.example.bookingapptim14.enums.NotificationType;
 import com.example.bookingapptim14.models.dtos.NotificationDTO.Guest.GuestNotificationsData;
+import com.example.bookingapptim14.models.dtos.NotificationDTO.NotificationDTO;
+import com.example.bookingapptim14.models.dtos.ReservationRequestDTO.ApprovedReservationGuestData;
+import com.example.bookingapptim14.models.dtos.ReservationRequestDTO.ReservationRequestDTO;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.lang.reflect.Type;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,10 +70,16 @@ public class NotificationsFragmentGuest extends Fragment implements GuestNotific
     private SensorEventListener proximityEventListener;
     private RecyclerView notificationsRecyclerView;
     private GuestNotificationsAdapter guestNotificationsAdapter;
+    private String jwtToken;
+    private long userId;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_notifications_guest, container, false);
+
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("MySharedPref", MODE_PRIVATE);
+        jwtToken = sharedPreferences.getString("jwtToken", "");
+        userId = sharedPreferences.getLong("userId", 0);
 
         notificationsRecyclerView = view.findViewById(R.id.guestNotificationsRecyclerView);
         guestNotificationsAdapter = new GuestNotificationsAdapter(new ArrayList<>(), this);
@@ -68,10 +88,49 @@ public class NotificationsFragmentGuest extends Fragment implements GuestNotific
 
         ToggleButton toggleButton = view.findViewById(R.id.guestNotificationsToggleButton);
 
-        // TODO: [VUK] get the preference from the server
-        // GET api/users/{userId}/not-wanted-notifications
-        // if empty array, user wants notifications -> toggleButton.setChecked(false);
-        // else -> toggleButton.setChecked(true);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    URL url = new URL(BuildConfig.IP_ADDR + "/api/users/" + userId + "/not-wanted-notifications");
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    conn.setRequestMethod("GET");
+                    conn.setDoInput(true);
+                    conn.setRequestProperty("Authorization", "Bearer " + jwtToken);
+
+                    int responseCode = conn.getResponseCode();
+                    if (responseCode == HttpURLConnection.HTTP_OK) {
+                        BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                        String inputLine;
+                        StringBuilder content = new StringBuilder();
+                        while ((inputLine = in.readLine()) != null) {
+                            content.append(inputLine);
+                        }
+                        in.close();
+                        conn.disconnect();
+
+                        Gson gson = new Gson();
+                        Type listType = new TypeToken<List<NotificationType>>(){}.getType();
+                        List<NotificationType> notificationTypes = gson.fromJson(content.toString(), listType);
+
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (notificationTypes.isEmpty()) {
+                                    toggleButton.setChecked(false);
+                                } else {
+                                    toggleButton.setChecked(true);
+                                }
+                            }
+                        });
+                    } else {
+                        System.out.println("GET request failed!");
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
 
         toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -79,18 +138,11 @@ public class NotificationsFragmentGuest extends Fragment implements GuestNotific
                 if (isChecked) {
                     TextView notificationsTextView = view.findViewById(R.id.guestNotificationsEnabledTextView);
                     notificationsTextView.setText("Notifications: disabled");
-                    // TODO: Implement the logic for disabling notifications
-                    // PUT api/users/${userId}/not-wanted-notifications, consumes String (RESERVATION_REQUEST_RESPONSE)
-                    // after that, fetchNotifications() again to get the notifications for the type toggled
+                    sendPutRequest();
                 } else {
                     TextView notificationsTextView = view.findViewById(R.id.guestNotificationsEnabledTextView);
                     notificationsTextView.setText("Notifications: enabled");
-
-                    // isti kod kao gore, moze da se ekstraktuje u metodu
-
-                    // TODO: Implement the logic for enabling notifications
-                    // PUT api/users/${userId}/not-wanted-notifications, consumes String (RESERVATION_REQUEST_RESPONSE)
-                    // after that, fetchNotifications() again to get the notifications for the type toggled
+                    sendPutRequest();
                 }
             }
         });
@@ -124,6 +176,39 @@ public class NotificationsFragmentGuest extends Fragment implements GuestNotific
         return view;
     }
 
+    private void sendPutRequest() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    URL url = new URL(BuildConfig.IP_ADDR + "/api/users/" + userId + "/not-wanted-notifications");
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    conn.setRequestMethod("PUT");
+                    conn.setDoOutput(true);
+                    conn.setRequestProperty("Content-Type", "text/plain");
+                    conn.setRequestProperty("Authorization", "Bearer " + jwtToken);
+
+                    String notificationType = "RESERVATION_REQUEST_RESPONSE";
+                    conn.getOutputStream().write(notificationType.getBytes());
+
+                    int responseCode = conn.getResponseCode();
+                    if (responseCode == HttpURLConnection.HTTP_OK) {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                fetchNotifications();
+                            }
+                        });
+                    } else {
+                        System.out.println("PUT request failed!");
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -137,20 +222,76 @@ public class NotificationsFragmentGuest extends Fragment implements GuestNotific
     }
 
     public void fetchNotifications() {
-        // TODO: fetch data
         // GET api/notifications/{userId}/true -> GuestNotificationsData
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    URL url = new URL(BuildConfig.IP_ADDR + "/api/notifications/" + userId + "/true");
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    conn.setRequestMethod("GET");
+                    conn.setDoInput(true);
+                    conn.setRequestProperty("Authorization", "Bearer " + jwtToken);
 
-        // For now, use test data
-        GlobalData data = GlobalData.getInstance();
-        List<GuestNotificationsData> testNotifications = data.getGuestNotifications();
-        guestNotificationsAdapter.setNotifications(testNotifications);
+                    int responseCode = conn.getResponseCode();
+                    if (responseCode == HttpURLConnection.HTTP_OK) {
+                        BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                        String inputLine;
+                        StringBuilder content = new StringBuilder();
+                        while ((inputLine = in.readLine()) != null) {
+                            content.append(inputLine);
+                        }
+                        in.close();
+                        conn.disconnect();
+
+                        Gson gson = new Gson();
+                        Type listType = new TypeToken<List<GuestNotificationsData>>(){}.getType();
+                        List<GuestNotificationsData> notifications = gson.fromJson(content.toString(), listType);
+
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                guestNotificationsAdapter.setNotifications(notifications);
+                            }
+                        });
+                    } else {
+                        System.out.println("GET request failed!");
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 
     @Override
     public void onNotificationDeleted(GuestNotificationsData notification) {
-        // TODO: Handle deletion logic here
         // DELETE api/notifications/{notificationId}
-        guestNotificationsAdapter.removeItem(notification);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    URL url = new URL(BuildConfig.IP_ADDR + "/api/notifications/" + notification.getId());
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    conn.setRequestMethod("DELETE");
+                    conn.setRequestProperty("Authorization", "Bearer " + jwtToken);
+
+                    int responseCode = conn.getResponseCode();
+                    if (responseCode == HttpURLConnection.HTTP_OK) {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                guestNotificationsAdapter.removeItem(notification);
+                            }
+                        });
+                    } else {
+                        System.out.println("DELETE request failed!");
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 
 }
