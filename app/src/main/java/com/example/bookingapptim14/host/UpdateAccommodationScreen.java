@@ -3,6 +3,7 @@ package com.example.bookingapptim14.host;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -21,6 +22,7 @@ import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
+import com.example.bookingapptim14.BuildConfig;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceManager;
@@ -39,13 +41,16 @@ import com.example.bookingapptim14.models.dtos.AccommodationDTO.LocationDTO;
 import com.example.bookingapptim14.models.dtos.AccommodationDTO.UpdateAvailabilityDTO;
 import com.example.bookingapptim14.models.dtos.Image;
 import com.example.bookingapptim14.models.dtos.ReportsDTO.AccommodationReviewReportsData;
+import com.example.bookingapptim14.models.dtos.ReservationRequestDTO.ApprovedReservationData;
+import com.example.bookingapptim14.models.dtos.ReservationRequestDTO.ReservationRequestDTO;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.osmdroid.config.Configuration;
-import org.osmdroid.library.BuildConfig;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
@@ -55,6 +60,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -70,13 +76,16 @@ import java.util.Set;
 
 public class UpdateAccommodationScreen extends AppCompatActivity {
 
-    // TODO: [VUK] prosledi id smestaja da se zna kome se menjaju podaci
     MapView map = null;
     boolean automaticHandling;
     boolean perGuest;
     ArrayList<Bitmap> imageBitmaps = new ArrayList<>();
     private static final int PICK_IMAGES = 1;
     ImageAdapter imageAdapter;
+    private String jwtToken;
+    private long userId;
+    private AmenityAdapter amenityAdapter;
+    private Long accommodationId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,38 +95,297 @@ public class UpdateAccommodationScreen extends AppCompatActivity {
         Configuration.getInstance().setUserAgentValue(BuildConfig.APPLICATION_ID);
         setContentView(R.layout.activity_update_accommodation);
 
+        accommodationId = getIntent().getLongExtra("accommodationId", -1);
+
+        SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
+        jwtToken = sharedPreferences.getString("jwtToken", "");
+        userId = sharedPreferences.getLong("userId", 0);
+
         ImageButton buttonBack = (ImageButton) findViewById(R.id.updateAccommodationBackButton);
         buttonBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) {
             getOnBackPressedDispatcher().onBackPressed();
         }});
 
+        Context context = this;
         // GET api/amenities -> AmenityDTOs
-        List<AmenityDTO> amenities = new ArrayList<>();
-        // dummy data
-        amenities.add(new AmenityDTO(1L, "Wifi", "wifi", "icon1", "jpg", ""));
-        amenities.add(new AmenityDTO(2L, "Free parking", "Free parking", "icon2", "jpg", ""));
-        amenities.add(new AmenityDTO(3L, "TV", "tv", "icon3", "jpg", ""));
-        amenities.add(new AmenityDTO(4L, "Air conditioning", "air conditioning", "icon4", "jpg", ""));
-        amenities.add(new AmenityDTO(5L, "Heating", "heating", "icon5", "jpg", ""));
-        amenities.add(new AmenityDTO(6L, "Kitchen", "kitchen", "icon6", "jpg", ""));
-        amenities.add(new AmenityDTO(7L, "Washing machine", "washing machine", "icon7", "jpg", ""));
-        amenities.add(new AmenityDTO(8L, "Gym center", "Gym center", "icon8", "jpg", ""));
-        amenities.add(new AmenityDTO(9L, "Video games", "Video games", "icon9", "jpg", ""));
-        //
-        List<CheckableAmenity> checkableAmenities = new ArrayList<>();
-        for (AmenityDTO amenity : amenities) {
-            checkableAmenities.add(new CheckableAmenity(amenity));
-        }
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    URL url = new URL(BuildConfig.IP_ADDR + "/api/amenities");
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    conn.setRequestMethod("GET");
+                    conn.setDoInput(true);
+                    conn.setRequestProperty("Authorization", "Bearer " + jwtToken);
 
-        RecyclerView recyclerView = findViewById(R.id.updateAccommodationRecyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        AmenityAdapter amenityAdapter = new AmenityAdapter(checkableAmenities);
-        recyclerView.setAdapter(amenityAdapter);
+                    int responseCode = conn.getResponseCode();
+                    if (responseCode == HttpURLConnection.HTTP_OK) {
+                        BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                        String inputLine;
+                        StringBuilder content = new StringBuilder();
+                        while ((inputLine = in.readLine()) != null) {
+                            content.append(inputLine);
+                        }
+                        in.close();
+                        conn.disconnect();
+
+                        Gson gson = new Gson();
+                        Type listType = new TypeToken<List<AmenityDTO>>(){}.getType();
+                        List<AmenityDTO> amenities = gson.fromJson(content.toString(), listType);
+
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                List<CheckableAmenity> checkableAmenities = new ArrayList<>();
+                                for (AmenityDTO amenity : amenities) {
+                                    checkableAmenities.add(new CheckableAmenity(amenity));
+                                }
+
+                                RecyclerView recyclerView = findViewById(R.id.updateAccommodationRecyclerView);
+                                recyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
+                                amenityAdapter = new AmenityAdapter(checkableAmenities);
+                                recyclerView.setAdapter(amenityAdapter);
+                            }
+                        });
+                    } else {
+                        System.out.println("GET request failed!");
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
 
         // GET api/accommodations/update/{accommodationId} -> AccommodationUpdateDTO
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    URL url = new URL(BuildConfig.IP_ADDR + "/api/accommodations/update/" + accommodationId);
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    conn.setRequestMethod("GET");
+                    conn.setDoInput(true);
+                    conn.setRequestProperty("Authorization", "Bearer " + jwtToken);
 
-        GlobalData data = GlobalData.getInstance();
-        AccommodationUpdateDTO accommodation = data.getAccommodationUpdateDTO();
+                    int responseCode = conn.getResponseCode();
+                    if (responseCode == HttpURLConnection.HTTP_OK) {
+                        BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                        String inputLine;
+                        StringBuilder content = new StringBuilder();
+                        while ((inputLine = in.readLine()) != null) {
+                            content.append(inputLine);
+                        }
+                        in.close();
+                        conn.disconnect();
+
+                        Gson gson = new Gson();
+                        AccommodationUpdateDTO accommodation = gson.fromJson(content.toString(), AccommodationUpdateDTO.class);
+
+                        runOnUiThread(new Runnable() {
+
+                            @Override
+                            public void run() {
+                                for (Image image : accommodation.getImages()) {
+                                    byte[] imageBytes = Base64.decode(image.getImageBytes(), Base64.DEFAULT);
+                                    Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+                                    imageBitmaps.add(bitmap);
+                                }
+                                imageAdapter.notifyDataSetChanged();
+
+                                EditText editTextName = findViewById(R.id.updateAccommodationEditTextName);
+                                editTextName.setText(accommodation.getName());
+
+                                EditText editTextDescription = findViewById(R.id.updateAccommodationEditTextDescription);
+                                editTextDescription.setText(accommodation.getDescription());
+
+                                EditText editTextMinGuests = findViewById(R.id.updateAccommodationEditTextMinGuests);
+                                editTextMinGuests.setText(String.valueOf(accommodation.getMinNumberOfGuests()));
+
+                                EditText editTextMaxGuests = findViewById(R.id.updateAccommodationEditTextMaxGuests);
+                                editTextMaxGuests.setText(String.valueOf(accommodation.getMaxNumberOfGuests()));
+
+                                Spinner spinnerAccommodationType = findViewById(R.id.updateAccommodationSpinnerType);
+
+                                String[] types = {"STUDIO", "ROOM", "APARTMENT", "VILLA", "HOTEL"};
+
+                                ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, types);
+                                spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                spinnerAccommodationType.setAdapter(spinnerAdapter);
+                                if (accommodation.getType().equals("STUDIO")) {
+                                    spinnerAccommodationType.setSelection(0);
+                                } else if (accommodation.getType().equals("ROOM")) {
+                                    spinnerAccommodationType.setSelection(1);
+                                } else if (accommodation.getType().equals("APARTMENT")) {
+                                    spinnerAccommodationType.setSelection(2);
+                                } else if (accommodation.getType().equals("VILLA")) {
+                                    spinnerAccommodationType.setSelection(3);
+                                } else if (accommodation.getType().equals("HOTEL")) {
+                                    spinnerAccommodationType.setSelection(4);
+                                }
+
+                                map = (MapView) findViewById(R.id.updateAccommodationMap);
+                                map.setMultiTouchControls(true);
+                                map.getController().setZoom(15.0);
+
+                                locateOnMap(accommodation.getLocation().getAddress() + ", " + accommodation.getLocation().getCity() + ", " + accommodation.getLocation().getCountry());
+
+                                EditText editTextAddress = findViewById(R.id.updateAccommodationEditTextAddress);
+                                editTextAddress.setText(accommodation.getLocation().getAddress() + ", " + accommodation.getLocation().getCity() + ", " + accommodation.getLocation().getCountry());
+
+                                RadioGroup radioGroupConfirmation = findViewById(R.id.updateAccommodationConfirmationRadioGroup);
+                                if (accommodation.isAutomaticHandling()) {
+                                    radioGroupConfirmation.check(R.id.updateAccommodationRadioButtonAutomatic);
+                                    automaticHandling = true;
+                                } else {
+                                    radioGroupConfirmation.check(R.id.updateAccommodationRadioButtonManual);
+                                    automaticHandling = false;
+                                }
+
+                                radioGroupConfirmation.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                                    @Override
+                                    public void onCheckedChanged(RadioGroup group, int checkedId) {
+                                        if (checkedId == R.id.updateAccommodationRadioButtonAutomatic) {
+                                            automaticHandling = true;
+                                        } else if (checkedId == R.id.updateAccommodationRadioButtonManual) {
+                                            automaticHandling = false;
+                                        }
+                                    }
+                                });
+
+                                RadioGroup radioGroupPrice = findViewById(R.id.updateAccommodationDefinePriceRadioGroup);
+                                if (accommodation.isPricePerGuest()) {
+                                    radioGroupPrice.check(R.id.updateAccommodationRadioButtonPerGuest);
+                                    perGuest = true;
+                                } else {
+                                    radioGroupPrice.check(R.id.updateAccommodationRadioButtonPerNight);
+                                    perGuest = false;
+                                }
+
+                                radioGroupPrice.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                                    @Override
+                                    public void onCheckedChanged(RadioGroup group, int checkedId) {
+                                        if (checkedId == R.id.updateAccommodationRadioButtonPerNight) {
+                                            perGuest = false;
+                                        } else if (checkedId == R.id.updateAccommodationRadioButtonPerGuest) {
+                                            perGuest = true;
+                                        }
+                                    }
+                                });
+
+                                EditText editTextDefaultPrice = findViewById(R.id.updateAccommodationEditTextPrice);
+                                String formattedPrice = String.format(Locale.getDefault(), "%.2f", accommodation.getDefaultPrice());
+                                editTextDefaultPrice.setText(formattedPrice);
+
+                                EditText editTextCancellationDeadline = findViewById(R.id.updateAccommodationEditTextCancellationDeadline);
+                                editTextCancellationDeadline.setText(String.valueOf(accommodation.getCancellationDeadline()));
+
+                                Button addAvailabilityButton = findViewById(R.id.updateAccommodationAddAvailabilityAndSpecialPriceButton);
+                                addAvailabilityButton.setOnClickListener(v -> addAvailabilityAndSpecialPriceView(null));
+
+                                for (UpdateAvailabilityDTO availabilityAndSpecialPrice : accommodation.getAvailability()) {
+                                    addAvailabilityAndSpecialPriceView(availabilityAndSpecialPrice);
+                                }
+
+                                for (Long amenityId : accommodation.getAmenities()){
+                                    amenityAdapter.checkAmenity(amenityId);
+                                }
+
+                                Button updateAccommodationButton = findViewById(R.id.updateAccommodationButtonUpdateDetails);
+
+                                updateAccommodationButton.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        updateAccommodationInformation();
+                                    }
+                                });
+
+                                CustomScrollView scrollView = findViewById(R.id.updateAccommodationScrollView);
+                                map.setOnTouchListener(new View.OnTouchListener() {
+                                    @Override
+                                    public boolean onTouch(View v, MotionEvent event) {
+                                        switch (event.getAction()) {
+                                            case MotionEvent.ACTION_DOWN:
+                                                scrollView.setScrollingEnabled(false);
+                                                return false;
+
+                                            case MotionEvent.ACTION_UP:
+                                                scrollView.setScrollingEnabled(true);
+                                                return true;
+
+                                            case MotionEvent.ACTION_MOVE:
+                                                scrollView.setScrollingEnabled(false);
+                                                return false;
+
+                                            default:
+                                                return true;
+                                        }
+                                    }
+                                });
+
+                                findViewById(R.id.updateAccommodationScrollView).setOnTouchListener(new View.OnTouchListener() {
+                                    @Override
+                                    public boolean onTouch(View v, MotionEvent event) {
+                                        View currentFocus = getCurrentFocus();
+                                        if (currentFocus instanceof EditText) {
+                                            currentFocus.clearFocus();
+                                        }
+                                        return false;
+                                    }
+                                });
+
+                                EditText editTextReason = findViewById(R.id.updateAccommodationEditTextReason);
+
+                                editTextDescription.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                                    @Override
+                                    public void onFocusChange(View v, boolean hasFocus) {
+                                        if (hasFocus) {
+                                            scrollView.setScrollingEnabled(false);
+                                        } else {
+                                            scrollView.setScrollingEnabled(true);
+                                            // Hide keyboard
+                                            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                                            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                                        }
+                                    }
+                                });
+
+                                editTextReason.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                                    @Override
+                                    public void onFocusChange(View v, boolean hasFocus) {
+                                        if (hasFocus) {
+                                            scrollView.setScrollingEnabled(false);
+                                        } else {
+                                            scrollView.setScrollingEnabled(true);
+                                            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                                            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                                        }
+                                    }
+                                });
+
+                                Button buttonLocateOnMap = findViewById(R.id.updateAccommodationButtonLocateOnMap);
+                                buttonLocateOnMap.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        EditText editTextAddress = findViewById(R.id.updateAccommodationEditTextAddress);
+                                        String address = editTextAddress.getText().toString();
+                                        if (address.isEmpty()) {
+                                            Toast.makeText(UpdateAccommodationScreen.this, "Please enter an address.", Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            locateOnMap(address);
+                                        }
+                                    }
+                                });
+
+                            }
+                        });
+                    } else {
+                        System.out.println("GET request failed!");
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
 
         Button openGalleryButton = findViewById(R.id.updateAccommodationOpenGalleryButton);
         openGalleryButton.setOnClickListener(new View.OnClickListener() {
@@ -135,207 +403,12 @@ public class UpdateAccommodationScreen extends AppCompatActivity {
         accommodationImageRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         imageAdapter = new ImageAdapter(imageBitmaps, this);
         accommodationImageRecyclerView.setAdapter(imageAdapter);
-
-        for (Image image : accommodation.getImages()) {
-            byte[] imageBytes = Base64.decode(image.getImageBytes(), Base64.DEFAULT);
-            Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
-            imageBitmaps.add(bitmap);
-        }
-        imageAdapter.notifyDataSetChanged();
-
-        EditText editTextName = findViewById(R.id.updateAccommodationEditTextName);
-        editTextName.setText(accommodation.getName());
-
-        EditText editTextDescription = findViewById(R.id.updateAccommodationEditTextDescription);
-        editTextDescription.setText(accommodation.getDescription());
-
-        EditText editTextMinGuests = findViewById(R.id.updateAccommodationEditTextMinGuests);
-        editTextMinGuests.setText(String.valueOf(accommodation.getMinNumberOfGuests()));
-
-        EditText editTextMaxGuests = findViewById(R.id.updateAccommodationEditTextMaxGuests);
-        editTextMaxGuests.setText(String.valueOf(accommodation.getMaxNumberOfGuests()));
-
-        Spinner spinnerAccommodationType = findViewById(R.id.updateAccommodationSpinnerType);
-
-        String[] types = {"STUDIO", "ROOM", "APARTMENT", "VILLA", "HOTEL"};
-
-        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, types);
-        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerAccommodationType.setAdapter(spinnerAdapter);
-        if (accommodation.getType().equals("STUDIO")) {
-            spinnerAccommodationType.setSelection(0);
-        } else if (accommodation.getType().equals("ROOM")) {
-            spinnerAccommodationType.setSelection(1);
-        } else if (accommodation.getType().equals("APARTMENT")) {
-            spinnerAccommodationType.setSelection(2);
-        } else if (accommodation.getType().equals("VILLA")) {
-            spinnerAccommodationType.setSelection(3);
-        } else if (accommodation.getType().equals("HOTEL")) {
-            spinnerAccommodationType.setSelection(4);
-        }
-
-        map = (MapView) findViewById(R.id.updateAccommodationMap);
-        map.setMultiTouchControls(true);
-        map.getController().setZoom(15.0);
-
-        locateOnMap(accommodation.getLocation().getAddress() + ", " + accommodation.getLocation().getCity() + ", " + accommodation.getLocation().getCountry());
-
-        EditText editTextAddress = findViewById(R.id.updateAccommodationEditTextAddress);
-        editTextAddress.setText(accommodation.getLocation().getAddress() + ", " + accommodation.getLocation().getCity() + ", " + accommodation.getLocation().getCountry());
-
-        RadioGroup radioGroupConfirmation = findViewById(R.id.updateAccommodationConfirmationRadioGroup);
-        if (accommodation.isAutomaticHandling()) {
-            radioGroupConfirmation.check(R.id.updateAccommodationRadioButtonAutomatic);
-            automaticHandling = true;
-        } else {
-            radioGroupConfirmation.check(R.id.updateAccommodationRadioButtonManual);
-            automaticHandling = false;
-        }
-
-        radioGroupConfirmation.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if (checkedId == R.id.updateAccommodationRadioButtonAutomatic) {
-                    automaticHandling = true;
-                } else if (checkedId == R.id.updateAccommodationRadioButtonManual) {
-                    automaticHandling = false;
-                }
-            }
-        });
-
-        RadioGroup radioGroupPrice = findViewById(R.id.updateAccommodationDefinePriceRadioGroup);
-        if (accommodation.isPricePerGuest()) {
-            radioGroupPrice.check(R.id.updateAccommodationRadioButtonPerGuest);
-            perGuest = true;
-        } else {
-            radioGroupPrice.check(R.id.updateAccommodationRadioButtonPerNight);
-            perGuest = false;
-        }
-
-        radioGroupPrice.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if (checkedId == R.id.updateAccommodationRadioButtonPerNight) {
-                    perGuest = false;
-                } else if (checkedId == R.id.updateAccommodationRadioButtonPerGuest) {
-                    perGuest = true;
-                }
-            }
-        });
-
-        EditText editTextDefaultPrice = findViewById(R.id.updateAccommodationEditTextPrice);
-        String formattedPrice = String.format(Locale.getDefault(), "%.2f", accommodation.getDefaultPrice());
-        editTextDefaultPrice.setText(formattedPrice);
-
-        EditText editTextCancellationDeadline = findViewById(R.id.updateAccommodationEditTextCancellationDeadline);
-        editTextCancellationDeadline.setText(String.valueOf(accommodation.getCancellationDeadline()));
-
-        Button addAvailabilityButton = findViewById(R.id.updateAccommodationAddAvailabilityAndSpecialPriceButton);
-        addAvailabilityButton.setOnClickListener(v -> addAvailabilityAndSpecialPriceView(null));
-
-        for (UpdateAvailabilityDTO availabilityAndSpecialPrice : accommodation.getAvailability()) {
-            addAvailabilityAndSpecialPriceView(availabilityAndSpecialPrice);
-        }
-
-        for (Long amenityId : accommodation.getAmenities()){
-            amenityAdapter.checkAmenity(amenityId);
-        }
-
-        Button updateAccommodationButton = findViewById(R.id.updateAccommodationButtonUpdateDetails);
-
-        updateAccommodationButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                updateAccommodationInformation();
-            }
-        });
-
-        CustomScrollView scrollView = findViewById(R.id.updateAccommodationScrollView);
-        map.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        scrollView.setScrollingEnabled(false);
-                        return false;
-
-                    case MotionEvent.ACTION_UP:
-                        scrollView.setScrollingEnabled(true);
-                        return true;
-
-                    case MotionEvent.ACTION_MOVE:
-                        scrollView.setScrollingEnabled(false);
-                        return false;
-
-                    default:
-                        return true;
-                }
-            }
-        });
-
-        findViewById(R.id.updateAccommodationScrollView).setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                View currentFocus = getCurrentFocus();
-                if (currentFocus instanceof EditText) {
-                    currentFocus.clearFocus();
-                }
-                return false;
-            }
-        });
-
-        EditText editTextReason = findViewById(R.id.updateAccommodationEditTextReason);
-
-        editTextDescription.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    scrollView.setScrollingEnabled(false);
-                } else {
-                    scrollView.setScrollingEnabled(true);
-                    // Hide keyboard
-                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-                }
-            }
-        });
-
-        editTextReason.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    scrollView.setScrollingEnabled(false);
-                } else {
-                    scrollView.setScrollingEnabled(true);
-                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-                }
-            }
-        });
-
-        Button buttonLocateOnMap = findViewById(R.id.updateAccommodationButtonLocateOnMap);
-        buttonLocateOnMap.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                EditText editTextAddress = findViewById(R.id.updateAccommodationEditTextAddress);
-                String address = editTextAddress.getText().toString();
-                if (address.isEmpty()) {
-                    Toast.makeText(UpdateAccommodationScreen.this, "Please enter an address.", Toast.LENGTH_SHORT).show();
-                } else {
-                    locateOnMap(address);
-                }
-            }
-        });
-
     }
 
-    private void updateAccommodationInformation(){
-        // PUT api/accommodations/update, consumes AccommodationUpdateDTO
-
+    private void updateAccommodationInformation() {
         AccommodationUpdateDTO accommodationUpdateDTO = new AccommodationUpdateDTO();
 
-        // get accommodationId from a parameter when switching to this activity
-        // accommodationUpdateDTO.setId(accommodationId);
+        accommodationUpdateDTO.setId(accommodationId);
 
         EditText editTextName = findViewById(R.id.updateAccommodationEditTextName);
         String accommodationNameString = editTextName.getText().toString();
@@ -449,8 +522,40 @@ public class UpdateAccommodationScreen extends AppCompatActivity {
         }
         accommodationUpdateDTO.setImages(images);
 
-        Toast.makeText(UpdateAccommodationScreen.this, "The request for approval of accommodation changes has been sent to the admin.", Toast.LENGTH_SHORT).show();
-        getOnBackPressedDispatcher().onBackPressed();
+        // PUT api/accommodations/update, consumes AccommodationUpdateDTO
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Gson gson = new Gson();
+                    String json = gson.toJson(accommodationUpdateDTO);
+
+                    URL url = new URL(BuildConfig.IP_ADDR + "/api/accommodations/update");
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    conn.setRequestMethod("PUT");
+                    conn.setRequestProperty("Content-Type", "application/json; utf-8");
+                    conn.setRequestProperty("Authorization", "Bearer " + jwtToken);
+                    conn.setDoOutput(true);
+
+                    conn.getOutputStream().write(json.getBytes());
+
+                    int responseCode = conn.getResponseCode();
+                    if (responseCode == HttpURLConnection.HTTP_OK) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(UpdateAccommodationScreen.this, "The request for approval of accommodation changes has been sent to the admin.", Toast.LENGTH_SHORT).show();
+                                getOnBackPressedDispatcher().onBackPressed();
+                            }
+                        });
+                    } else {
+                        System.out.println("PUT request failed!");
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 
     @Override

@@ -4,6 +4,7 @@ import static android.content.Context.MODE_PRIVATE;
 import static android.content.Context.SENSOR_SERVICE;
 import static android.content.Context.VIBRATOR_SERVICE;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -27,6 +28,7 @@ import com.example.bookingapptim14.Adapters.AdminUserReportsAdapter;
 import com.example.bookingapptim14.BuildConfig;
 import com.example.bookingapptim14.GlobalData;
 import com.example.bookingapptim14.R;
+import com.example.bookingapptim14.host.AccomodationDetailsActivityHost;
 import com.example.bookingapptim14.models.dtos.ApproveReviewsDTO.ApproveAccommodationReviewsDTO;
 import com.example.bookingapptim14.models.dtos.ApproveReviewsDTO.ApproveAccommodationReviewsData;
 import com.example.bookingapptim14.models.dtos.ReportsDTO.AccommodationReviewDTO;
@@ -301,8 +303,9 @@ public class AccommodationReviewReportsAdminFragment extends Fragment implements
 
     @Override
     public void onDetailsRequested(AccommodationReviewReportsData report) {
-        // TODO: Open details fragment here
-
+        Intent intent = new Intent(getActivity(), AccomodationDetailsActivityHost.class);
+        intent.putExtra("accommodationId", report.getAccommodationReviewDTO().getAccommodationId());
+        startActivity(intent);
     }
 
 }

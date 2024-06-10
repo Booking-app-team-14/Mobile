@@ -1,9 +1,11 @@
 package com.example.bookingapptim14.host;
 
+import static android.content.Context.MODE_PRIVATE;
 import static android.content.Context.SENSOR_SERVICE;
 import static android.content.Context.VIBRATOR_SERVICE;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -25,11 +27,23 @@ import android.widget.Toast;
 import com.example.bookingapptim14.Adapters.AccommodationApprovalAdapter;
 import com.example.bookingapptim14.Adapters.ApprovedReservationsAdapter;
 import com.example.bookingapptim14.Adapters.HostAccommodationsAdapter;
+import com.example.bookingapptim14.BuildConfig;
 import com.example.bookingapptim14.GlobalData;
 import com.example.bookingapptim14.R;
 import com.example.bookingapptim14.models.dtos.OwnersAccommodationDTO;
+import com.example.bookingapptim14.models.dtos.ReportsDTO.AccommodationReviewDTO;
+import com.example.bookingapptim14.models.dtos.ReportsDTO.AccommodationReviewReportsDTO;
+import com.example.bookingapptim14.models.dtos.ReportsDTO.AccommodationReviewReportsData;
 import com.example.bookingapptim14.models.dtos.ReservationRequestDTO.ApprovedReservationData;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.example.bookingapptim14.models.dtos.ReservationRequestDTO.ReservationRequestDTO;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.lang.reflect.Type;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,10 +55,16 @@ public class ApprovedReservationsFragmentHost extends Fragment {
     private SensorEventListener proximityEventListener;
     private RecyclerView reservationsRecyclerView;
     private ApprovedReservationsAdapter adapter;
+    private String jwtToken;
+    private long userId;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_approved_reservations_host, container, false);
+
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("MySharedPref", MODE_PRIVATE);
+        jwtToken = sharedPreferences.getString("jwtToken", "");
+        userId = sharedPreferences.getLong("userId", 0);
 
         reservationsRecyclerView = view.findViewById(R.id.approvedReservationsRecyclerView);
         adapter = new ApprovedReservationsAdapter(new ArrayList<>());
@@ -92,23 +112,82 @@ public class ApprovedReservationsFragmentHost extends Fragment {
         sensorManager.unregisterListener(proximityEventListener);
     }
 
-    // /api /requests/owner/{username} -> ReservationReqeustDTO
-    // .requestStatus == "SENT"
-
-    // convert to ApprovedReservationData
-
-    // /users/{id}/usernameAndNumberOfCancellations -> vraca string username + " | " + numberOfCancellationsString
-
     private void fetchReservations() {
-        // TODO: [VUK] fetch data
+        // GET /api/requests/owner/id/{id} -> ReservationRequestDTOs
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    URL url = new URL(BuildConfig.IP_ADDR + "/api/requests/owner/" + userId);
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    conn.setRequestMethod("GET");
+                    conn.setDoInput(true);
+                    conn.setRequestProperty("Authorization", "Bearer " + jwtToken);
 
-        // process all the DTOs and make ApprovedReservationData
+                    int responseCode = conn.getResponseCode();
+                    if (responseCode == HttpURLConnection.HTTP_OK) {
+                        BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                        String inputLine;
+                        StringBuilder content = new StringBuilder();
+                        while ((inputLine = in.readLine()) != null) {
+                            content.append(inputLine);
+                        }
+                        in.close();
+                        conn.disconnect();
 
-        // For now, use test data
-        GlobalData data = GlobalData.getInstance();
-        List<ApprovedReservationData> testReservations = data.getApprovedReservations();
+                        List<ApprovedReservationData> approvedReservations = new ArrayList<>();
 
-        adapter.setReservations(testReservations);
+                        Gson gson = new Gson();
+                        Type listType = new TypeToken<List<ReservationRequestDTO>>(){}.getType();
+                        List<ReservationRequestDTO> reservationRequestDTOs = gson.fromJson(content.toString(), listType);
+
+                        for (ReservationRequestDTO dto : reservationRequestDTOs) {
+                           if (dto.getRequestStatus().equals("ACCEPTED")) {
+                               // GET api/users/{id}/usernameAndNumberOfCancellations -> vraca string username + " | " + numberOfCancellationsString
+                                 URL url2 = new URL(BuildConfig.IP_ADDR + "/api/users/" + dto.getGuestId() + "/usernameAndNumberOfCancellations");
+                                    HttpURLConnection conn2 = (HttpURLConnection) url2.openConnection();
+                                    conn2.setRequestMethod("GET");
+                                    conn2.setDoInput(true);
+                                    conn2.setRequestProperty("Authorization", "Bearer " + jwtToken);
+
+                                    int responseCode2 = conn2.getResponseCode();
+
+                                    if (responseCode2 == HttpURLConnection.HTTP_OK) {
+                                        BufferedReader in2 = new BufferedReader(new InputStreamReader(conn2.getInputStream()));
+                                        String inputLine2;
+                                        StringBuilder content2 = new StringBuilder();
+                                        while ((inputLine2 = in2.readLine()) != null) {
+                                            content2.append(inputLine2);
+                                        }
+                                        in2.close();
+                                        conn2.disconnect();
+
+                                        String[] usernameAndNumberOfCancellations = content2.toString().split(" \\| ");
+                                        String username = usernameAndNumberOfCancellations[0];
+                                        String numberOfCancellationsString = usernameAndNumberOfCancellations[1];;
+
+                                        ApprovedReservationData approvedReservation = new ApprovedReservationData(dto, dto.getDateRequested(), username, numberOfCancellationsString);
+                                        approvedReservations.add(approvedReservation);
+                                    } else {
+                                        System.out.println("GET request failed!");
+                                    }
+                           }
+                        }
+
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                adapter.setReservations(approvedReservations);
+                            }
+                        });
+                    } else {
+                        System.out.println("GET request failed!");
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 
 }
