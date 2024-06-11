@@ -211,13 +211,15 @@ public class HomeFragmentHost extends Fragment implements SensorEventListener {
     }
 
     private void filterAccommodationsByPriceDesc() {
-        if (accommodationsList == null) {
-            return;
-        }
-        List<SearchAccommodation> sortedList = new ArrayList<>(accommodationsList);
-        // GET request price/desc
-        Collections.sort(sortedList, (a1, a2) -> Float.compare((float)a2.getPrice(),(float)a1.getPrice()));
-        updateUI(sortedList);
+        try {
+            if (accommodationsList == null) {
+                return;
+            }
+            List<SearchAccommodation> sortedList = new ArrayList<>(accommodationsList);
+            // GET request price/desc
+            Collections.sort(sortedList, (a1, a2) -> Float.compare((float) a2.getPrice(), (float) a1.getPrice()));
+            updateUI(sortedList);
+        } catch (Exception e) { }
     }
 
     public void showFilterDialog() {
