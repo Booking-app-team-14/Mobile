@@ -181,6 +181,7 @@ public class UpdateAccommodationScreen extends AppCompatActivity {
                         Gson gson = new Gson();
                         AccommodationUpdateDTO accommodation = gson.fromJson(content.toString(), AccommodationUpdateDTO.class);
 
+                        // TODO: [VUK] popravi error
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {

@@ -64,6 +64,7 @@ public class MyAccommodationsViewHolder extends RecyclerView.ViewHolder {
             Bitmap bm = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
             Bitmap scaled = scaleDown(bm, 200, true);
             mainAccommodationImage.setImageBitmap(scaled);
+            // TODO: [VUK] obrisi scaler
         }
     }
 
