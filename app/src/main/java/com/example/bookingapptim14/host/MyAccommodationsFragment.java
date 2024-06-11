@@ -183,7 +183,7 @@ public class MyAccommodationsFragment extends Fragment implements HostAccommodat
     @Override
     public void onAccommodationDetailsRequested(OwnersAccommodationDTO accommodation) {
         Long accommodationId = accommodation.getId();
-        Intent intent = new Intent(getActivity(), AccomodationDetailsActivityHost.class);
+        Intent intent = new Intent(getActivity(), AccommodationDetailsActivityHost.class);
         intent.putExtra("accommodationId", accommodationId);
         startActivity(intent);
     }

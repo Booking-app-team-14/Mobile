@@ -175,7 +175,9 @@ public class LoginScreen extends AppCompatActivity {
                                             public void run() {
                                                 Intent intent = new Intent(LoginScreen.this, MainActivityGuest.class);
                                                 showSuccessMessage();
+                                                Log.d("Here","passed");
                                                 startActivity(intent);
+                                                Log.d("Here","passed2");
                                                 finish();
                                             }
                                         });
@@ -225,6 +227,12 @@ public class LoginScreen extends AppCompatActivity {
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(LoginScreen.this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                                }
+                            });
                         }
                     }
                 }).start();

@@ -33,7 +33,8 @@ import com.example.bookingapptim14.Adapters.AdminApprovalOwnerCommentsAndReviews
 import com.example.bookingapptim14.BuildConfig;
 import com.example.bookingapptim14.GlobalData;
 import com.example.bookingapptim14.R;
-import com.example.bookingapptim14.host.AccomodationDetailsActivityHost;
+import com.example.bookingapptim14.admin.AccommodationDetailsActivityAdmin;
+import com.example.bookingapptim14.guest.AccommodationDetailsActivityGuest;
 import com.example.bookingapptim14.models.AccommodationRequest;
 import com.example.bookingapptim14.models.dtos.ApproveReviewsDTO.ApproveAccommodationReviewsDTO;
 import com.example.bookingapptim14.models.dtos.ApproveReviewsDTO.ApproveAccommodationReviewsData;
@@ -499,7 +500,7 @@ public class CommentsAndReviewsApprovalFragment extends Fragment implements Admi
 
     @Override
     public void onAccommodationCommentAndReviewDetailsRequested(ApproveAccommodationReviewsData commentAndReview) {
-        Intent intent = new Intent(getActivity(), AccomodationDetailsActivityHost.class);
+        Intent intent = new Intent(getActivity(), AccommodationDetailsActivityAdmin.class);
         intent.putExtra("accommodationId", commentAndReview.getAccommodationId());
         startActivity(intent);
     }

@@ -10,15 +10,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.bookingapptim14.R;
 import com.example.bookingapptim14.guest.FavouritesViewHolder;
 import com.example.bookingapptim14.host.MyAccommodationsViewHolder;
+import com.example.bookingapptim14.models.SearchAccommodation;
 import com.example.bookingapptim14.models.dtos.OwnersAccommodationDTO;
 
 import java.util.List;
 
 public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesViewHolder>{
-    private List<OwnersAccommodationDTO> accommodations;
+    private List<SearchAccommodation> accommodations;
     private FavouritesAdapter.OnAccommodationListener listener;
 
-    public FavouritesAdapter(List<OwnersAccommodationDTO> accommodations, FavouritesAdapter.OnAccommodationListener listener) {
+    public FavouritesAdapter(List<SearchAccommodation> accommodations, FavouritesAdapter.OnAccommodationListener listener) {
         this.accommodations = accommodations;
         this.listener = listener;
     }
@@ -31,7 +32,7 @@ public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesViewHolder
     }
     @Override
     public void onBindViewHolder(@NonNull FavouritesViewHolder holder, int position) {
-        OwnersAccommodationDTO accommodation = accommodations.get(position);
+        SearchAccommodation accommodation = accommodations.get(position);
         holder.bind(accommodation);
 
         holder.viewDetailsButton.setOnClickListener(new View.OnClickListener() {
@@ -49,12 +50,12 @@ public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesViewHolder
         return accommodations.size();
     }
 
-    public void setAccommodations(List<OwnersAccommodationDTO> accommodations) {
+    public void setAccommodations(List<SearchAccommodation> accommodations) {
         this.accommodations = accommodations;
         notifyDataSetChanged();
     }
 
-    public void removeItem(OwnersAccommodationDTO accommodation) {
+    public void removeItem(SearchAccommodation accommodation) {
         int position = accommodations.indexOf(accommodation);
         if (position == -1) {
             return;
@@ -64,6 +65,6 @@ public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesViewHolder
     }
 
     public interface OnAccommodationListener {
-        void onAccommodationDetailsRequested(OwnersAccommodationDTO request);
+        void onAccommodationDetailsRequested(SearchAccommodation request);
     }
 }

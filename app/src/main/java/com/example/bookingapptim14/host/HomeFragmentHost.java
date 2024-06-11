@@ -1,14 +1,24 @@
 package com.example.bookingapptim14.host;
 
+import static android.content.Context.MODE_PRIVATE;
+
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
+
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,154 +31,185 @@ import android.widget.NumberPicker;
 import android.widget.RatingBar;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import androidx.appcompat.widget.PopupMenu;
-
-import androidx.cardview.widget.CardView;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-
-import com.example.bookingapptim14.GlobalData;
+import com.example.bookingapptim14.BuildConfig;
 import com.example.bookingapptim14.R;
-import com.example.bookingapptim14.enums.AccommodationType;
-import com.example.bookingapptim14.guest.AccommodationDetailsActivityGuest;
-import com.example.bookingapptim14.models.Location;
 import com.example.bookingapptim14.models.SearchAccommodation;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.slider.RangeSlider;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.lang.reflect.Type;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-
-public class HomeFragmentHost extends Fragment {
+public class HomeFragmentHost extends Fragment implements SensorEventListener {
 
     private LinearLayout linearLayout;
     private List<SearchAccommodation> accommodationsList;
     private TextView textViewDateRange;
     private Button btnDateRangePicker;
+    private SensorManager sensorManager;
+    private Sensor accelerometer;
+    private static final int SHAKE_THRESHOLD = 800;
+    private long lastUpdate = 0;
+    private float last_x, last_y, last_z;
 
+    private String jwtToken;
+    private long userId;
+
+    private Map<Long, Boolean> favoriteStatusMap = new HashMap<>();
     LocalDate startDateSelected;
     LocalDate endDateSelected;
     String startDate;
     String endDate;
+    RangeSlider priceRangeSlider;
+    NumberPicker numberPickerGuests;
+    RatingBar ratingBar;
+    CheckBox checkboxWifi, checkboxParking, checkboxSauna, checkboxGym, checkboxGames;
+    CheckBox checkboxApartment, checkboxStudio, checkboxHotel, checkboxVilla, checkboxRoom;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("MySharedPref", MODE_PRIVATE);
+        jwtToken = sharedPreferences.getString("jwtToken", "");
+        userId = sharedPreferences.getLong("userId", 0);
+
+        sensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
+        accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_home_host, container, false);
-
-        //TODO accommodation list = api/accommodations/sort/rating/desc (GET)
-        accommodationsList = GlobalData.getInstance().getSearchAccommodations();
+        View view = inflater.inflate(R.layout.fragment_home_guest, container, false);
 
         linearLayout = view.findViewById(R.id.linearView);
 
-        for (SearchAccommodation accommodation : accommodationsList) {
-            View cardView = getLayoutInflater().inflate(R.layout.card_vew, null);
+        // Fetch accommodations from the API
+        fetchAccommodations();
 
-            TextView descriptionTextView = cardView.findViewById(R.id.descriptionTextView);
-            TextView ratingTextView = cardView.findViewById(R.id.ratingTextView);
-            TextView priceTextView = cardView.findViewById(R.id.priceTextView);
-            ImageView accommodationImageView = cardView.findViewById(R.id.imageView);
+        ImageView filterIcon = view.findViewById(R.id.filterIcon);
+        filterIcon.setOnClickListener(v -> showFilterDialog());
 
-            descriptionTextView.setText(accommodation.getName());
-            ratingTextView.setText("Rating: " + accommodation.getRating());
-            priceTextView.setText("Price/Night: $" + accommodation.getPricePerNight());
-            int drawableResourceId = getResources().getIdentifier(accommodation.getImage(), "drawable", requireContext().getPackageName());
-            accommodationImageView.setImageResource(drawableResourceId);
+        SearchView searchView = view.findViewById(R.id.searchView);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
 
-
-            // Set click listener on card view to open accommodation details activity
-            cardView.setOnClickListener(v -> {
-                Intent intent = new Intent(getActivity(), AccommodationDetailsActivityGuest.class);
-                intent.putExtra("accommodation", accommodation);
-                //TODO send an accommodation id instead of the whole object
-                startActivity(intent);
-            });
-
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT
-            );
-            params.setMargins(0, 0, 0, 16); // Add margin bottom of 16dp
-            cardView.setLayoutParams(params);
-
-            linearLayout.addView(cardView);
-        }
-            ImageView filterIcon = view.findViewById(R.id.filterIcon);
-            filterIcon.setOnClickListener(v -> showFilterDialog());
-
-            SearchView searchView = view.findViewById(R.id.searchView);
-            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                @Override
-                public boolean onQueryTextSubmit(String query) {
-                    return false;
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (newText.isEmpty()) {
+                    updateUI(accommodationsList);
+                } else {
+                    filterAccommodations(newText);
                 }
-
-                @Override
-                public boolean onQueryTextChange(String newText) {
-                    if (newText.isEmpty()) {
-                        updateUI(accommodationsList);
-                    } else {
-                        filterAccommodations(newText);
-                    }
-                    return true;
-                }
-            });
-
-            return view;
-        }
-
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-    }
-
-
-
-
-    private void openDateRangePicker() {
-        MaterialDatePicker.Builder<Pair<Long, Long>> builder = MaterialDatePicker.Builder.dateRangePicker();
-        builder.setTitleText("Select Dates");
-
-        Calendar startDate = Calendar.getInstance();
-        Calendar endDate = Calendar.getInstance();
-        endDate.add(Calendar.DAY_OF_MONTH, 1); // Default range of 1 day
-        builder.setSelection(new Pair<>(startDate.getTimeInMillis(), endDate.getTimeInMillis()));
-
-        MaterialDatePicker<Pair<Long, Long>> picker = builder.build();
-
-        picker.addOnPositiveButtonClickListener(selection -> {
-            long startMillis = selection.first;
-            long endMillis = selection.second;
-
-            Calendar startCal = Calendar.getInstance();
-            startCal.setTimeInMillis(startMillis);
-            Calendar endCal = Calendar.getInstance();
-            endCal.setTimeInMillis(endMillis);
-
-            String dateRange = String.format(
-                    "Check-in: %s\nCheck-out: %s",
-                    android.text.format.DateFormat.format("dd/MM/yyyy", startCal),
-                    android.text.format.DateFormat.format("dd/MM/yyyy", endCal)
-            );
-            textViewDateRange.setText(dateRange);
+                return true;
+            }
         });
 
-        picker.show(getChildFragmentManager(), picker.toString());
+        return view;
+    }
+
+    private void fetchAccommodations() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    URL url = new URL(BuildConfig.IP_ADDR + "/api/accommodations-mobile/sort/price/asc");
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    conn.setRequestMethod("GET");
+                    conn.setDoInput(true);
+                    conn.setRequestProperty("Authorization", "Bearer " + jwtToken);
+
+                    int responseCode = conn.getResponseCode();
+                    if (responseCode == HttpURLConnection.HTTP_OK) {
+                        BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                        String inputLine;
+                        StringBuilder content = new StringBuilder();
+                        while ((inputLine = in.readLine()) != null) {
+                            content.append(inputLine);
+                        }
+                        in.close();
+                        conn.disconnect();
+
+                        Gson gson = new Gson();
+                        Type listType = new TypeToken<List<SearchAccommodation>>() {}.getType();
+                        accommodationsList = gson.fromJson(content.toString(), listType);
+
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                updateUI(accommodationsList);
+                            }
+                        });
+                    } else {
+                        System.out.println("GET request failed!");
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        sensorManager.unregisterListener(this);
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+            long curTime = System.currentTimeMillis();
+            if ((curTime - lastUpdate) > 100) {
+                long diffTime = (curTime - lastUpdate);
+                lastUpdate = curTime;
+
+                float x = event.values[0];
+                float y = event.values[1];
+                float z = event.values[2];
+
+                float speed = Math.abs(x + y + z - last_x - last_y - last_z) / diffTime * 10000;
+
+                if (speed > SHAKE_THRESHOLD) {
+                    filterAccommodationsByPriceDesc();
+                }
+
+                last_x = x;
+                last_y = y;
+                last_z = z;
+            }
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
     }
 
     private void filterAccommodationsByPriceDesc() {
         List<SearchAccommodation> sortedList = new ArrayList<>(accommodationsList);
-        //TODO GET request price/desc
-        Collections.sort(sortedList, (a1, a2) -> Float.compare(a2.getPricePerNight().floatValue(), a1.getPricePerNight().floatValue()));
+        // GET request price/desc
+        Collections.sort(sortedList, (a1, a2) -> Float.compare((float)a2.getPrice(),(float)a1.getPrice()));
         updateUI(sortedList);
     }
 
@@ -299,13 +340,13 @@ public class HomeFragmentHost extends Fragment {
         for (SearchAccommodation accommodation : accommodationsList) {
             boolean matchesFilters = true;
 
-            if (accommodation.getMinNumberOfGuests() < numberOfGuests) {
+            if (accommodation.getMaxGuests() < numberOfGuests) {
                 matchesFilters = false;
             }
-            if (accommodation.getPricePerNight() < minPrice || accommodation.getPricePerNight() > maxPrice) {
+            if (accommodation.getPrice() < minPrice || accommodation.getPrice() > maxPrice) {
                 matchesFilters = false;
             }
-            if (accommodation.getRating() < minRating) {
+            if (accommodation.getStars() < minRating) {
                 matchesFilters = false;
             }
             /*
@@ -372,7 +413,6 @@ public class HomeFragmentHost extends Fragment {
         updateUI(filteredList);
     }
 
-
     private void filterAccommodations(String query) {
         List<SearchAccommodation> filteredList = new ArrayList<>();
 
@@ -388,12 +428,11 @@ public class HomeFragmentHost extends Fragment {
     private void updateUI(List<SearchAccommodation> filteredList) {
         linearLayout.removeAllViews();
         for (SearchAccommodation accommodation : filteredList) {
-            View cardView = getLayoutInflater().inflate(R.layout.card_vew, null);
+            View cardView = getLayoutInflater().inflate(R.layout.host_card_view, null);
 
             cardView.setOnClickListener(v -> {
-                Intent intent = new Intent(getActivity(), AccommodationDetailsActivityGuest.class);
-                intent.putExtra("accommodation", accommodation);
-                //TODO id instead of the whole object
+                Intent intent = new Intent(getActivity(), AccommodationDetailsActivityHost.class);
+                intent.putExtra("accommodation_id", accommodation.getId());  // Ensure the ID is being passed
                 startActivity(intent);
             });
 
@@ -403,15 +442,18 @@ public class HomeFragmentHost extends Fragment {
             ImageView accommodationImageView = cardView.findViewById(R.id.imageView);
 
             descriptionTextView.setText(accommodation.getName());
-            ratingTextView.setText("Rating: " + accommodation.getRating());
-            priceTextView.setText("Price/Night: $" + accommodation.getPricePerNight());
+            ratingTextView.setText("Rating: " + accommodation.getStars());
+            priceTextView.setText("Price/Night: $" + accommodation.getPrice());
 
-            int drawableResourceId = getResources().getIdentifier(accommodation.getImage(), "drawable", requireContext().getPackageName());
-            accommodationImageView.setImageResource(drawableResourceId);
+            String base64Image = accommodation.getMainPictureBytes();
+            if (base64Image != null && !base64Image.isEmpty()) {
+                byte[] decodedString = Base64.getDecoder().decode(base64Image);
+                Bitmap bm = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                Bitmap scaled = scaleDown(bm, 200, true);
+                accommodationImageView.setImageBitmap(scaled);
+            }
 
 
-
-            // Set margin for each card view
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT
@@ -421,6 +463,16 @@ public class HomeFragmentHost extends Fragment {
 
             linearLayout.addView(cardView);
         }
+    }
+
+    public static Bitmap scaleDown(Bitmap realImage, float maxImageSize, boolean filter) {
+        float ratio = Math.min(
+                maxImageSize / realImage.getWidth(),
+                maxImageSize / realImage.getHeight());
+        int width = Math.round(ratio * realImage.getWidth());
+        int height = Math.round(ratio * realImage.getHeight());
+
+        return Bitmap.createScaledBitmap(realImage, width, height, filter);
     }
 
 }

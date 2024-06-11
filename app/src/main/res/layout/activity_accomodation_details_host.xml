@@ -131,7 +131,7 @@
                 android:id="@+id/ownerName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Owner's Name"
+                android:text="Owner 2"
                 android:textSize="18sp"
                 android:paddingTop="8dp"/>
         </LinearLayout>

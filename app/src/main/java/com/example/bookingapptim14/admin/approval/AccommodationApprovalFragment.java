@@ -30,7 +30,7 @@ import com.example.bookingapptim14.Adapters.AccommodationApprovalAdapter;
 import com.example.bookingapptim14.BuildConfig;
 import com.example.bookingapptim14.GlobalData;
 import com.example.bookingapptim14.R;
-import com.example.bookingapptim14.host.AccomodationDetailsActivityHost;
+import com.example.bookingapptim14.admin.AccommodationDetailsActivityAdmin;
 import com.example.bookingapptim14.models.AccommodationRequest;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -223,7 +223,7 @@ public class AccommodationApprovalFragment extends Fragment implements Accommoda
 
     @Override
     public void onAccommodationDetailsRequested(AccommodationRequest request) {
-        Intent intent = new Intent(getActivity(), AccomodationDetailsActivityHost.class);
+        Intent intent = new Intent(getActivity(), AccommodationDetailsActivityAdmin.class);
         intent.putExtra("accommodationId", request.getAccommodationId());
         startActivity(intent);
 

@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -48,6 +50,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
@@ -131,7 +134,7 @@ public class HomeFragmentGuest extends Fragment implements SensorEventListener {
             @Override
             public void run() {
                 try {
-                    URL url = new URL(BuildConfig.IP_ADDR + "/api/accommodations/sort/rating/desc");
+                    URL url = new URL(BuildConfig.IP_ADDR + "/api/accommodations-mobile/sort/price/asc");
                     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                     conn.setRequestMethod("GET");
                     conn.setDoInput(true);
@@ -206,7 +209,7 @@ public class HomeFragmentGuest extends Fragment implements SensorEventListener {
     private void filterAccommodationsByPriceDesc() {
         List<SearchAccommodation> sortedList = new ArrayList<>(accommodationsList);
         // GET request price/desc
-        Collections.sort(sortedList, (a1, a2) -> Float.compare(a2.getPricePerNight().floatValue(), a1.getPricePerNight().floatValue()));
+        Collections.sort(sortedList, (a1, a2) -> Float.compare((float)a2.getPrice(),(float)a1.getPrice()));
         updateUI(sortedList);
     }
 
@@ -337,13 +340,13 @@ public class HomeFragmentGuest extends Fragment implements SensorEventListener {
         for (SearchAccommodation accommodation : accommodationsList) {
             boolean matchesFilters = true;
 
-            if (accommodation.getMinNumberOfGuests() < numberOfGuests) {
+            if (accommodation.getMaxGuests() < numberOfGuests) {
                 matchesFilters = false;
             }
-            if (accommodation.getPricePerNight() < minPrice || accommodation.getPricePerNight() > maxPrice) {
+            if (accommodation.getPrice() < minPrice || accommodation.getPrice() > maxPrice) {
                 matchesFilters = false;
             }
-            if (accommodation.getRating() < minRating) {
+            if (accommodation.getStars() < minRating) {
                 matchesFilters = false;
             }
             /*
@@ -429,7 +432,7 @@ public class HomeFragmentGuest extends Fragment implements SensorEventListener {
 
             cardView.setOnClickListener(v -> {
                 Intent intent = new Intent(getActivity(), AccommodationDetailsActivityGuest.class);
-                intent.putExtra("accommodation_id", accommodation.getId());
+                intent.putExtra("accommodation_id", accommodation.getId());  // Ensure the ID is being passed
                 startActivity(intent);
             });
 
@@ -439,11 +442,16 @@ public class HomeFragmentGuest extends Fragment implements SensorEventListener {
             ImageView accommodationImageView = cardView.findViewById(R.id.imageView);
 
             descriptionTextView.setText(accommodation.getName());
-            ratingTextView.setText("Rating: " + accommodation.getRating());
-            priceTextView.setText("Price/Night: $" + accommodation.getPricePerNight());
+            ratingTextView.setText("Rating: " + accommodation.getStars());
+            priceTextView.setText("Price/Night: $" + accommodation.getPrice());
 
-            int drawableResourceId = getResources().getIdentifier(accommodation.getImage(), "drawable", requireContext().getPackageName());
-            accommodationImageView.setImageResource(drawableResourceId);
+           String base64Image = accommodation.getMainPictureBytes();
+            if (base64Image != null && !base64Image.isEmpty()) {
+                byte[] decodedString = Base64.getDecoder().decode(base64Image);
+                Bitmap bm = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                Bitmap scaled = scaleDown(bm, 200, true);
+                accommodationImageView.setImageBitmap(scaled);
+            }
 
             ImageButton heartButton = cardView.findViewById(R.id.heartButton);
             Boolean isFavorite = favoriteStatusMap.get(accommodation.getId());
@@ -477,6 +485,15 @@ public class HomeFragmentGuest extends Fragment implements SensorEventListener {
         }
     }
 
+    public static Bitmap scaleDown(Bitmap realImage, float maxImageSize, boolean filter) {
+        float ratio = Math.min(
+                maxImageSize / realImage.getWidth(),
+                maxImageSize / realImage.getHeight());
+        int width = Math.round(ratio * realImage.getWidth());
+        int height = Math.round(ratio * realImage.getHeight());
+
+        return Bitmap.createScaledBitmap(realImage, width, height, filter);
+    }
     private void addToFavorites(long accommodationId) {
         // Implement the PUT request to add to favorites
         new Thread(() -> {

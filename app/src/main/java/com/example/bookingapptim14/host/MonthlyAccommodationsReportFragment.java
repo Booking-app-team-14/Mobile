@@ -4,6 +4,8 @@ import static android.content.Context.MODE_PRIVATE;
 import static android.content.Context.SENSOR_SERVICE;
 import static android.content.Context.VIBRATOR_SERVICE;
 
+import static java.lang.Integer.parseInt;
+
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
@@ -218,9 +220,10 @@ public class MonthlyAccommodationsReportFragment extends Fragment {
     }
 
     private void fetchMonthlyReservations(String year, BarChart barChart) {
+        int year1= Integer.parseInt(year);
         new Thread(() -> {
             try {
-                URL url = new URL(BuildConfig.IP_ADDR + "/api/accommodation-reports/" + accommodationId + "/monthly-report");
+                URL url = new URL(BuildConfig.IP_ADDR + "/api/accommodation-reports/" + accommodationId + "/monthly-report"+ "?year=" + year1);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("GET");
                 conn.setDoInput(true);
