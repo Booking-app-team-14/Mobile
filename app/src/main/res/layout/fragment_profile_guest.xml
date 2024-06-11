@@ -39,7 +39,7 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/profilePictureImage"
+                        android:id="@+id/guestProfilePictureImage"
                         android:layout_width="120dp"
                         android:layout_height="120dp"
                         android:layout_marginTop="32dp"
@@ -52,7 +52,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/nameSurnameTextView"
+                        android:id="@+id/guestNameSurnameTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
@@ -60,20 +60,20 @@
                         android:text="Sava Savic"
                         android:textColor="@color/white"
                         android:textSize="20dp"
-                        app:layout_constraintEnd_toEndOf="@+id/profilePictureImage"
-                        app:layout_constraintStart_toStartOf="@+id/profilePictureImage"
-                        app:layout_constraintTop_toBottomOf="@+id/profilePictureImage" />
+                        app:layout_constraintEnd_toEndOf="@id/guestProfilePictureImage"
+                        app:layout_constraintStart_toStartOf="@id/guestProfilePictureImage"
+                        app:layout_constraintTop_toBottomOf="@id/guestProfilePictureImage" />
 
                     <TextView
-                        android:id="@+id/emailTextView"
+                        android:id="@+id/guestEmailTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="tim14.guest@gmail.com"
                         android:textColor="@color/white"
                         android:textSize="18dp"
-                        app:layout_constraintEnd_toEndOf="@+id/nameSurnameTextView"
-                        app:layout_constraintStart_toStartOf="@+id/nameSurnameTextView"
-                        app:layout_constraintTop_toBottomOf="@+id/nameSurnameTextView" />
+                        app:layout_constraintEnd_toEndOf="@id/guestNameSurnameTextView"
+                        app:layout_constraintStart_toStartOf="@id/guestNameSurnameTextView"
+                        app:layout_constraintTop_toBottomOf="@id/guestNameSurnameTextView" />
 
                     <ImageView
                         android:id="@+id/imageView4"
@@ -99,7 +99,7 @@
                         android:paddingBottom="6dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/emailTextView">
+                        app:layout_constraintTop_toBottomOf="@id/guestEmailTextView">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -107,6 +107,7 @@
                             android:orientation="horizontal">
 
                             <LinearLayout
+                                android:id="@+id/profileGuestRequests"
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_marginLeft="10dp"
@@ -116,7 +117,8 @@
                                 android:layout_weight="0.5"
                                 android:background="@drawable/gray_background_box"
                                 android:elevation="5dp"
-                                android:orientation="vertical">
+                                android:orientation="vertical"
+                                android:clickable="true">
 
                                 <androidx.constraintlayout.widget.ConstraintLayout
                                     android:layout_width="50dp"
@@ -151,6 +153,7 @@
                             </LinearLayout>
 
                             <LinearLayout
+                                android:id="@+id/profileGuestReservations"
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_marginLeft="5dp"
@@ -160,7 +163,8 @@
                                 android:layout_weight="0.5"
                                 android:background="@drawable/gray_background_box"
                                 android:elevation="5dp"
-                                android:orientation="vertical">
+                                android:orientation="vertical"
+                                android:clickable="true">
 
                                 <androidx.constraintlayout.widget.ConstraintLayout
                                     android:layout_width="50dp"
@@ -253,7 +257,7 @@
                                 android:textSize="18dp" />
 
                             <TextView
-                                android:id="@+id/addressTextView"
+                                android:id="@+id/guestAddressTextView"
                                 android:layout_width="245dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -291,7 +295,7 @@
                                 android:textSize="18dp" />
 
                             <TextView
-                                android:id="@+id/phoneNumberTextView"
+                                android:id="@+id/guestPhoneNumberTextView"
                                 android:layout_width="190dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"

@@ -33,7 +33,7 @@
                     android:layout_width="64dp"
                     android:layout_height="64dp"
                     android:contentDescription="owner_avatar_image"
-                    android:src="@color/primary_blue" />
+                    android:src="@drawable/default_profile_picture" />
 
                 <TextView
                     android:id="@+id/ownerUsername"
@@ -171,7 +171,7 @@
                     android:text="Reject"
                     android:fontFamily="@font/inter"
                     android:textColor="#FFFFFF"
-                    android:layout_marginEnd="4dp"/>
+                    android:layout_marginEnd="2dp"/>
 
                 <Button
                     android:id="@+id/viewDetailsButton"
@@ -182,8 +182,8 @@
                     android:text="Details"
                     android:fontFamily="@font/inter"
                     android:textColor="#FFFFFF"
-                    android:layout_marginStart="4dp"
-                    android:layout_marginEnd="4dp"/>
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="2dp"/>
 
                 <Button
                     android:id="@+id/approveButton"
@@ -194,7 +194,7 @@
                     android:text="Approve"
                     android:fontFamily="@font/inter"
                     android:textColor="#FFFFFF"
-                    android:layout_marginStart="4dp"/>
+                    android:layout_marginStart="2dp"/>
 
             </LinearLayout>
 

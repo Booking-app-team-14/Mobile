@@ -1,5 +1,6 @@
 package com.example.bookingapptim14.admin.approval;
 
+import android.graphics.BitmapFactory;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -19,9 +20,11 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Base64;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class AccommodationApprovalViewHolder extends RecyclerView.ViewHolder {
 
-    private ImageView ownerImage;
+    private CircleImageView ownerImage;
     private TextView accommodationName;
     private TextView ownerUsername;
     private TextView datePosted;
@@ -69,14 +72,11 @@ public class AccommodationApprovalViewHolder extends RecyclerView.ViewHolder {
         } else {
             accommodationRequestType.setImageResource(R.drawable.ic_updated);
         }
-        // TODO: set owner image
-//        String base64Image = request.getOwnerProfilePictureBytes();
-//        if (base64Image != null) {
-//            byte[] decodedString = Base64.getDecoder().decode(base64Image);
-//            String ownerImageType = request.getOwnerImageType();
-//
-//        }
-        ownerImage.setImageResource(R.drawable.default_profile_picture);
+        String base64Image = request.getOwnerProfilePictureBytes();
+        if (base64Image != null && !base64Image.isEmpty()) {
+            byte[] decodedString = Base64.getDecoder().decode(base64Image);
+            ownerImage.setImageBitmap(BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length));
+        }
     }
 
     public static String getPostedAgo(Instant date) {

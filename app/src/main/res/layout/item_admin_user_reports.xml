@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="16dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="8dp"
+    android:backgroundTint="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/adminUserReportsReportingUserProfilePicture"
+                    app:civ_border_color="@color/text_black"
+                    app:civ_border_width="1dp"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:contentDescription="owner_avatar_image"
+                    android:src="@drawable/default_profile_picture" />
+
+                <TextView
+                    android:id="@+id/adminUserReportsReportingUserUsername"
+                    android:layout_width="wrap_content"
+                    android:fontFamily="@font/inter_medium"
+                    android:layout_height="wrap_content"
+                    android:scrollbars="vertical"
+                    android:text="guest_username"
+                    android:maxHeight="20dp"
+                    android:layout_marginStart="8dp"
+                    android:textColor="@color/text_black"
+                    android:textSize="14dp" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/adminUserReportsDateReported"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter"
+                android:text="(18th October 2023)"
+                android:layout_gravity="end"
+                android:textColor="@color/text_gray"
+                android:textSize="12dp"
+                android:layout_alignParentEnd="true" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:fontFamily="@font/inter_medium"
+            android:layout_height="wrap_content"
+            android:maxHeight="48dp"
+            android:layout_marginBottom="8dp"
+            android:scrollbars = "vertical"
+            android:text="Reason"
+            android:textColor="@color/text_black"
+            android:justificationMode="inter_word"
+            android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/adminUserReportsReason"
+            android:layout_width="match_parent"
+            android:fontFamily="@font/inter"
+            android:layout_height="wrap_content"
+            android:maxHeight="48dp"
+            android:layout_marginBottom="8dp"
+            android:scrollbars = "vertical"
+            android:text="“Report razlog...”"
+            android:textColor="@color/text_gray"
+            android:justificationMode="inter_word"
+            android:textSize="12dp" />
+
+        <View
+            android:id="@+id/adminUserReportsAccommodationsDivider"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginBottom="8dp"
+            android:background="@color/icon_gray"
+            app:layout_constraintTop_toBottomOf="@id/adminCommentsAndReviewsToggleButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/adminUserReportsReportedUserProfilePicture"
+                    app:civ_border_color="@color/text_black"
+                    app:civ_border_width="1dp"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:contentDescription="owner_avatar_image"
+                    android:src="@drawable/default_profile_picture" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:id="@+id/adminUserReportsReportedUserUsername"
+                        android:layout_width="wrap_content"
+                        android:fontFamily="@font/inter_medium"
+                        android:layout_height="wrap_content"
+                        android:scrollbars="vertical"
+                        android:text="owner_username"
+                        android:maxHeight="20dp"
+                        android:layout_marginStart="8dp"
+                        android:textColor="@color/text_black"
+                        android:textSize="14dp" />
+
+                    <TextView
+                        android:id="@+id/adminUserReportsReportedUserPreviousReports"
+                        android:layout_width="wrap_content"
+                        android:fontFamily="@font/inter"
+                        android:layout_height="wrap_content"
+                        android:scrollbars="vertical"
+                        android:text="(0 previous reports)"
+                        android:maxHeight="20dp"
+                        android:layout_marginStart="8dp"
+                        android:textColor="@color/text_gray"
+                        android:textSize="12dp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/adminUserReportsBlockUserButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:backgroundTint="@color/red"
+                android:text="Block"
+                android:fontFamily="@font/inter"
+                android:textColor="#FFFFFF"
+                android:layout_marginEnd="2dp"/>
+
+            <Button
+                android:id="@+id/adminUserReportsDismissReportButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:backgroundTint="@color/green"
+                android:text="Dismiss"
+                android:fontFamily="@font/inter"
+                android:textColor="#FFFFFF"
+                android:layout_marginStart="2dp"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

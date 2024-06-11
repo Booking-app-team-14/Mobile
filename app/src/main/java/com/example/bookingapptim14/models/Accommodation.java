@@ -1,34 +1,58 @@
 package com.example.bookingapptim14.models;
 
 import com.example.bookingapptim14.enums.AccommodationType;
+import com.example.bookingapptim14.models.dtos.AccommodationDTO.AmenityDTO;
+import com.example.bookingapptim14.models.dtos.AccommodationDTO.LocationDTO;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class Accommodation {
 
 
+
     private Long id;
+
     private String name;
+
     private String description;
-    private Location location;
+
+    private LocationDTO location;
+
     private AccommodationType type;
-    private Set<String> images;
-    private Set<Amenity> amenities;
+
+    private Set<String> images = new HashSet<>();
+
+    private List<String> imageTypes = new ArrayList<>();
+
+    private Set<String> imageBytes = new HashSet<>();
+
+    private Set<AmenityDTO> amenities;
+
     private Double rating;
+
     private Integer minNumberOfGuests;
+
     private Integer maxNumberOfGuests;
+
     private Set<Availability> availability;
+
     private Double pricePerNight;
     private boolean pricePerGuest;
+    private boolean automatic;
+
     private Integer cancellationDeadline;
+
     private Long owner_Id;
 
     public Accommodation(
-            Long id, String name, String description, Location location,
-            AccommodationType type, Set<String> images, Set<Amenity> amenities,
+            Long id, String name, String description, LocationDTO location,
+            AccommodationType type, Set<String> images, Set<AmenityDTO> amenities,
             Double rating, Integer minNumberOfGuests, Integer maxNumberOfGuests,
             Set<Availability> availability, Double pricePerNight,
-            boolean pricePerGuest, Integer cancellationDeadline, Long owner_Id
+            boolean pricePerGuest,boolean automatic, Integer cancellationDeadline, Long owner_Id
     ) {
         this.id = id;
         this.name = name;
@@ -43,8 +67,9 @@ public class Accommodation {
         this.availability = availability;
         this.pricePerNight = pricePerNight;
         this.pricePerGuest = pricePerGuest;
+        this.automatic = automatic;
         this.cancellationDeadline = cancellationDeadline;
-        this.owner_Id = owner_Id;
+        this.owner_Id=owner_Id;
     }
 
     public Accommodation() {
@@ -53,14 +78,14 @@ public class Accommodation {
     private void setId(Long id){
         this.id = id;
     }
-    private Long getId(){
+    public Long getId(){
         return this.id;
     }
 
     private void setName(String name){
         this.name = name;
     }
-    private String getName(){
+    public String getName(){
         return this.name;
     }
     private void setDescription(String description){
@@ -72,20 +97,20 @@ public class Accommodation {
     private void setRating(Double rating){
         this.rating = rating;
     }
-    public Double getRating(){
-        return this.rating;
+    public float getRating(){
+        return this.rating.floatValue();
     }
-    private void setAmenities(Set<Amenity> amenities){
+    private void setAmenities(Set<AmenityDTO> amenities){
         this.amenities = amenities;
     }
-    private Set<Amenity> getAmenities(){
+    private Set<AmenityDTO> getAmenities(){
         return this.amenities;
     }
 
-    private void setLocation(Location location){
+    private void setLocation(LocationDTO location){
         this.location = location;
     }
-    private Location getLocation(){
+    private LocationDTO getLocation(){
         return this.location;
     }
     private void setAvailability(Set<Availability> availability){
@@ -98,7 +123,7 @@ public class Accommodation {
     private void setType(AccommodationType type){
         this.type = type;
     }
-    private AccommodationType getType(){
+    public AccommodationType getType(){
         return this.type;
     }
     private void setImages(Set<String> images){
@@ -111,14 +136,24 @@ public class Accommodation {
     private void setMaxNumberOfGuests(Integer maxNumberOfGuests){
         this.maxNumberOfGuests = maxNumberOfGuests;
     }
-    private Integer getMaxNumberOfGuests(){
+    public Integer getMaxNumberOfGuests(){
         return this.maxNumberOfGuests;
     }
 
     private void setMinNumberOfGuests(Integer minNumberOfGuests){
         this.minNumberOfGuests = minNumberOfGuests;
     }
-    private Integer getMinNumberOfGuests(){
+
+    public void setImageBytes(Set<String> bytes){
+        this.images = bytes;
+    }
+    public Set<String> getImageBytes(){
+        return this.imageBytes;
+    }
+    public Set<Availability> getAvailabilities(){
+        return this.availability;
+    }
+    public Integer getMinNumberOfGuests(){
         return this.minNumberOfGuests;
     }
     private void setPricePerNight(Double pricePerNight){
@@ -146,5 +181,16 @@ public class Accommodation {
     }
     private Long getOwner_Id(){
         return this.owner_Id;
+    }
+
+    public String getCity(){
+        return this.location.getCity();
+    }
+
+    public String getCountry(){
+        return this.location.getCountry();
+    }
+    public String getAddress(){
+        return this.location.getAddress();
     }
 }

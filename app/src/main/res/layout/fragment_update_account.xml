@@ -126,6 +126,33 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="24dp"
+                android:layout_marginRight="24dp">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/newProfilePictureImageView"
+                    android:layout_width="118dp"
+                    android:layout_height="118dp"
+                    android:scaleType="centerCrop"
+                    app:civ_border_color="@color/text_black"
+                    app:civ_border_width="1dp"
+                    android:src="@drawable/default_profile_picture" />
+
+                <Button
+                    android:id="@+id/newProfilePictureImageViewButtonLoadPicture"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Upload new profile picture"
+                    android:backgroundTint="@color/text_gray"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true" />
+
+            </RelativeLayout>
+
             <Button
                 android:id="@+id/buttonUpdateDetails"
                 android:layout_width="match_parent"

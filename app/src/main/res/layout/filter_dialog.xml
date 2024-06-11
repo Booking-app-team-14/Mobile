@@ -9,16 +9,17 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Price Range"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="8dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Price Range"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp"/>
 
 
         <com.google.android.material.slider.RangeSlider
+            android:id= "@+id/priceRangeSlider"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="Price Range"
@@ -83,142 +84,102 @@
             android:layout_marginBottom="16dp"/>
 
         <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Facilities"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="8dp"/>
-
-    <GridLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:columnCount="3"
-        android:rowCount="2">
-
-        <CheckBox
-            android:id="@+id/checkbox_wifi"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Wi-Fi" />
+            android:text="Facilities"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp"/>
 
-        <CheckBox
-            android:id="@+id/checkbox_parking"
+        <GridLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Parking" />
+            android:columnCount="3"
+            android:rowCount="2">
 
-        <CheckBox
-            android:id="@+id/checkbox_pool"
+            <CheckBox
+                android:id="@+id/checkbox_wifi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Wi-Fi" />
+
+            <CheckBox
+                android:id="@+id/checkbox_parking"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Parking" />
+
+            <CheckBox
+                android:id="@+id/checkbox_sauna"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pool" />
+
+            <CheckBox
+                android:id="@+id/checkbox_gym"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Breakfast" />
+
+            <CheckBox
+                android:id="@+id/checkbox_games"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Dinner" />
+        </GridLayout>
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Pool" />
+            android:text="Type of Place"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"/>
 
-        <CheckBox
-            android:id="@+id/checkbox_breakfast"
-            android:layout_width="wrap_content"
+        <GridLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Breakfast" />
+            android:columnCount="3"
+            android:rowCount="2">
 
-        <CheckBox
-            android:id="@+id/checkbox_dinner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Dinner" />
+            <CheckBox
+                android:id="@+id/checkbox_apartment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Apartment" />
 
-        <CheckBox
-            android:id="@+id/checkbox_sauna"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Sauna" />
-        <CheckBox
-            android:id="@+id/checkbox_karaoke_room"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Karaoke Room" />
+            <CheckBox
+                android:id="@+id/checkbox_studio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Studio" />
+            <CheckBox
+                android:id="@+id/checkbox_hotel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hotel" />
+            <CheckBox
+                android:id="@+id/checkbox_villa"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Villa" />
+            <CheckBox
+                android:id="@+id/checkbox_room"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Room" />
 
-        <CheckBox
-            android:id="@+id/checkbox_lunch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Lunch" />
-        <CheckBox
-            android:id="@+id/checkbox_Spa"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Spa" />
+        </GridLayout>
+        <LinearLayout
 
-        <CheckBox
-            android:id="@+id/checkbox_rent"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Rent A Car" />
-        <CheckBox
-            android:id="@+id/checkbox_air_condition"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Air Condition" />
+            android:orientation="horizontal"
+            android:gravity="end">
 
-        <CheckBox
-            android:id="@+id/checkbox_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="TV" />
+        </LinearLayout>
 
-    </GridLayout>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Type of Place"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="8dp"/>
 
-    <GridLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:columnCount="3"
-        android:rowCount="2">
-
-        <CheckBox
-            android:id="@+id/checkbox_apartment"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Apartment" />
-
-        <CheckBox
-            android:id="@+id/checkbox_studio"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Studio" />
-        <CheckBox
-            android:id="@+id/checkbox_hotel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Hotel" />
-        <CheckBox
-            android:id="@+id/checkbox_villa"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Villa" />
-        <CheckBox
-            android:id="@+id/checkbox_room"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Room" />
-
-    </GridLayout>
-    <LinearLayout
-
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="end">
-
-    </LinearLayout>
-
-       
 
 
     </LinearLayout>
