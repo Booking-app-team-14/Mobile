@@ -25,7 +25,7 @@
             android:backgroundTint="@color/primary_blue"
             android:textColor="@color/white"
             android:layout_marginEnd="5dp"
-            android:text="Generate reports" />
+            android:text="Generate\nreports" />
 
         <Button
             android:id="@+id/addAccommodationButton"
@@ -35,7 +35,7 @@
             android:backgroundTint="@color/primary_blue"
             android:textColor="@color/white"
             android:layout_marginStart="5dp"
-            android:text="Add accommodation" />
+            android:text="Add an\naccommodation" />
     </LinearLayout>
 
     <View

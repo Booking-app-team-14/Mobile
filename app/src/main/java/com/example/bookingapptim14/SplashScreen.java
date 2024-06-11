@@ -56,7 +56,7 @@ public class SplashScreen extends AppCompatActivity {
             } else {
                 Toast.makeText(SplashScreen.this, "No internet connection. Please connect to the internet.", Toast.LENGTH_SHORT).show();
                 // Offer the user the option to connect to the internet
-                Intent intent = new Intent(Settings.ACTION_WIFI_ADD_NETWORKS);
+                Intent intent = new Intent(Settings.ACTION_WIFI_SETTINGS);
                 startActivity(intent);
                 isRedirectedToSettings = true;
             }

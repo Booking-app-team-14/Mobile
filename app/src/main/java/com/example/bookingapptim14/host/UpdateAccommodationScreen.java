@@ -182,6 +182,13 @@ public class UpdateAccommodationScreen extends AppCompatActivity {
                         AccommodationUpdateDTO accommodation = gson.fromJson(content.toString(), AccommodationUpdateDTO.class);
 
                         runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(context, "ovde puca pre", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+                        runOnUiThread(new Runnable() {
 
                             @Override
                             public void run() {
@@ -380,9 +387,21 @@ public class UpdateAccommodationScreen extends AppCompatActivity {
                         });
                     } else {
                         System.out.println("GET request failed!");
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(context, "Failed to load accommodation data.", Toast.LENGTH_SHORT).show();
+                            }
+                        });
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(context, "Failed. Catch", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
             }
         }).start();
@@ -709,13 +728,17 @@ public class UpdateAccommodationScreen extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        map.onResume();
+        if (map != null) {
+            map.onResume();
+        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        map.onPause();
+        if (map != null) {
+            map.onPause();
+        }
     }
 
     private void locateOnMap(String address) {
