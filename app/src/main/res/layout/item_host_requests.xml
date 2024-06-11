@@ -293,22 +293,24 @@
             android:weightSum="2">
 
             <Button
-                android:id="@+id/ApproveButton"
+                android:id="@+id/hostApproveRequestButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:backgroundTint="@color/green"
                 android:text="Approve"
+                android:layout_marginEnd="5dp"
                 android:fontFamily="@font/inter"
                 android:textColor="#FFFFFF" />
 
             <Button
-                android:id="@+id/declineRequest"
+                android:id="@+id/hostRejectRequestButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:layout_marginStart="5dp"
                 android:backgroundTint="@color/red"
-                android:text="Decline"
+                android:text="Reject"
                 android:fontFamily="@font/inter"
                 android:textColor="#FFFFFF" />
 

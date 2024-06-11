@@ -203,7 +203,7 @@ public class MyAccommodationsFragment extends Fragment implements HostAccommodat
 //                .replace(R.id.frameLayout, fragment, fragment.getClass().getSimpleName()).addToBackStack(null).commit();
 
         Intent updateAccommodationIntent = new Intent(getActivity(), UpdateAccommodationScreen.class);
-        updateAccommodationIntent.putExtra("accommodation_id", accommodationId);
+        updateAccommodationIntent.putExtra("accommodationId", accommodationId);
         startActivity(updateAccommodationIntent);
 
     }

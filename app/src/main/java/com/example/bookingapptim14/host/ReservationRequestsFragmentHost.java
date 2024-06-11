@@ -21,7 +21,9 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.bookingapptim14.Adapters.AccommodationApprovalAdapter;
 import com.example.bookingapptim14.Adapters.LocalDateDeserializer;
 import com.example.bookingapptim14.Adapters.ReservationRequestsAdapter;
 import com.example.bookingapptim14.BuildConfig;
@@ -46,7 +48,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ReservationRequestsFragmentHost extends Fragment {
+public class ReservationRequestsFragmentHost extends Fragment implements ReservationRequestsAdapter.OnRequestListener {
     private Button btnDateRangePicker;
     private TextView textViewDateRange;
     private EditText editTextSearch;
@@ -86,7 +88,7 @@ public class ReservationRequestsFragmentHost extends Fragment {
         radioGroupStatus = view.findViewById(R.id.radioGroupReservationRequestsStatus);
         recyclerViewRequests = view.findViewById(R.id.recyclerViewRequests);
         recyclerViewRequests.setLayoutManager(new LinearLayoutManager(getContext()));
-        requestsAdapter = new ReservationRequestsAdapter(filteredList);
+        requestsAdapter = new ReservationRequestsAdapter(filteredList, this);
         recyclerViewRequests.setAdapter(requestsAdapter);
     }
 
@@ -211,4 +213,69 @@ public class ReservationRequestsFragmentHost extends Fragment {
 
         requestsAdapter.setReservations(filteredList);
     }
+
+    @Override
+    public void onRequestApproved(ApprovedReservationData request) {
+        // PUT api/requests/approve/{requestId}
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    URL url = new URL(BuildConfig.IP_ADDR + "/api/requests/approve/" + request.getId());
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    conn.setRequestMethod("PUT");
+                    conn.setDoInput(true);
+                    conn.setRequestProperty("Authorization", "Bearer " + jwtToken);
+
+                    int responseCode = conn.getResponseCode();
+                    if (responseCode == HttpURLConnection.HTTP_OK) {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                filterRequests();
+                                Toast.makeText(getContext(), "Approved!", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    } else {
+                        System.out.println("PUT request failed!");
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
+    @Override
+    public void onRequestRejected(ApprovedReservationData request) {
+        // PUT api/requests/reject/{requestId}
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    URL url = new URL(BuildConfig.IP_ADDR + "/api/requests/reject/" + request.getId());
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    conn.setRequestMethod("PUT");
+                    conn.setDoInput(true);
+                    conn.setRequestProperty("Authorization", "Bearer " + jwtToken);
+
+                    int responseCode = conn.getResponseCode();
+                    if (responseCode == HttpURLConnection.HTTP_OK) {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                filterRequests();
+                                Toast.makeText(getContext(), "Rejected!", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    } else {
+                        System.out.println("PUT request failed!");
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
 }

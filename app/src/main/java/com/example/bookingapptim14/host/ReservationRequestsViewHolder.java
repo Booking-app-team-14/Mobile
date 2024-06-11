@@ -2,6 +2,7 @@ package com.example.bookingapptim14.host;
 
 import android.graphics.BitmapFactory;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -35,6 +36,8 @@ public class ReservationRequestsViewHolder extends RecyclerView.ViewHolder {
     private TextView accommodationName;
     private TextView dateFrom;
     private TextView dateTo;
+    public Button approveButton;
+    public Button rejectButton;
 
     public ReservationRequestsViewHolder(@NonNull View itemView) {
         super(itemView);
@@ -50,6 +53,8 @@ public class ReservationRequestsViewHolder extends RecyclerView.ViewHolder {
         accommodationName = itemView.findViewById(R.id.guestApprovedReservationsAccommodationName);
         dateFrom = itemView.findViewById(R.id.guestApprovedReservationsFromDate);
         dateTo = itemView.findViewById(R.id.guestApprovedReservationsToDate);
+        approveButton = itemView.findViewById(R.id.hostApproveRequestButton);
+        rejectButton = itemView.findViewById(R.id.hostRejectRequestButton);
     }
 
     public void bind(ApprovedReservationData accommodation) {

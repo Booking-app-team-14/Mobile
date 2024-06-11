@@ -391,12 +391,6 @@ public class UpdateAccommodationScreen extends AppCompatActivity {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(context, "Failed. Catch", Toast.LENGTH_SHORT).show();
-                        }
-                    });
                 }
             }
         }).start();
