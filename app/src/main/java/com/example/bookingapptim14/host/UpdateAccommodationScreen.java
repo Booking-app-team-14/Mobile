@@ -388,12 +388,6 @@ public class UpdateAccommodationScreen extends AppCompatActivity {
                         });
                     } else {
                         System.out.println("GET request failed!");
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Toast.makeText(context, "Failed to load accommodation data.", Toast.LENGTH_SHORT).show();
-                            }
-                        });
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

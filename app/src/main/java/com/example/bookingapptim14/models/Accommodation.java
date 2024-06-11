@@ -53,7 +53,7 @@ public class Accommodation {
     private void setId(Long id){
         this.id = id;
     }
-    private Long getId(){
+    public Long getId(){
         return this.id;
     }
 
@@ -146,5 +146,16 @@ public class Accommodation {
     }
     private Long getOwner_Id(){
         return this.owner_Id;
+    }
+
+    public String getCity(){
+        return this.location.getCity();
+    }
+
+    public String getCountry(){
+        return this.location.getCountry();
+    }
+    public String getAddress(){
+        return this.location.getAddress();
     }
 }
