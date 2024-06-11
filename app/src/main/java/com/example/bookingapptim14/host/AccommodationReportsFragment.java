@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -20,7 +21,6 @@ import android.os.Environment;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,13 +31,12 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
-
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bookingapptim14.Adapters.AccommodationReportsAdapter;
-import com.example.bookingapptim14.GlobalData;
+import com.example.bookingapptim14.BuildConfig;
 import com.example.bookingapptim14.R;
 import com.example.bookingapptim14.models.dtos.AccommodationDTO.AccommodationReportDTO;
 import com.github.mikephil.charting.charts.PieChart;
@@ -45,10 +44,17 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.lang.reflect.Type;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -56,6 +62,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static android.content.Context.MODE_PRIVATE;
 import static android.content.Context.SENSOR_SERVICE;
 import static android.content.Context.VIBRATOR_SERVICE;
 
@@ -70,10 +77,16 @@ public class AccommodationReportsFragment extends Fragment {
     private AccommodationReportsAdapter adapter;
     private PieChart pieChart;
     private List<AccommodationReportDTO> reports = new ArrayList<>();
+    private Long userId;
+    private String jwtToken;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_accommodation_report, container, false);
+
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("MySharedPref", MODE_PRIVATE);
+        jwtToken = sharedPreferences.getString("jwtToken", "");
+        userId = sharedPreferences.getLong("userId", 0);
 
         EditText startDateEditText = view.findViewById(R.id.startDateEditText);
         EditText endDateEditText = view.findViewById(R.id.endDateEditText);
@@ -89,13 +102,10 @@ public class AccommodationReportsFragment extends Fragment {
             String endDate = endDateEditText.getText().toString();
 
             // Fetch and display the reports based on the date range
-            reports = fetchReports(startDate, endDate);
+            fetchReports(startDate, endDate);
         });
 
         generatePdfButton.setOnClickListener(v -> {
-            String startDate = startDateEditText.getText().toString();
-            String endDate = endDateEditText.getText().toString();
-
             if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                 // Generate PDF based on the date range
                 generatePdf(getContext(), reports);
@@ -200,30 +210,60 @@ public class AccommodationReportsFragment extends Fragment {
         }
     }
 
+    private void fetchReports(String startDate, String endDate) {
+        new Thread(() -> {
+            try {
+                URL url = new URL(BuildConfig.IP_ADDR + "/api/accommodation-reports/" + userId);
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestMethod("GET");
+                conn.setDoInput(true);
+                conn.setRequestProperty("Authorization", "Bearer " + jwtToken);
 
-    private List<AccommodationReportDTO> fetchReports(String startDate, String endDate) {
-        // For now, use test data
-        GlobalData data = GlobalData.getInstance();
-        //TODO GET request from api/accommodation-reports/{ownerId}
-        List<AccommodationReportDTO> testAccommodations = data.getAccommodationReports();
-        adapter.setAccommodations(testAccommodations);
-        if (testAccommodations.isEmpty()) {
+                int responseCode = conn.getResponseCode();
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                    String inputLine;
+                    StringBuilder content = new StringBuilder();
+                    while ((inputLine = in.readLine()) != null) {
+                        content.append(inputLine);
+                    }
+                    in.close();
+                    conn.disconnect();
+
+                    Gson gson = new Gson();
+                    Type listType = new TypeToken<List<AccommodationReportDTO>>(){}.getType();
+                    List<AccommodationReportDTO> fetchedReports = gson.fromJson(content.toString(), listType);
+
+                    getActivity().runOnUiThread(() -> {
+                        adapter.setAccommodations(fetchedReports);
+                        reports = fetchedReports;
+                        updatePieChart(fetchedReports);
+                    });
+                } else {
+                    System.out.println("GET request failed!");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }).start();
+    }
+
+    private void updatePieChart(List<AccommodationReportDTO> reports) {
+        if (reports.isEmpty()) {
             // Handle case when there are no reports available
-            return Collections.emptyList();
+            return;
         }
 
         Map<String, Float> profitData = new HashMap<>();
-        for (AccommodationReportDTO accommodationReport : testAccommodations) {
+        for (AccommodationReportDTO accommodationReport : reports) {
             profitData.put(accommodationReport.getAccommodationName(), (float) accommodationReport.getTotalProfit());
         }
 
         ArrayList<PieEntry> entries = new ArrayList<>();
-        int i = 0;
         for (Map.Entry<String, Float> entry : profitData.entrySet()) {
             String accommodationName = entry.getKey();
             Float profit = entry.getValue();
             entries.add(new PieEntry(profit, accommodationName)); // Use accommodationName as label
-            i++;
         }
 
         PieDataSet dataSet = new PieDataSet(entries, "Accommodation Profits");
@@ -241,10 +281,7 @@ public class AccommodationReportsFragment extends Fragment {
         pieChart.setRotationAngle(0);
         pieChart.setRotationEnabled(true);
         pieChart.animateY(1400);
-
-        return testAccommodations;
     }
-
 
     public void generatePdf(Context context, List<AccommodationReportDTO> reports) {
         PdfDocument pdfDocument = new PdfDocument();
@@ -289,7 +326,7 @@ public class AccommodationReportsFragment extends Fragment {
         }
 
         // Save the PDF to external storage
-        String fileName = "AccommodationReports1.pdf";
+        String fileName = "AccommodationReports" + userId + ".pdf";
         File pdfFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), fileName);
 
         try {

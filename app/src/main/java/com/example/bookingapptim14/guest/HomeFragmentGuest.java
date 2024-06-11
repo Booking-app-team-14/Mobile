@@ -1,8 +1,11 @@
 package com.example.bookingapptim14.guest;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -28,25 +31,28 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.bookingapptim14.GlobalData;
+import com.example.bookingapptim14.BuildConfig;
 import com.example.bookingapptim14.R;
-import com.example.bookingapptim14.models.Amenity;
 import com.example.bookingapptim14.models.SearchAccommodation;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.slider.RangeSlider;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.lang.reflect.Type;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class HomeFragmentGuest extends Fragment implements SensorEventListener {
 
@@ -59,6 +65,9 @@ public class HomeFragmentGuest extends Fragment implements SensorEventListener {
     private static final int SHAKE_THRESHOLD = 800;
     private long lastUpdate = 0;
     private float last_x, last_y, last_z;
+
+    private String jwtToken;
+    private long userId;
 
     private Map<Long, Boolean> favoriteStatusMap = new HashMap<>();
     LocalDate startDateSelected;
@@ -74,6 +83,11 @@ public class HomeFragmentGuest extends Fragment implements SensorEventListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("MySharedPref", MODE_PRIVATE);
+        jwtToken = sharedPreferences.getString("jwtToken", "");
+        userId = sharedPreferences.getLong("userId", 0);
+
         sensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
@@ -83,65 +97,10 @@ public class HomeFragmentGuest extends Fragment implements SensorEventListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home_guest, container, false);
 
-        //TODO accommodation list = api/accommodations/sort/rating/desc (GET)
-        accommodationsList = GlobalData.getInstance().getSearchAccommodations();
-
         linearLayout = view.findViewById(R.id.linearView);
 
-        for (SearchAccommodation accommodation : accommodationsList) {
-            View cardView = getLayoutInflater().inflate(R.layout.card_vew, null);
-
-            TextView descriptionTextView = cardView.findViewById(R.id.descriptionTextView);
-            TextView ratingTextView = cardView.findViewById(R.id.ratingTextView);
-            TextView priceTextView = cardView.findViewById(R.id.priceTextView);
-            ImageView accommodationImageView = cardView.findViewById(R.id.imageView);
-            ImageButton heartButton = cardView.findViewById(R.id.heartButton);
-
-            descriptionTextView.setText(accommodation.getName());
-            ratingTextView.setText("Rating: " + accommodation.getRating());
-            priceTextView.setText("Price/Night: $" + accommodation.getPricePerNight());
-            int drawableResourceId = getResources().getIdentifier(accommodation.getImage(), "drawable", requireContext().getPackageName());
-            accommodationImageView.setImageResource(drawableResourceId);
-
-            // Set the initial favorite status
-            Boolean isFavorite = favoriteStatusMap.get(accommodation.getId());
-            if (isFavorite == null) {
-                favoriteStatusMap.put(accommodation.getId(), false);
-                heartButton.setSelected(false);
-            } else {
-                heartButton.setSelected(isFavorite);
-            }
-
-            // Set click listener on heart button
-            heartButton.setOnClickListener(v -> {
-                Boolean currentFavoriteStatus = favoriteStatusMap.get(accommodation.getId());
-                boolean newFavoriteStatus = !currentFavoriteStatus;
-                favoriteStatusMap.put(accommodation.getId(), newFavoriteStatus);
-                heartButton.setSelected(newFavoriteStatus);
-                if (newFavoriteStatus) {
-                    //TODO PUT Request to: api/users/{id}/favorite-accommodations/{accommodationId}
-                } else {
-                    // TODO DELETE Request TO api/users/{id}/favorite-accommodations/{accommodationId}
-                }
-            });
-
-            // Set click listener on card view to open accommodation details activity
-            cardView.setOnClickListener(v -> {
-                Intent intent = new Intent(getActivity(), AccommodationDetailsActivityGuest.class);
-                intent.putExtra("accommodation", accommodation);
-                //TODO send an accommodation id instead of the whole object
-                startActivity(intent);
-            });
-
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT
-            );
-            params.setMargins(0, 0, 0, 16); // Add margin bottom of 16dp
-            cardView.setLayoutParams(params);
-
-            linearLayout.addView(cardView);
-        }
+        // Fetch accommodations from the API
+        fetchAccommodations();
 
         ImageView filterIcon = view.findViewById(R.id.filterIcon);
         filterIcon.setOnClickListener(v -> showFilterDialog());
@@ -165,6 +124,48 @@ public class HomeFragmentGuest extends Fragment implements SensorEventListener {
         });
 
         return view;
+    }
+
+    private void fetchAccommodations() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    URL url = new URL(BuildConfig.IP_ADDR + "/api/accommodations/sort/rating/desc");
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    conn.setRequestMethod("GET");
+                    conn.setDoInput(true);
+                    conn.setRequestProperty("Authorization", "Bearer " + jwtToken);
+
+                    int responseCode = conn.getResponseCode();
+                    if (responseCode == HttpURLConnection.HTTP_OK) {
+                        BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                        String inputLine;
+                        StringBuilder content = new StringBuilder();
+                        while ((inputLine = in.readLine()) != null) {
+                            content.append(inputLine);
+                        }
+                        in.close();
+                        conn.disconnect();
+
+                        Gson gson = new Gson();
+                        Type listType = new TypeToken<List<SearchAccommodation>>() {}.getType();
+                        accommodationsList = gson.fromJson(content.toString(), listType);
+
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                updateUI(accommodationsList);
+                            }
+                        });
+                    } else {
+                        System.out.println("GET request failed!");
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 
     @Override
@@ -204,7 +205,7 @@ public class HomeFragmentGuest extends Fragment implements SensorEventListener {
 
     private void filterAccommodationsByPriceDesc() {
         List<SearchAccommodation> sortedList = new ArrayList<>(accommodationsList);
-        //TODO GET request price/desc
+        // GET request price/desc
         Collections.sort(sortedList, (a1, a2) -> Float.compare(a2.getPricePerNight().floatValue(), a1.getPricePerNight().floatValue()));
         updateUI(sortedList);
     }
@@ -409,7 +410,6 @@ public class HomeFragmentGuest extends Fragment implements SensorEventListener {
         updateUI(filteredList);
     }
 
-
     private void filterAccommodations(String query) {
         List<SearchAccommodation> filteredList = new ArrayList<>();
 
@@ -429,8 +429,7 @@ public class HomeFragmentGuest extends Fragment implements SensorEventListener {
 
             cardView.setOnClickListener(v -> {
                 Intent intent = new Intent(getActivity(), AccommodationDetailsActivityGuest.class);
-                intent.putExtra("accommodation", accommodation);
-                //TODO id instead of the whole object
+                intent.putExtra("accommodation_id", accommodation.getId());
                 startActivity(intent);
             });
 
@@ -455,20 +454,18 @@ public class HomeFragmentGuest extends Fragment implements SensorEventListener {
                 heartButton.setSelected(isFavorite);
             }
 
-            // Set click listener on heart button
             heartButton.setOnClickListener(v -> {
                 Boolean currentFavoriteStatus = favoriteStatusMap.get(accommodation.getId());
                 boolean newFavoriteStatus = !currentFavoriteStatus;
                 favoriteStatusMap.put(accommodation.getId(), newFavoriteStatus);
                 heartButton.setSelected(newFavoriteStatus);
                 if (newFavoriteStatus) {
-                    //TODO PUT Request to: api/users/{id}/favorite-accommodations/{accommodationId}
+                    addToFavorites(accommodation.getId());
                 } else {
-                    // TODO DELETE Request TO api/users/{id}/favorite-accommodations/{accommodationId}
+                    removeFromFavorites(accommodation.getId());
                 }
             });
 
-            // Set margin for each card view
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT
@@ -478,5 +475,49 @@ public class HomeFragmentGuest extends Fragment implements SensorEventListener {
 
             linearLayout.addView(cardView);
         }
+    }
+
+    private void addToFavorites(long accommodationId) {
+        // Implement the PUT request to add to favorites
+        new Thread(() -> {
+            try {
+                URL url = new URL(BuildConfig.IP_ADDR + "/api/users/" + userId + "/favorite-accommodations/" + accommodationId);
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestMethod("PUT");
+                conn.setRequestProperty("Authorization", "Bearer " + jwtToken);
+
+                int responseCode = conn.getResponseCode();
+                if (responseCode != HttpURLConnection.HTTP_OK) {
+                    getActivity().runOnUiThread(() -> {
+                        Toast.makeText(getActivity(), "Failed to add to favorites", Toast.LENGTH_SHORT).show();
+                    });
+                }
+                conn.disconnect();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }).start();
+    }
+
+    private void removeFromFavorites(long accommodationId) {
+        // Implement the DELETE request to remove from favorites
+        new Thread(() -> {
+            try {
+                URL url = new URL(BuildConfig.IP_ADDR + "/api/users/" + userId + "/favorite-accommodations/" + accommodationId);
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestMethod("DELETE");
+                conn.setRequestProperty("Authorization", "Bearer " + jwtToken);
+
+                int responseCode = conn.getResponseCode();
+                if (responseCode != HttpURLConnection.HTTP_OK) {
+                    getActivity().runOnUiThread(() -> {
+                        Toast.makeText(getActivity(), "Failed to remove from favorites", Toast.LENGTH_SHORT).show();
+                    });
+                }
+                conn.disconnect();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }).start();
     }
 }

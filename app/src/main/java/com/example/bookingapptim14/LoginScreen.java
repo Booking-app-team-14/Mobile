@@ -225,6 +225,7 @@ public class LoginScreen extends AppCompatActivity {
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
+                            Log.d("err",e.getMessage());
                         }
                     }
                 }).start();

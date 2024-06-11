@@ -1,11 +1,13 @@
 package com.example.bookingapptim14.host;
 
+import static android.content.Context.MODE_PRIVATE;
 import static android.content.Context.SENSOR_SERVICE;
 import static android.content.Context.VIBRATOR_SERVICE;
 
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -21,7 +23,6 @@ import android.os.Environment;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,20 +38,25 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.bookingapptim14.Adapters.AccommodationReportsAdapter;
 import com.example.bookingapptim14.Adapters.MonthlyAccommodationReportAdapter;
-import com.example.bookingapptim14.GlobalData;
+import com.example.bookingapptim14.BuildConfig;
 import com.example.bookingapptim14.R;
-import com.example.bookingapptim14.models.dtos.AccommodationDTO.AccommodationReportDTO;
 import com.example.bookingapptim14.models.dtos.AccommodationDTO.MonthlyAccommodationReport;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.lang.reflect.Type;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -67,6 +73,9 @@ public class MonthlyAccommodationsReportFragment extends Fragment {
     private RecyclerView accommodationsRecyclerView;
     private MonthlyAccommodationReportAdapter adapter;
 
+    private String jwtToken;
+
+    private Long userId;
     private List<MonthlyAccommodationReport> reports = new ArrayList<>();
 
     @Override
@@ -82,6 +91,10 @@ public class MonthlyAccommodationsReportFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_montly_report, container, false);
 
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("MySharedPref", MODE_PRIVATE);
+        jwtToken = sharedPreferences.getString("jwtToken", "");
+        userId = sharedPreferences.getLong("userId", 0);
+
         Spinner yearSpinner = view.findViewById(R.id.yearSpinner);
         List<String> years = new ArrayList<>();
         for (int i = 2000; i <= 2030; i++) {
@@ -96,8 +109,6 @@ public class MonthlyAccommodationsReportFragment extends Fragment {
         Button pdfButton = view.findViewById(R.id.generatePdfButton);
 
         pdfButton.setOnClickListener(v -> {
-            String selectedYear = yearSpinner.getSelectedItem().toString();
-
             if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                 // Generate PDF based on the date range
                 generatePdf(getContext(), reports);
@@ -106,27 +117,10 @@ public class MonthlyAccommodationsReportFragment extends Fragment {
             }
         });
 
-        showReportsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String selectedYear = yearSpinner.getSelectedItem().toString();
-                // Fetch data for the selected year
-                List<MonthlyAccommodationReport> reservations = fetchMonthlyReservations(selectedYear); // Replace with actual data fetching method
-
-                ArrayList<Integer> numbersList = new ArrayList<>();
-
-                for(MonthlyAccommodationReport report: reservations){
-                    numbersList.add(report.getNumberOfReservations());
-                }
-
-                int[] numbersArray = new int[numbersList.size()];
-                for (int i = 0; i < numbersList.size(); i++) {
-                    numbersArray[i] = numbersList.get(i);
-                }
-
-                // Update the Bar Chart
-                updateBarChart(reservationsBarChart, numbersArray);
-            }
+        showReportsButton.setOnClickListener(v -> {
+            String selectedYear = yearSpinner.getSelectedItem().toString();
+            // Fetch data for the selected year
+            fetchMonthlyReservations(selectedYear, reservationsBarChart);
         });
 
         accommodationsRecyclerView = view.findViewById(R.id.hostAccommodationsRecyclerView);
@@ -157,9 +151,7 @@ public class MonthlyAccommodationsReportFragment extends Fragment {
         }
 
         return view;
-
     }
-
 
     private void requestStoragePermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
@@ -225,17 +217,59 @@ public class MonthlyAccommodationsReportFragment extends Fragment {
         barChart.invalidate(); // refresh
     }
 
-    private List<MonthlyAccommodationReport> fetchMonthlyReservations(String year) {
-        Map<String, MonthlyAccommodationReport> monthlyAccommodationReportMap = GlobalData.getInstance().getMonthlyReportMap();
-        //TODO GET request from api/accommodation-reports/{accommodationId}/monthly-report"
-        for (Map.Entry<String, MonthlyAccommodationReport> entry : monthlyAccommodationReportMap.entrySet()) {
-            String month = entry.getKey();
-            MonthlyAccommodationReport report1 = entry.getValue();
-            reports.add(report1);
+    private void fetchMonthlyReservations(String year, BarChart barChart) {
+        new Thread(() -> {
+            try {
+                URL url = new URL(BuildConfig.IP_ADDR + "/api/accommodation-reports/" + accommodationId + "/monthly-report");
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestMethod("GET");
+                conn.setDoInput(true);
+                conn.setRequestProperty("Authorization", "Bearer " + jwtToken);
 
-        }
-        adapter.setReports(reports);
-        return reports;
+                int responseCode = conn.getResponseCode();
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                    String inputLine;
+                    StringBuilder content = new StringBuilder();
+                    while ((inputLine = in.readLine()) != null) {
+                        content.append(inputLine);
+                    }
+                    in.close();
+                    conn.disconnect();
+
+                    Gson gson = new Gson();
+                    Type mapType = new TypeToken<Map<String, MonthlyAccommodationReport>>(){}.getType();
+
+                    Map<String, MonthlyAccommodationReport> monthlyAccommodationReportMap = gson.fromJson(content.toString(), mapType);
+
+                    List<MonthlyAccommodationReport> fetchedReports = new ArrayList<>();
+                    for (Map.Entry<String, MonthlyAccommodationReport> entry : monthlyAccommodationReportMap.entrySet()) {
+                        fetchedReports.add(entry.getValue());
+                    }
+
+                    getActivity().runOnUiThread(() -> {
+                        adapter.setReports(fetchedReports);
+                        reports = fetchedReports;
+
+                        ArrayList<Integer> numbersList = new ArrayList<>();
+                        for (MonthlyAccommodationReport report : fetchedReports) {
+                            numbersList.add(report.getNumberOfReservations());
+                        }
+
+                        int[] numbersArray = new int[numbersList.size()];
+                        for (int i = 0; i < numbersList.size(); i++) {
+                            numbersArray[i] = numbersList.get(i);
+                        }
+
+                        updateBarChart(barChart, numbersArray);
+                    });
+                } else {
+                    System.out.println("GET request failed!");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }).start();
     }
 
     public void generatePdf(Context context, List<MonthlyAccommodationReport> reports) {
@@ -263,7 +297,7 @@ public class MonthlyAccommodationsReportFragment extends Fragment {
                 if (itemIndex >= reports.size()) break;
                 MonthlyAccommodationReport report = reports.get(itemIndex);
 
-                String reportText = String.format("Month: %s\nTotal: %.2f\nReservations: %d\n\n\n",
+                String reportText = String.format("Month: %s\nTotal Profit: %.2f\nReservations: %d\n\n\n",
                         report.getMonth(), report.getTotalProfit(), report.getNumberOfReservations());
 
                 for (String line : reportText.split("\n")) {
@@ -278,7 +312,7 @@ public class MonthlyAccommodationsReportFragment extends Fragment {
         }
 
         // Save the PDF to external storage
-        String fileName = "MonthlyReport.pdf";
+        String fileName = "MonthlyReport" + accommodationId + ".pdf";
         File pdfFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), fileName);
 
         try {
@@ -292,21 +326,19 @@ public class MonthlyAccommodationsReportFragment extends Fragment {
         }
     }
 
-        @Override
-        public void onResume () {
-            super.onResume();
-            if (proximitySensor != null) {
-                sensorManager.registerListener(proximityEventListener, proximitySensor, SensorManager.SENSOR_DELAY_UI);
-            }
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (proximitySensor != null) {
+            sensorManager.registerListener(proximityEventListener, proximitySensor, SensorManager.SENSOR_DELAY_UI);
         }
-
-        @Override
-        public void onPause () {
-            super.onPause();
-            if (proximitySensor != null) {
-                sensorManager.unregisterListener(proximityEventListener);
-            }
-        }
-
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (proximitySensor != null) {
+            sensorManager.unregisterListener(proximityEventListener);
+        }
+    }
+}
