@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import com.example.bookingapptim14.Adapters.FavouritesAdapter;
 import com.example.bookingapptim14.Adapters.HostAccommodationsAdapter;
+import com.example.bookingapptim14.Adapters.LocalDateDeserializer;
 import com.example.bookingapptim14.BuildConfig;
 import com.example.bookingapptim14.GlobalData;
 import com.example.bookingapptim14.R;
@@ -34,6 +35,7 @@ import com.example.bookingapptim14.host.UpdateAccommodationScreen;
 import com.example.bookingapptim14.models.SearchAccommodation;
 import com.example.bookingapptim14.models.dtos.OwnersAccommodationDTO;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.BufferedReader;
@@ -41,6 +43,7 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -135,7 +138,9 @@ public class SavedFragmentGuest extends Fragment implements FavouritesAdapter.On
                         in.close();
                         conn.disconnect();
 
-                        Gson gson = new Gson();
+                        Gson gson = new GsonBuilder()
+                                .registerTypeAdapter(LocalDate.class, new LocalDateDeserializer())
+                                .create();
                         List<SearchAccommodation> testAccommodations;
                         Type listType = new TypeToken<List<SearchAccommodation>>() {}.getType();
                         testAccommodations = gson.fromJson(content.toString(), listType);

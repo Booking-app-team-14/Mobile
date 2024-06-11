@@ -40,6 +40,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.bookingapptim14.Adapters.LocalDateDeserializer;
 import com.example.bookingapptim14.Adapters.MonthlyAccommodationReportAdapter;
 import com.example.bookingapptim14.BuildConfig;
 import com.example.bookingapptim14.R;
@@ -49,6 +50,7 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.BufferedReader;
@@ -59,6 +61,7 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -240,7 +243,9 @@ public class MonthlyAccommodationsReportFragment extends Fragment {
                     in.close();
                     conn.disconnect();
 
-                    Gson gson = new Gson();
+                    Gson gson = new GsonBuilder()
+                            .registerTypeAdapter(LocalDate.class, new LocalDateDeserializer())
+                            .create();
                     Type mapType = new TypeToken<Map<String, MonthlyAccommodationReport>>(){}.getType();
 
                     Map<String, MonthlyAccommodationReport> monthlyAccommodationReportMap = gson.fromJson(content.toString(), mapType);

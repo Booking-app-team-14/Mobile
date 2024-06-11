@@ -17,10 +17,12 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.bookingapptim14.Adapters.ImageSliderAdapter;
+import com.example.bookingapptim14.Adapters.LocalDateDeserializer;
 import com.example.bookingapptim14.BuildConfig;
 import com.example.bookingapptim14.R;
 import com.example.bookingapptim14.models.Accommodation;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import org.osmdroid.config.Configuration;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
@@ -34,6 +36,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -89,7 +92,9 @@ public class AccommodationDetailsActivityAdmin extends AppCompatActivity {
                     }
                     in.close();
 
-                    Gson gson = new Gson();
+                    Gson gson = new GsonBuilder()
+                            .registerTypeAdapter(LocalDate.class, new LocalDateDeserializer())
+                            .create();
                     accommodation = gson.fromJson(response.toString(), Accommodation.class);
 
                     runOnUiThread(() -> {

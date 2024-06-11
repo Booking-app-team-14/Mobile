@@ -30,6 +30,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.bookingapptim14.Adapters.AccommodationApprovalAdapter;
 import com.example.bookingapptim14.Adapters.AdminApprovalAccommodationCommentsAndReviewsAdapter;
 import com.example.bookingapptim14.Adapters.AdminApprovalOwnerCommentsAndReviewsAdapter;
+import com.example.bookingapptim14.Adapters.LocalDateDeserializer;
 import com.example.bookingapptim14.BuildConfig;
 import com.example.bookingapptim14.GlobalData;
 import com.example.bookingapptim14.R;
@@ -42,6 +43,7 @@ import com.example.bookingapptim14.models.dtos.ApproveReviewsDTO.ApproveOwnerRev
 import com.example.bookingapptim14.models.dtos.ApproveReviewsDTO.ApproveOwnerReviewsData;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.BufferedReader;
@@ -49,6 +51,7 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -159,7 +162,7 @@ public class CommentsAndReviewsApprovalFragment extends Fragment implements Admi
             @Override
             public void run() {
                 try {
-                    URL url = new URL(BuildConfig.IP_ADDR + "/api/accommodations/requests");
+                    URL url = new URL(BuildConfig.IP_ADDR + "/api/reviews/accommodation/requests");
                     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                     conn.setRequestMethod("GET");
                     conn.setDoInput(true);
@@ -178,7 +181,9 @@ public class CommentsAndReviewsApprovalFragment extends Fragment implements Admi
 
                         List<ApproveAccommodationReviewsData> accommodationCommentsAndReviews = new ArrayList<>();
 
-                        Gson gson = new Gson();
+                        Gson gson = new GsonBuilder()
+                                .registerTypeAdapter(LocalDate.class, new LocalDateDeserializer())
+                                .create();
                         Type listType = new TypeToken<List<ApproveAccommodationReviewsDTO>>(){}.getType();
                         List<ApproveAccommodationReviewsDTO> accommodationReviewsDTOs = gson.fromJson(content.toString(), listType);
 
@@ -328,7 +333,9 @@ public class CommentsAndReviewsApprovalFragment extends Fragment implements Admi
 
                         List<ApproveOwnerReviewsData> ownerCommentsAndReviews = new ArrayList<>();
 
-                        Gson gson = new Gson();
+                        Gson gson = new GsonBuilder()
+                                .registerTypeAdapter(LocalDate.class, new LocalDateDeserializer())
+                                .create();
                         Type listType = new TypeToken<List<ApproveOwnerReviewsDTO>>(){}.getType();
                         List<ApproveOwnerReviewsDTO> ownerReviewsDTOs = gson.fromJson(content.toString(), listType);
 
@@ -501,7 +508,7 @@ public class CommentsAndReviewsApprovalFragment extends Fragment implements Admi
     @Override
     public void onAccommodationCommentAndReviewDetailsRequested(ApproveAccommodationReviewsData commentAndReview) {
         Intent intent = new Intent(getActivity(), AccommodationDetailsActivityAdmin.class);
-        intent.putExtra("accommodationId", commentAndReview.getAccommodationId());
+        intent.putExtra("accommodation_id", commentAndReview.getAccommodationId());
         startActivity(intent);
     }
 

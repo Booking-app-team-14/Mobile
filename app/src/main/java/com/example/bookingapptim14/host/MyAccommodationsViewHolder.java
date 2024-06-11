@@ -62,20 +62,21 @@ public class MyAccommodationsViewHolder extends RecyclerView.ViewHolder {
         if (base64Image != null && !base64Image.isEmpty()) {
             byte[] decodedString = Base64.getDecoder().decode(base64Image);
             Bitmap bm = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-            Bitmap scaled = scaleDown(bm, 200, true);
-            mainAccommodationImage.setImageBitmap(scaled);
-            // TODO: [VUK] obrisi scaler
+//            Bitmap scaled = scaleDown(bm, 200, true);
+//            mainAccommodationImage.setImageBitmap(scaled);
+            mainAccommodationImage.setImageBitmap(bm);
+            // TODO: bitmap image scaler, vidi da li treba svugde
         }
     }
 
-    public static Bitmap scaleDown(Bitmap realImage, float maxImageSize, boolean filter) {
-        float ratio = Math.min(
-                maxImageSize / realImage.getWidth(),
-                maxImageSize / realImage.getHeight());
-        int width = Math.round(ratio * realImage.getWidth());
-        int height = Math.round(ratio * realImage.getHeight());
-
-        return Bitmap.createScaledBitmap(realImage, width, height, filter);
-    }
+//    public static Bitmap scaleDown(Bitmap realImage, float maxImageSize, boolean filter) {
+//        float ratio = Math.min(
+//                maxImageSize / realImage.getWidth(),
+//                maxImageSize / realImage.getHeight());
+//        int width = Math.round(ratio * realImage.getWidth());
+//        int height = Math.round(ratio * realImage.getHeight());
+//
+//        return Bitmap.createScaledBitmap(realImage, width, height, filter);
+//    }
 
 }

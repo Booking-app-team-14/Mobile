@@ -22,6 +22,9 @@ import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import com.example.bookingapptim14.Adapters.LocalDateDeserializer;
+import com.example.bookingapptim14.Adapters.LocalDateSerializer;
 import com.example.bookingapptim14.BuildConfig;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -46,6 +49,7 @@ import com.example.bookingapptim14.models.dtos.ReservationRequestDTO.Reservation
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
@@ -129,7 +133,9 @@ public class UpdateAccommodationScreen extends AppCompatActivity {
                         in.close();
                         conn.disconnect();
 
-                        Gson gson = new Gson();
+                        Gson gson = new GsonBuilder()
+                                .registerTypeAdapter(LocalDate.class, new LocalDateDeserializer())
+                                .create();
                         Type listType = new TypeToken<List<AmenityDTO>>(){}.getType();
                         List<AmenityDTO> amenities = gson.fromJson(content.toString(), listType);
 
@@ -178,16 +184,10 @@ public class UpdateAccommodationScreen extends AppCompatActivity {
                         in.close();
                         conn.disconnect();
 
-                        Gson gson = new Gson();
+                        Gson gson = new GsonBuilder()
+                                .registerTypeAdapter(LocalDate.class, new LocalDateDeserializer())
+                                .create();
                         AccommodationUpdateDTO accommodation = gson.fromJson(content.toString(), AccommodationUpdateDTO.class);
-
-                        // TODO: [VUK] popravi error
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Toast.makeText(context, "ovde puca pre", Toast.LENGTH_SHORT).show();
-                            }
-                        });
 
                         runOnUiThread(new Runnable() {
 
@@ -541,7 +541,9 @@ public class UpdateAccommodationScreen extends AppCompatActivity {
             @Override
             public void run() {
                 try {
-                    Gson gson = new Gson();
+                    Gson gson = new GsonBuilder()
+                            .registerTypeAdapter(LocalDate.class, new LocalDateSerializer())
+                            .create();
                     String json = gson.toJson(accommodationUpdateDTO);
 
                     URL url = new URL(BuildConfig.IP_ADDR + "/api/accommodations/update");
@@ -711,7 +713,8 @@ public class UpdateAccommodationScreen extends AppCompatActivity {
                     return null;
                 }
             } else {
-                amount = Double.parseDouble(findViewById(R.id.updateAccommodationEditTextPrice).toString());
+                EditText defaultPriceEditText = findViewById(R.id.updateAccommodationEditTextPrice);
+                amount = Double.parseDouble(defaultPriceEditText.getText().toString());
             }
 
             availabilitiesAndSpecialPrices.add(new UpdateAvailabilityDTO(startDate, endDate, amount));

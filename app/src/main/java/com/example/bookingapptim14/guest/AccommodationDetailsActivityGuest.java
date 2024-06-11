@@ -40,6 +40,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.bookingapptim14.Adapters.AvailabilityAdapter;
 import com.example.bookingapptim14.Adapters.ImageSliderAdapter;
+import com.example.bookingapptim14.Adapters.LocalDateDeserializer;
 import com.example.bookingapptim14.BuildConfig;
 import com.example.bookingapptim14.GlobalData;
 import com.example.bookingapptim14.R;
@@ -48,6 +49,7 @@ import com.example.bookingapptim14.models.Accommodation;
 import com.example.bookingapptim14.models.Availability;
 import com.example.bookingapptim14.models.ReservationRequest;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import org.osmdroid.config.Configuration;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
@@ -123,7 +125,9 @@ public class AccommodationDetailsActivityGuest extends AppCompatActivity {
                     }
                     in.close();
 
-                    Gson gson = new Gson();
+                    Gson gson = new GsonBuilder()
+                            .registerTypeAdapter(LocalDate.class, new LocalDateDeserializer())
+                            .create();
                     accommodation = gson.fromJson(response.toString(), Accommodation.class);
 
                     runOnUiThread(() -> {
@@ -393,7 +397,9 @@ public class AccommodationDetailsActivityGuest extends AppCompatActivity {
                 conn.setRequestProperty("Content-Type", "application/json");
                 conn.setRequestProperty("Authorization", "Bearer " + jwtToken);
 
-                Gson gson = new Gson();
+                Gson gson = new GsonBuilder()
+                        .registerTypeAdapter(LocalDate.class, new LocalDateDeserializer())
+                        .create();
                 String jsonInputString = gson.toJson(reservationRequest);
 
                 try (OutputStream os = conn.getOutputStream()) {

@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.example.bookingapptim14.Adapters.AdminAccommodationReviewReportsAdapter;
 import com.example.bookingapptim14.Adapters.AdminOwnerReviewReportAdapter;
+import com.example.bookingapptim14.Adapters.LocalDateDeserializer;
 import com.example.bookingapptim14.BuildConfig;
 import com.example.bookingapptim14.GlobalData;
 import com.example.bookingapptim14.R;
@@ -34,6 +35,7 @@ import com.example.bookingapptim14.models.dtos.ReportsDTO.OwnerReviewDTO;
 import com.example.bookingapptim14.models.dtos.ReportsDTO.OwnerReviewReportsDTO;
 import com.example.bookingapptim14.models.dtos.ReportsDTO.OwnerReviewReportsData;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.BufferedReader;
@@ -41,6 +43,7 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -129,7 +132,9 @@ public class OwnerReviewReportsAdminFragment extends Fragment implements AdminOw
 
                         List<OwnerReviewReportsData> ownerReviewReports = new ArrayList<>();
 
-                        Gson gson = new Gson();
+                        Gson gson = new GsonBuilder()
+                                .registerTypeAdapter(LocalDate.class, new LocalDateDeserializer())
+                                .create();
                         Type listType = new TypeToken<List<OwnerReviewReportsDTO>>(){}.getType();
                         List<OwnerReviewReportsDTO> ownerReviewReportsDTOs = gson.fromJson(response.toString(), listType);
 

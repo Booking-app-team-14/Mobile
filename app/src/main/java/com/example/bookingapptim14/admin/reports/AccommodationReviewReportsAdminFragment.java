@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import com.example.bookingapptim14.Adapters.AdminAccommodationReviewReportsAdapter;
 import com.example.bookingapptim14.Adapters.AdminUserReportsAdapter;
+import com.example.bookingapptim14.Adapters.LocalDateDeserializer;
 import com.example.bookingapptim14.BuildConfig;
 import com.example.bookingapptim14.GlobalData;
 import com.example.bookingapptim14.R;
@@ -37,6 +38,7 @@ import com.example.bookingapptim14.models.dtos.ReportsDTO.AccommodationReviewRep
 import com.example.bookingapptim14.models.dtos.ReportsDTO.AccommodationReviewReportsData;
 import com.example.bookingapptim14.models.dtos.ReportsDTO.UserReportsData;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.BufferedReader;
@@ -44,6 +46,7 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -134,7 +137,9 @@ public class AccommodationReviewReportsAdminFragment extends Fragment implements
 
                         List<AccommodationReviewReportsData> accommodationReviewReports = new ArrayList<>();
 
-                        Gson gson = new Gson();
+                        Gson gson = new GsonBuilder()
+                                .registerTypeAdapter(LocalDate.class, new LocalDateDeserializer())
+                                .create();
                         Type listType = new TypeToken<List<AccommodationReviewReportsDTO>>(){}.getType();
                         List<AccommodationReviewReportsDTO> accommodationReviewsDTOs = gson.fromJson(content.toString(), listType);
 
@@ -305,7 +310,7 @@ public class AccommodationReviewReportsAdminFragment extends Fragment implements
     @Override
     public void onDetailsRequested(AccommodationReviewReportsData report) {
         Intent intent = new Intent(getActivity(), AccommodationDetailsActivityAdmin.class);
-        intent.putExtra("accommodationId", report.getAccommodationReviewDTO().getAccommodationId());
+        intent.putExtra("accommodation_id", report.getAccommodationReviewDTO().getAccommodationId());
         startActivity(intent);
     }
 

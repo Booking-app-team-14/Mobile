@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 import com.example.bookingapptim14.Adapters.AccommodationApprovalAdapter;
 import com.example.bookingapptim14.Adapters.HostAccommodationsAdapter;
+import com.example.bookingapptim14.Adapters.LocalDateDeserializer;
 import com.example.bookingapptim14.BuildConfig;
 import com.example.bookingapptim14.GlobalData;
 import com.example.bookingapptim14.R;
@@ -35,6 +36,7 @@ import com.example.bookingapptim14.models.dtos.OwnersAccommodationDTO;
 import com.example.bookingapptim14.models.dtos.ReservationRequestDTO.ApprovedReservationData;
 import com.example.bookingapptim14.models.dtos.ReservationRequestDTO.ReservationRequestDTO;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.BufferedReader;
@@ -42,6 +44,7 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -145,7 +148,9 @@ public class MyAccommodationsFragment extends Fragment implements HostAccommodat
                         in.close();
                         conn.disconnect();
 
-                        Gson gson = new Gson();
+                        Gson gson = new GsonBuilder()
+                                .registerTypeAdapter(LocalDate.class, new LocalDateDeserializer())
+                                .create();
                         Type listType = new TypeToken<List<OwnersAccommodationDTO>>(){}.getType();
                         List<OwnersAccommodationDTO> hostAccommodations = gson.fromJson(content.toString(), listType);
 
@@ -184,7 +189,7 @@ public class MyAccommodationsFragment extends Fragment implements HostAccommodat
     public void onAccommodationDetailsRequested(OwnersAccommodationDTO accommodation) {
         Long accommodationId = accommodation.getId();
         Intent intent = new Intent(getActivity(), AccommodationDetailsActivityHost.class);
-        intent.putExtra("accommodationId", accommodationId);
+        intent.putExtra("accommodation_id", accommodationId);
         startActivity(intent);
     }
 
@@ -198,7 +203,7 @@ public class MyAccommodationsFragment extends Fragment implements HostAccommodat
 //                .replace(R.id.frameLayout, fragment, fragment.getClass().getSimpleName()).addToBackStack(null).commit();
 
         Intent updateAccommodationIntent = new Intent(getActivity(), UpdateAccommodationScreen.class);
-        updateAccommodationIntent.putExtra("accommodationId", accommodationId);
+        updateAccommodationIntent.putExtra("accommodation_id", accommodationId);
         startActivity(updateAccommodationIntent);
 
     }

@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import com.example.bookingapptim14.Adapters.ApprovedReservationsAdapter;
 import com.example.bookingapptim14.Adapters.ApprovedReservationsGuestAdapter;
+import com.example.bookingapptim14.Adapters.LocalDateDeserializer;
 import com.example.bookingapptim14.BuildConfig;
 import com.example.bookingapptim14.GlobalData;
 import com.example.bookingapptim14.R;
@@ -32,6 +33,7 @@ import com.example.bookingapptim14.models.dtos.ReservationRequestDTO.ApprovedRes
 import com.example.bookingapptim14.models.dtos.ReservationRequestDTO.ApprovedReservationGuestData;
 import com.example.bookingapptim14.models.dtos.ReservationRequestDTO.ReservationRequestDTO;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.BufferedReader;
@@ -39,6 +41,7 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -132,7 +135,9 @@ public class ApprovedReservationsFragmentGuest extends Fragment implements Appro
 
                         List<ApprovedReservationGuestData> approvedReservations = new ArrayList<>();
 
-                        Gson gson = new Gson();
+                        Gson gson = new GsonBuilder()
+                                .registerTypeAdapter(LocalDate.class, new LocalDateDeserializer())
+                                .create();
                         Type listType = new TypeToken<List<ReservationRequestDTO>>(){}.getType();
                         List<ReservationRequestDTO> reservationRequestDTOs = gson.fromJson(content.toString(), listType);
 
