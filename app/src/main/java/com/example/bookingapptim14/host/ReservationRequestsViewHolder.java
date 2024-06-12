@@ -88,5 +88,14 @@ public class ReservationRequestsViewHolder extends RecyclerView.ViewHolder {
             byte[] decodedString = Base64.getDecoder().decode(base64Image);
             accommodationImage.setImageBitmap(BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length));
         }
+
+        String status = accommodation.getRequestStatus();
+        if ("DECLINED".equalsIgnoreCase(status)) {
+            approveButton.setVisibility(View.GONE);
+            rejectButton.setVisibility(View.GONE);
+        } else if ("SENT".equalsIgnoreCase(status)) {
+            approveButton.setVisibility(View.VISIBLE);
+            rejectButton.setVisibility(View.VISIBLE);
+        }
     }
 }

@@ -107,14 +107,12 @@
                 android:id="@+id/ownerPicture"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:src="@drawable/accommodation_1"
                 android:scaleType="centerCrop"/>
 
             <TextView
                 android:id="@+id/ownerName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Owner 1"
                 android:textSize="18sp"
                 android:paddingTop="8dp"/>
         </LinearLayout>

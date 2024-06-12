@@ -166,7 +166,7 @@ public class Accommodation {
     private void setPricePerGuest(boolean pricePerGuest){
         this.pricePerGuest = pricePerGuest;
     }
-    private boolean isPricePerGuest(){
+    public boolean isPricePerGuest(){
         return this.pricePerGuest;
     }
 
@@ -179,7 +179,7 @@ public class Accommodation {
     private  void setOwner_Id(Long owner_Id){
         this.owner_Id = owner_Id;
     }
-    private Long getOwner_Id(){
+    public Long getOwner_Id(){
         return this.owner_Id;
     }
 

@@ -1,7 +1,6 @@
 package com.example.bookingapptim14.guest;
 
 import static android.content.Context.MODE_PRIVATE;
-
 import static com.example.bookingapptim14.broadcastReceivers.ConnectivityReceiver.MY_PERMISSIONS_REQUEST_NOTIFICATION;
 
 import android.Manifest;
@@ -36,18 +35,21 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
-import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.bookingapptim14.Adapters.AvailabilityAdapter;
 import com.example.bookingapptim14.Adapters.ImageSliderAdapter;
 import com.example.bookingapptim14.Adapters.LocalDateDeserializer;
+import com.example.bookingapptim14.Adapters.LocalDateDeserializerR;
 import com.example.bookingapptim14.BuildConfig;
 import com.example.bookingapptim14.GlobalData;
 import com.example.bookingapptim14.R;
 import com.example.bookingapptim14.enums.RequestStatus;
 import com.example.bookingapptim14.models.Accommodation;
 import com.example.bookingapptim14.models.Availability;
-import com.example.bookingapptim14.models.ReservationRequest;
+import com.example.bookingapptim14.models.UserInfoDTO;
+import com.example.bookingapptim14.models.dtos.ReservationRequestDTO.RequestDTOGuest;
+import com.example.bookingapptim14.models.dtos.ReservationRequestDTO.ReservationRequestDTO;
+import com.example.bookingapptim14.models.dtos.UserBasicInfoDTO;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -65,6 +67,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Calendar;
@@ -103,8 +106,6 @@ public class AccommodationDetailsActivityGuest extends AppCompatActivity {
                 finish();
             }
         }
-
-
     }
 
     private void fetchAccommodationDetails(Long accommodationId) {
@@ -169,33 +170,21 @@ public class AccommodationDetailsActivityGuest extends AppCompatActivity {
 
     private void setupViewPager() {
         viewPager = findViewById(R.id.rectangle_1);
-        String base64Image="";
-        Set<String> images=accommodation.getImageBytes();
-        for (String b1: images){
+        String base64Image = "";
+        Set<String> images = accommodation.getImageBytes();
+        for (String b1 : images) {
             base64Image = b1;
             break;
-        };
+        }
         if (base64Image != null && !base64Image.isEmpty()) {
             byte[] decodedString = Base64.getDecoder().decode(base64Image);
             Bitmap bm = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-            //Bitmap scaled = scaleDown(bm, 200, true);
             viewPager.setImageBitmap(bm);
         }
-
 
         adapter = new ImageSliderAdapter(this, imageList);
     }
 
-
-    public static Bitmap scaleDown(Bitmap realImage, float maxImageSize, boolean filter) {
-        float ratio = Math.min(
-                maxImageSize / realImage.getWidth(),
-                maxImageSize / realImage.getHeight());
-        int width = Math.round(ratio * realImage.getWidth());
-        int height = Math.round(ratio * realImage.getHeight());
-
-        return Bitmap.createScaledBitmap(realImage, width, height, filter);
-    }
     private void setupMapView() {
         mapView = findViewById(R.id.mapView);
         mapView.setTileSource(TileSourceFactory.MAPNIK);
@@ -354,7 +343,8 @@ public class AccommodationDetailsActivityGuest extends AppCompatActivity {
         while (!currentDate.isAfter(endDate)) {
             for (Availability availability : accommodation.getAvailabilities()) {
                 if (!currentDate.isBefore(availability.getStartDate()) && !currentDate.isAfter(availability.getEndDate())) {
-                    totalAmount += availability.getSpecialPrice() * numOfGuests;
+                    double dailyRate = accommodation.isPricePerGuest() ? availability.getSpecialPrice() * numOfGuests : availability.getSpecialPrice();
+                    totalAmount += dailyRate;
                     break;
                 }
             }
@@ -381,16 +371,70 @@ public class AccommodationDetailsActivityGuest extends AppCompatActivity {
         int numOfGuests = numberPickerGuests.getValue();
         LocalDate startDate = LocalDate.of(startYear, startMonth, startDay);
         LocalDate endDate = LocalDate.of(endYear, endMonth, endDay);
+
         double totalPrice = calculateTotalAmount(startDate, endDate, numOfGuests);
 
-        ReservationRequest reservationRequest = new ReservationRequest(1L, accommodationId, totalPrice, startDate, endDate, numOfGuests, RequestStatus.SENT);
-        sendReservationRequest(reservationRequest);
-    }
-
-    private void sendReservationRequest(ReservationRequest reservationRequest) {
         new Thread(() -> {
             try {
-                URL url = new URL(BuildConfig.IP_ADDR + "/api/requests" + "?requestDTO="+ reservationRequest);
+                URL url = new URL(BuildConfig.IP_ADDR + "/api/users/owner/" + accommodation.getOwner_Id());
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestMethod("GET");
+                conn.setRequestProperty("Authorization", "Bearer " + jwtToken);
+
+                int responseCode = conn.getResponseCode();
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                    StringBuilder response = new StringBuilder();
+                    String line;
+                    while ((line = in.readLine()) != null) {
+                        response.append(line);
+                    }
+                    in.close();
+
+                    Gson gson = new GsonBuilder()
+                            .registerTypeAdapter(LocalDate.class, new LocalDateDeserializer())
+                            .create();
+                    UserInfoDTO user = gson.fromJson(response.toString(), UserInfoDTO.class);
+
+                    runOnUiThread(() -> {
+                        TextView ownerName = findViewById(R.id.ownerName);
+                        ownerName.setText(user.getFirstName()+" "+user.getLastName());
+                        ImageView ownerPicture = findViewById(R.id.ownerPicture);
+                        String base64ImageGuest = user.getProfilePictureBytes();
+                        if (base64ImageGuest != null && !base64ImageGuest.isEmpty()) {
+                            byte[] decodedString = Base64.getDecoder().decode(base64ImageGuest);
+                            ownerPicture.setImageBitmap(BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length));
+                        }
+                        RequestDTOGuest reservationRequest = new RequestDTOGuest(
+                                userId, accommodationId, startDate, endDate, numOfGuests, totalPrice,
+                                RequestStatus.SENT, accommodation.getName(), accommodation.getType().toString(),
+                                user.getUsername(), LocalDate.now().toString(), (int) accommodation.getRating(),
+                                "refhdxg", "jpg", "efrd", "jpg"
+                        );
+                        sendReservationRequest(reservationRequest, alertDialog);
+                    });
+                } else {
+                    runOnUiThread(() -> {
+                        Toast.makeText(AccommodationDetailsActivityGuest.this, "Failed to fetch accommodation details", Toast.LENGTH_SHORT).show();
+                        finish();
+                    });
+
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                runOnUiThread(() -> {
+                    Toast.makeText(AccommodationDetailsActivityGuest.this, "Error fetching accommodation details", Toast.LENGTH_SHORT).show();
+                    finish();
+                });
+            }
+        }).start();
+
+    }
+
+    private void sendReservationRequest(RequestDTOGuest reservationRequest, AlertDialog alertDialog) {
+        new Thread(() -> {
+            try {
+                URL url = new URL(BuildConfig.IP_ADDR + "/api/requests");
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("POST");
                 conn.setDoOutput(true);
@@ -398,9 +442,12 @@ public class AccommodationDetailsActivityGuest extends AppCompatActivity {
                 conn.setRequestProperty("Authorization", "Bearer " + jwtToken);
 
                 Gson gson = new GsonBuilder()
-                        .registerTypeAdapter(LocalDate.class, new LocalDateDeserializer())
+                        .registerTypeAdapter(LocalDate.class, new LocalDateDeserializerR())
                         .create();
                 String jsonInputString = gson.toJson(reservationRequest);
+
+                // Log the JSON to debug
+                Log.d("JSON_Request", jsonInputString);
 
                 try (OutputStream os = conn.getOutputStream()) {
                     byte[] input = jsonInputString.getBytes("utf-8");
@@ -418,7 +465,10 @@ public class AccommodationDetailsActivityGuest extends AppCompatActivity {
                     in.close();
                     conn.disconnect();
 
-                    runOnUiThread(() -> Toast.makeText(AccommodationDetailsActivityGuest.this, "Reservation Successfully Sent", Toast.LENGTH_SHORT).show());
+                    runOnUiThread(() -> {
+                        alertDialog.dismiss(); // Dismiss the dialog first
+                        Toast.makeText(AccommodationDetailsActivityGuest.this, "Reservation Successfully Sent", Toast.LENGTH_SHORT).show();
+                    });
                 } else {
                     Log.e("Reservation", "POST request failed!");
                 }
@@ -426,7 +476,6 @@ public class AccommodationDetailsActivityGuest extends AppCompatActivity {
                 e.printStackTrace();
             }
         }).start();
-
         sendNotification();
     }
 
@@ -467,6 +516,4 @@ public class AccommodationDetailsActivityGuest extends AppCompatActivity {
             }
         }
     }
-
-
 }

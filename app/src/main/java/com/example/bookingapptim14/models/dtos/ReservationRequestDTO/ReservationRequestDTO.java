@@ -1,5 +1,8 @@
 package com.example.bookingapptim14.models.dtos.ReservationRequestDTO;
 
+import com.example.bookingapptim14.enums.RequestStatus;
+
+import java.lang.ref.ReferenceQueue;
 import java.time.LocalDate;
 
 public class ReservationRequestDTO {
@@ -12,6 +15,7 @@ public class ReservationRequestDTO {
     private int numberOfGuests;
     private double totalPrice;
     private String requestStatus;
+    private RequestStatus requestStatus1;
     private String name;
     private String type;
     private String userUsername; // owner username
@@ -44,6 +48,24 @@ public class ReservationRequestDTO {
         this.userImageType = userImageType;
     }
 
+    public ReservationRequestDTO(Long guestId, Long accommodationId, LocalDate startDate, LocalDate endDate, int numberOfGuests, double totalPrice, RequestStatus requestStatus, String name, String type, String userUsername, String dateRequested, int stars, String mainPictureBytes, String imageType, String userProfilePictureBytes, String userImageType) {
+        this.guestId = guestId;
+        this.accommodationId = accommodationId;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.numberOfGuests = numberOfGuests;
+        this.totalPrice = totalPrice;
+        this.requestStatus1 = requestStatus;
+        this.name = name;
+        this.type = type;
+        this.userUsername = userUsername;
+        this.dateRequested = dateRequested;
+        this.stars = stars;
+        this.mainPictureBytes = mainPictureBytes;
+        this.imageType = imageType;
+        this.userProfilePictureBytes = userProfilePictureBytes;
+        this.userImageType = userImageType;
+    }
     public Long getId() {
         return id;
     }

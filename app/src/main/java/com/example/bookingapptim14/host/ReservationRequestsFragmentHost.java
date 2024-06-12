@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,12 +24,10 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.bookingapptim14.Adapters.AccommodationApprovalAdapter;
 import com.example.bookingapptim14.Adapters.LocalDateDeserializer;
 import com.example.bookingapptim14.Adapters.ReservationRequestsAdapter;
 import com.example.bookingapptim14.BuildConfig;
 import com.example.bookingapptim14.R;
-import com.example.bookingapptim14.enums.ConfirmationMethod;
 import com.example.bookingapptim14.models.dtos.ReservationRequestDTO.ApprovedReservationData;
 import com.example.bookingapptim14.models.dtos.ReservationRequestDTO.ReservationRequestDTO;
 import com.google.android.material.datepicker.MaterialDatePicker;
@@ -46,7 +45,6 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class ReservationRequestsFragmentHost extends Fragment implements ReservationRequestsAdapter.OnRequestListener {
     private Button btnDateRangePicker;
@@ -68,10 +66,12 @@ public class ReservationRequestsFragmentHost extends Fragment implements Reserva
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("MySharedPref", MODE_PRIVATE);
         jwtToken = sharedPreferences.getString("jwtToken", "");
         userId = sharedPreferences.getLong("userId", 0);
+        Log.d("ReservationRequestsFragmentHost", "onCreate called");
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Log.d("ReservationRequestsFragmentHost", "onCreateView called");
         View view = inflater.inflate(R.layout.fragment_reservation_requests_host, container, false);
 
         initializeViews(view);
@@ -94,14 +94,14 @@ public class ReservationRequestsFragmentHost extends Fragment implements Reserva
 
     private void setupListeners() {
         btnDateRangePicker.setOnClickListener(v -> openDateRangePicker());
-        radioGroupStatus.setOnCheckedChangeListener((group, checkedId) -> filterRequests());
+        radioGroupStatus.setOnCheckedChangeListener((group, checkedId) -> fetchRequests());
         editTextSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                filterRequests();
+                fetchRequests();
             }
 
             @Override
@@ -125,7 +125,7 @@ public class ReservationRequestsFragmentHost extends Fragment implements Reserva
                     android.text.format.DateFormat.format("dd/MM/yyyy", selection.second)
             );
             textViewDateRange.setText(dateRange);
-            filterRequests();
+            fetchRequests();
         });
 
         picker.show(getChildFragmentManager(), picker.toString());
@@ -134,7 +134,19 @@ public class ReservationRequestsFragmentHost extends Fragment implements Reserva
     private void fetchRequests() {
         new Thread(() -> {
             try {
-                URL url = new URL(BuildConfig.IP_ADDR + "/api/requests/owner/" + userId);
+                StringBuilder urlBuilder = new StringBuilder(BuildConfig.IP_ADDR + "/api/requests/filtered-host/" + userId);
+                String status = getStatusFilter();
+                String startDate = selectedStartDate != null ? selectedStartDate.toString() : null;
+                String endDate = selectedEndDate != null ? selectedEndDate.toString() : null;
+                String query = editTextSearch.getText().toString().trim();
+
+                urlBuilder.append("?");
+                if (status != null && !status.equalsIgnoreCase("all")) urlBuilder.append("status=").append(status).append("&");
+                if (startDate != null) urlBuilder.append("startDate=").append(startDate).append("&");
+                if (endDate != null) urlBuilder.append("endDate=").append(endDate).append("&");
+                if (!query.isEmpty()) urlBuilder.append("query=").append(query);
+
+                URL url = new URL(urlBuilder.toString());
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("GET");
                 conn.setDoInput(true);
@@ -143,22 +155,22 @@ public class ReservationRequestsFragmentHost extends Fragment implements Reserva
                 int responseCode = conn.getResponseCode();
                 if (responseCode == HttpURLConnection.HTTP_OK) {
                     BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                    String inputLine;
                     StringBuilder content = new StringBuilder();
+                    String inputLine;
                     while ((inputLine = in.readLine()) != null) {
                         content.append(inputLine);
                     }
                     in.close();
                     conn.disconnect();
 
-                    List<ApprovedReservationData> approvedReservations = new ArrayList<>();
-
                     Gson gson = new GsonBuilder()
                             .registerTypeAdapter(LocalDate.class, new LocalDateDeserializer())
                             .create();
                     Type listType = new TypeToken<List<ReservationRequestDTO>>(){}.getType();
                     List<ReservationRequestDTO> reservationRequestDTOs = gson.fromJson(content.toString(), listType);
+                    Log.d("requests", "Fetched " + reservationRequestDTOs.size() + " requests");
 
+                    List<ApprovedReservationData> approvedReservations = new ArrayList<>();
                     for (ReservationRequestDTO dto : reservationRequestDTOs) {
                         URL url2 = new URL(BuildConfig.IP_ADDR + "/api/users/" + dto.getGuestId() + "/usernameAndNumberOfCancellations");
                         HttpURLConnection conn2 = (HttpURLConnection) url2.openConnection();
@@ -169,8 +181,8 @@ public class ReservationRequestsFragmentHost extends Fragment implements Reserva
                         int responseCode2 = conn2.getResponseCode();
                         if (responseCode2 == HttpURLConnection.HTTP_OK) {
                             BufferedReader in2 = new BufferedReader(new InputStreamReader(conn2.getInputStream()));
-                            String inputLine2;
                             StringBuilder content2 = new StringBuilder();
+                            String inputLine2;
                             while ((inputLine2 = in2.readLine()) != null) {
                                 content2.append(inputLine2);
                             }
@@ -188,94 +200,57 @@ public class ReservationRequestsFragmentHost extends Fragment implements Reserva
 
                     getActivity().runOnUiThread(() -> {
                         requestList = approvedReservations;
-                        filteredList = new ArrayList<>(requestList);
-                        requestsAdapter.setReservations(filteredList);
+                        requestsAdapter.setReservations(requestList);
+                        requestsAdapter.notifyDataSetChanged();
                     });
+                } else {
+                    Log.e("fetchRequests", "Failed to fetch requests. Response code: " + responseCode);
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.e("fetchRequests", "Exception during fetch", e);
             }
         }).start();
     }
 
-    @SuppressLint("DefaultLocale")
-    private void filterRequests() {
-        String query = editTextSearch.getText().toString().toLowerCase();
+    private String getStatusFilter() {
         int selectedStatusId = radioGroupStatus.getCheckedRadioButtonId();
+        if (selectedStatusId == -1) return null;
         RadioButton selectedRadioButton = radioGroupStatus.findViewById(selectedStatusId);
-        String selectedStatus = selectedRadioButton.getText().toString();
-
-        filteredList = requestList.stream()
-                .filter(request -> (query.isEmpty() || request.getGuestUsername().toLowerCase().contains(query))
-                        && (selectedStatus.equals("All") || request.getRequestStatus().equalsIgnoreCase(selectedStatus))
-                        && (selectedStartDate == null || (request.getStartDate().compareTo(selectedStartDate) >= 0 && request.getEndDate().compareTo(selectedEndDate) <= 0)))
-                .collect(Collectors.toList());
-
-        requestsAdapter.setReservations(filteredList);
+        return selectedRadioButton.getText().toString();
     }
 
     @Override
     public void onRequestApproved(ApprovedReservationData request) {
-        // PUT api/requests/approve/{requestId}
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    URL url = new URL(BuildConfig.IP_ADDR + "/api/requests/approve/" + request.getId());
-                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                    conn.setRequestMethod("PUT");
-                    conn.setDoInput(true);
-                    conn.setRequestProperty("Authorization", "Bearer " + jwtToken);
-
-                    int responseCode = conn.getResponseCode();
-                    if (responseCode == HttpURLConnection.HTTP_OK) {
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                filterRequests();
-                                Toast.makeText(getContext(), "Approved!", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    } else {
-                        System.out.println("PUT request failed!");
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
+        updateRequestStatus(request.getId(), true);
     }
 
     @Override
     public void onRequestRejected(ApprovedReservationData request) {
-        // PUT api/requests/reject/{requestId}
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    URL url = new URL(BuildConfig.IP_ADDR + "/api/requests/reject/" + request.getId());
-                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                    conn.setRequestMethod("PUT");
-                    conn.setDoInput(true);
-                    conn.setRequestProperty("Authorization", "Bearer " + jwtToken);
+        updateRequestStatus(request.getId(), false);
+    }
 
-                    int responseCode = conn.getResponseCode();
-                    if (responseCode == HttpURLConnection.HTTP_OK) {
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                filterRequests();
-                                Toast.makeText(getContext(), "Rejected!", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    } else {
-                        System.out.println("PUT request failed!");
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
+    private void updateRequestStatus(long requestId, boolean approve) {
+        new Thread(() -> {
+            try {
+                String action = approve ? "approve" : "reject";
+                URL url = new URL(BuildConfig.IP_ADDR + "/api/requests/" + action + "/" + requestId);
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestMethod("PUT");
+                conn.setDoInput(true);
+                conn.setRequestProperty("Authorization", "Bearer " + jwtToken);
+
+                int responseCode = conn.getResponseCode();
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    getActivity().runOnUiThread(() -> {
+                        fetchRequests(); // Fetch and filter again after approval or rejection
+                        Toast.makeText(getContext(), approve ? "Approved!" : "Rejected!", Toast.LENGTH_SHORT).show();
+                    });
+                } else {
+                    Log.e("updateRequestStatus", "PUT request failed. Response code: " + responseCode);
                 }
+            } catch (Exception e) {
+                Log.e("updateRequestStatus", "Exception during status update", e);
             }
         }).start();
     }
-
 }
