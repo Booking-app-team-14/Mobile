@@ -90,6 +90,20 @@ public class NotificationsFragmentGuest extends Fragment implements GuestNotific
         notificationsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         ToggleButton toggleButton = view.findViewById(R.id.guestNotificationsToggleButton);
+        CompoundButton.OnCheckedChangeListener toggleListener = new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    TextView notificationsTextView = view.findViewById(R.id.guestNotificationsEnabledTextView);
+                    notificationsTextView.setText("Notifications: disabled");
+                    sendPutRequest();
+                } else {
+                    TextView notificationsTextView = view.findViewById(R.id.guestNotificationsEnabledTextView);
+                    notificationsTextView.setText("Notifications: enabled");
+                    sendPutRequest();
+                }
+            }
+        };
 
         new Thread(new Runnable() {
             @Override
@@ -123,8 +137,14 @@ public class NotificationsFragmentGuest extends Fragment implements GuestNotific
                             public void run() {
                                 if (notificationTypes.isEmpty()) {
                                     toggleButton.setChecked(false);
+                                    TextView notificationsTextView = view.findViewById(R.id.guestNotificationsEnabledTextView);
+                                    notificationsTextView.setText("Notifications: enabled");
+                                    toggleButton.setOnCheckedChangeListener(toggleListener);
                                 } else {
                                     toggleButton.setChecked(true);
+                                    TextView notificationsTextView = view.findViewById(R.id.guestNotificationsEnabledTextView);
+                                    notificationsTextView.setText("Notifications: disabled");
+                                    toggleButton.setOnCheckedChangeListener(toggleListener);
                                 }
                             }
                         });
@@ -136,21 +156,6 @@ public class NotificationsFragmentGuest extends Fragment implements GuestNotific
                 }
             }
         }).start();
-
-        toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    TextView notificationsTextView = view.findViewById(R.id.guestNotificationsEnabledTextView);
-                    notificationsTextView.setText("Notifications: disabled");
-                    sendPutRequest();
-                } else {
-                    TextView notificationsTextView = view.findViewById(R.id.guestNotificationsEnabledTextView);
-                    notificationsTextView.setText("Notifications: enabled");
-                    sendPutRequest();
-                }
-            }
-        });
 
         fetchNotifications();
 
