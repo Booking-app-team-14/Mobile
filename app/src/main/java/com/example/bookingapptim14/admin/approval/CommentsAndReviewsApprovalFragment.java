@@ -31,6 +31,7 @@ import com.example.bookingapptim14.Adapters.AccommodationApprovalAdapter;
 import com.example.bookingapptim14.Adapters.AdminApprovalAccommodationCommentsAndReviewsAdapter;
 import com.example.bookingapptim14.Adapters.AdminApprovalOwnerCommentsAndReviewsAdapter;
 import com.example.bookingapptim14.Adapters.LocalDateDeserializer;
+import com.example.bookingapptim14.Adapters.LocalDateTimeDeserializer;
 import com.example.bookingapptim14.BuildConfig;
 import com.example.bookingapptim14.GlobalData;
 import com.example.bookingapptim14.R;
@@ -52,6 +53,7 @@ import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -183,6 +185,7 @@ public class CommentsAndReviewsApprovalFragment extends Fragment implements Admi
 
                         Gson gson = new GsonBuilder()
                                 .registerTypeAdapter(LocalDate.class, new LocalDateDeserializer())
+                                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeDeserializer())
                                 .create();
                         Type listType = new TypeToken<List<ApproveAccommodationReviewsDTO>>(){}.getType();
                         List<ApproveAccommodationReviewsDTO> accommodationReviewsDTOs = gson.fromJson(content.toString(), listType);
@@ -302,7 +305,7 @@ public class CommentsAndReviewsApprovalFragment extends Fragment implements Admi
                             }
                         });
                     } else {
-                        System.out.println("GET request failed!");
+                        System.out.println("GET request failed! 1");
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -314,7 +317,7 @@ public class CommentsAndReviewsApprovalFragment extends Fragment implements Admi
             @Override
             public void run() {
                 try {
-                    URL url = new URL(BuildConfig.IP_ADDR + "/api/owner/requests");
+                    URL url = new URL(BuildConfig.IP_ADDR + "/api/reviews/owner/requests");
                     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                     conn.setRequestMethod("GET");
                     conn.setDoInput(true);
@@ -335,6 +338,7 @@ public class CommentsAndReviewsApprovalFragment extends Fragment implements Admi
 
                         Gson gson = new GsonBuilder()
                                 .registerTypeAdapter(LocalDate.class, new LocalDateDeserializer())
+                                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeDeserializer())
                                 .create();
                         Type listType = new TypeToken<List<ApproveOwnerReviewsDTO>>(){}.getType();
                         List<ApproveOwnerReviewsDTO> ownerReviewsDTOs = gson.fromJson(content.toString(), listType);
@@ -432,7 +436,7 @@ public class CommentsAndReviewsApprovalFragment extends Fragment implements Admi
                             }
                         });
                     } else {
-                        System.out.println("GET request failed!");
+                        System.out.println("GET request failed! 2");
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

@@ -27,6 +27,7 @@ import android.widget.ToggleButton;
 
 import com.example.bookingapptim14.Adapters.GuestNotificationsAdapter;
 import com.example.bookingapptim14.Adapters.LocalDateDeserializer;
+import com.example.bookingapptim14.Adapters.LocalDateTimeDeserializer;
 import com.example.bookingapptim14.BuildConfig;
 import com.example.bookingapptim14.GlobalData;
 import com.example.bookingapptim14.R;
@@ -45,6 +46,7 @@ import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -128,6 +130,7 @@ public class NotificationsFragmentGuest extends Fragment implements GuestNotific
 
                         Gson gson = new GsonBuilder()
                                 .registerTypeAdapter(LocalDate.class, new LocalDateDeserializer())
+                                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeDeserializer())
                                 .create();
                         Type listType = new TypeToken<List<NotificationType>>(){}.getType();
                         List<NotificationType> notificationTypes = gson.fromJson(content.toString(), listType);

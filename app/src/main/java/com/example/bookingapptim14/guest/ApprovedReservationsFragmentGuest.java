@@ -116,7 +116,7 @@ public class ApprovedReservationsFragmentGuest extends Fragment implements Appro
             @Override
             public void run() {
                 try {
-                    URL url = new URL(BuildConfig.IP_ADDR + "/api/requests/owner/" + userId);
+                    URL url = new URL(BuildConfig.IP_ADDR + "/api/requests/guest/id/" + userId);
                     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                     conn.setRequestMethod("GET");
                     conn.setDoInput(true);

@@ -134,7 +134,7 @@ public class ReservationRequestsFragmentGuest extends Fragment implements Reserv
         new Thread(() -> {
             try {
                 StringBuilder urlBuilder = new StringBuilder(BuildConfig.IP_ADDR + "/api/requests/filtered-guest/" + userId);
-                String status = getStatusFilter();
+                String status = getStatusFilter().toUpperCase();
                 String startDate = selectedStartDate != null ? selectedStartDate.toString() : null;
                 String endDate = selectedEndDate != null ? selectedEndDate.toString() : null;
                 String query = editTextSearch.getText().toString().trim();

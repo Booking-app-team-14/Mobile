@@ -59,10 +59,10 @@ public class HostNotificationsViewHolder extends RecyclerView.ViewHolder {
     public void bind(HostNotificationsData notification) {
         accepted.setText(notification.getReservation().getRequestStatus().toString());
         accepted.setTextColor(accepted.getContext().getResources().getColor(R.color.primary_blue));
-        LocalDateTime dateTime = LocalDateTime.ofEpochSecond(Long.parseLong(notification.getSentAt()), 0, ZoneOffset.UTC);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM d, yyyy h:mm:ss a");
-        String formattedDate = dateTime.format(formatter);
-        dateSentAt.setText(formattedDate);
+//        LocalDateTime dateTime = LocalDateTime.ofEpochSecond(Long.parseLong(notification.getSentAt()), 0, ZoneOffset.UTC);
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM d, yyyy h:mm:ss a");
+//        String formattedDate = dateTime.format(formatter);
+//        dateSentAt.setText(formattedDate);
         //
         // if Date as string
         //    String sentAt = "2022-03-01 10:30:00"; // example date string
@@ -74,6 +74,13 @@ public class HostNotificationsViewHolder extends RecyclerView.ViewHolder {
         //
         //    System.out.println(formattedDate);
         //
+        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS");
+        LocalDateTime sentAtLocalDateTime = LocalDateTime.parse(notification.getSentAt(), inputFormatter);
+
+        // Format the LocalDateTime to the desired format
+        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("MMM d, yyyy h:mm:ss a");
+        String sentAtFormattedDate = sentAtLocalDateTime.format(outputFormatter);
+        dateSentAt.setText(sentAtFormattedDate);
         accommodationName.setText(notification.getReservation().getName());
         if (notification.getReservation().getType().equals("STUDIO")) {
             accommodationType.setText("Studio");

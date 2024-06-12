@@ -60,10 +60,11 @@ public class ReservationRequestsGuestViewHolder extends RecyclerView.ViewHolder 
 
     public void bind(ApprovedReservationGuestData accommodation) {
         guestUsername.setText(accommodation.getGuestUsername());
-        long epochMillis = Integer.parseInt(accommodation.getDateRequested()) * 1000L;
-        Date date = new Date(epochMillis);
-        SimpleDateFormat simpleFormatter = new SimpleDateFormat("dd MMMM yyyy", Locale.US);
-        String dateRequestedString = "(" + simpleFormatter.format(date) + "),";
+        //long epochMillis = Integer.parseInt(accommodation.getDateRequested()) * 1000L;
+        //Date date = new Date(epochMillis);
+        //SimpleDateFormat simpleFormatter = new SimpleDateFormat("dd MMMM yyyy", Locale.US);
+        String dateRequestedString = "(" + accommodation.getDateRequested() + ")";
+        //String dateRequestedString = "(" + simpleFormatter.format(date) + "),";
         dateRequested.setText(dateRequestedString);
         String cancellationsString = accommodation.getNumberOfCancellations() + " cancellations";
         numberOfCancellations.setText(cancellationsString);

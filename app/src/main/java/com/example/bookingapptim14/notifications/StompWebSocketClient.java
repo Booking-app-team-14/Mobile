@@ -46,7 +46,7 @@ public class StompWebSocketClient extends WebSocketClient {
             @Override
             public void run() {
                 try {
-                    URL url = new URL(BuildConfig.IP_ADDR + "/api//users/username/token/" + jwtToken);
+                    URL url = new URL(BuildConfig.IP_ADDR + "/api/users/token/" + jwtToken);
                     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                     conn.setRequestMethod("GET");
                     conn.setDoInput(true);

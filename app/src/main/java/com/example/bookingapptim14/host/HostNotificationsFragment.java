@@ -67,6 +67,20 @@ public class HostNotificationsFragment extends Fragment implements HostNotificat
         notificationsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         ToggleButton toggleButton = view.findViewById(R.id.hostNotificationsToggleButton);
+        CompoundButton.OnCheckedChangeListener toggleListener = new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    TextView notificationsTextView = view.findViewById(R.id.hostNotificationsEnabledTextView);
+                    notificationsTextView.setText("Notifications: disabled");
+                    sendPutRequest();
+                } else {
+                    TextView notificationsTextView = view.findViewById(R.id.hostNotificationsEnabledTextView);
+                    notificationsTextView.setText("Notifications: enabled");
+                    sendPutRequest();
+                }
+            }
+        };
 
         new Thread(() -> {
             try {
@@ -99,8 +113,14 @@ public class HostNotificationsFragment extends Fragment implements HostNotificat
                     getActivity().runOnUiThread(() -> {
                         if (notificationTypes.isEmpty()) {
                             toggleButton.setChecked(false);
+                            TextView notificationsTextView = view.findViewById(R.id.hostNotificationsEnabledTextView);
+                            notificationsTextView.setText("Notifications: enabled");
+                            toggleButton.setOnCheckedChangeListener(toggleListener);
                         } else {
                             toggleButton.setChecked(true);
+                            TextView notificationsTextView = view.findViewById(R.id.hostNotificationsEnabledTextView);
+                            notificationsTextView.setText("Notifications: disabled");
+                            toggleButton.setOnCheckedChangeListener(toggleListener);
                         }
                     });
                 } else {
@@ -110,12 +130,6 @@ public class HostNotificationsFragment extends Fragment implements HostNotificat
                 Log.e("HostNotificationsFragment", "Exception during GET request", e);
             }
         }).start();
-
-        toggleButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            TextView notificationsTextView = view.findViewById(R.id.hostNotificationsEnabledTextView);
-            notificationsTextView.setText(isChecked ? "Notifications: disabled" : "Notifications: enabled");
-            sendPutRequest();
-        });
 
         fetchNotifications();
         return view;

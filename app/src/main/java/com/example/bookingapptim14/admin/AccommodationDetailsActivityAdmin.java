@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.bookingapptim14.Adapters.ImageSliderAdapter;
 import com.example.bookingapptim14.Adapters.LocalDateDeserializer;
+import com.example.bookingapptim14.Adapters.LocalDateTimeDeserializer;
 import com.example.bookingapptim14.BuildConfig;
 import com.example.bookingapptim14.R;
 import com.example.bookingapptim14.enums.RequestStatus;
@@ -41,6 +42,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -98,6 +100,7 @@ public class AccommodationDetailsActivityAdmin extends AppCompatActivity {
 
                     Gson gson = new GsonBuilder()
                             .registerTypeAdapter(LocalDate.class, new LocalDateDeserializer())
+                            .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeDeserializer())
                             .create();
                     accommodation = gson.fromJson(response.toString(), Accommodation.class);
 
@@ -154,6 +157,7 @@ public class AccommodationDetailsActivityAdmin extends AppCompatActivity {
 
                     Gson gson = new GsonBuilder()
                             .registerTypeAdapter(LocalDate.class, new LocalDateDeserializer())
+                            .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeDeserializer())
                             .create();
                     UserInfoDTO user = gson.fromJson(response.toString(), UserInfoDTO.class);
 

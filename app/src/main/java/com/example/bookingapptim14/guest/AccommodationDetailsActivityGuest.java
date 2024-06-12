@@ -40,6 +40,7 @@ import com.example.bookingapptim14.Adapters.AvailabilityAdapter;
 import com.example.bookingapptim14.Adapters.ImageSliderAdapter;
 import com.example.bookingapptim14.Adapters.LocalDateDeserializer;
 import com.example.bookingapptim14.Adapters.LocalDateDeserializerR;
+import com.example.bookingapptim14.Adapters.LocalDateTimeDeserializer;
 import com.example.bookingapptim14.BuildConfig;
 import com.example.bookingapptim14.GlobalData;
 import com.example.bookingapptim14.R;
@@ -67,6 +68,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -443,6 +445,7 @@ public class AccommodationDetailsActivityGuest extends AppCompatActivity {
 
                 Gson gson = new GsonBuilder()
                         .registerTypeAdapter(LocalDate.class, new LocalDateDeserializerR())
+                        .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeDeserializer())
                         .create();
                 String jsonInputString = gson.toJson(reservationRequest);
 
