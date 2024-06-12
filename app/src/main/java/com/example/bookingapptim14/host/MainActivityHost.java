@@ -41,7 +41,7 @@ public class MainActivityHost extends AppCompatActivity {
                 loadFragment(new ReservationsFragmentHost(), false);
             }
             if (itemId == R.id.navNotificationsHost) {
-                loadFragment(new NotificationsFragmentHost(), false);
+                loadFragment(new HostNotificationsFragment(), false);
             }
             if (itemId == R.id.navProfileHost) {
                 loadFragment(new ProfileFragmentHost(), false);
@@ -94,7 +94,7 @@ public class MainActivityHost extends AppCompatActivity {
             bottomNavigationView.setSelectedItemId(R.id.navHomeHost);
         } else if (previousFragment instanceof ReservationsFragmentHost) {
             bottomNavigationView.setSelectedItemId(R.id.navReservationsHost);
-        } else if (previousFragment instanceof NotificationsFragmentHost) {
+        } else if (previousFragment instanceof HostNotificationsFragment) {
             bottomNavigationView.setSelectedItemId(R.id.navNotificationsHost);
         } else if (previousFragment instanceof ProfileFragmentHost) {
             bottomNavigationView.setSelectedItemId(R.id.navProfileHost);

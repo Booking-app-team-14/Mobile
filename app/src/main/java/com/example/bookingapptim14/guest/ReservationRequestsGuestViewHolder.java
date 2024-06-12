@@ -1,4 +1,4 @@
-package com.example.bookingapptim14.host;
+package com.example.bookingapptim14.guest;
 
 import android.graphics.BitmapFactory;
 import android.view.View;
@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bookingapptim14.R;
 import com.example.bookingapptim14.models.dtos.ReservationRequestDTO.ApprovedReservationData;
+import com.example.bookingapptim14.models.dtos.ReservationRequestDTO.ApprovedReservationGuestData;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -22,7 +23,7 @@ import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class ReservationRequestsViewHolder extends RecyclerView.ViewHolder {
+public class ReservationRequestsGuestViewHolder extends RecyclerView.ViewHolder {
 
     private CircleImageView profilePicture;
     private TextView guestUsername;
@@ -36,10 +37,10 @@ public class ReservationRequestsViewHolder extends RecyclerView.ViewHolder {
     private TextView accommodationName;
     private TextView dateFrom;
     private TextView dateTo;
-    public Button approveButton;
-    public Button rejectButton;
+    private TextView cancellationDeadline;
+    public Button cancelReservation;
 
-    public ReservationRequestsViewHolder(@NonNull View itemView) {
+    public ReservationRequestsGuestViewHolder(@NonNull View itemView) {
         super(itemView);
         profilePicture = itemView.findViewById(R.id.guestApprovedGuestProfilePicture);
         guestUsername = itemView.findViewById(R.id.guestApprovedReservationsGuestUsername);
@@ -52,12 +53,12 @@ public class ReservationRequestsViewHolder extends RecyclerView.ViewHolder {
         guests = itemView.findViewById(R.id.guestApprovedReservationsGuests);
         accommodationName = itemView.findViewById(R.id.guestApprovedReservationsAccommodationName);
         dateFrom = itemView.findViewById(R.id.guestApprovedReservationsFromDate);
-        dateTo = itemView.findViewById(R.id.guestApprovedReservationsToDate);
-        approveButton = itemView.findViewById(R.id.hostApproveRequestButton);
-        rejectButton = itemView.findViewById(R.id.hostRejectRequestButton);
+        dateTo =  itemView.findViewById(R.id.guestApprovedReservationsToDate);
+        cancellationDeadline = itemView.findViewById(R.id.guestApprovedReservationsCancellationDeadline);
+        cancelReservation = itemView.findViewById(R.id.guestApprovedReservationsCancelButton);
     }
 
-    public void bind(ApprovedReservationData accommodation) {
+    public void bind(ApprovedReservationGuestData accommodation) {
         guestUsername.setText(accommodation.getGuestUsername());
         long epochMillis = Integer.parseInt(accommodation.getDateRequested()) * 1000L;
         Date date = new Date(epochMillis);
@@ -67,7 +68,7 @@ public class ReservationRequestsViewHolder extends RecyclerView.ViewHolder {
         String cancellationsString = accommodation.getNumberOfCancellations() + " cancellations";
         numberOfCancellations.setText(cancellationsString);
         accommodationType.setText(accommodation.getType());
-        accommodationRating.setRating((float) accommodation.getStars());
+        accommodationRating.setRating((float)accommodation.getStars());
         price.setText(String.valueOf(accommodation.getTotalPrice()));
         guests.setText(String.valueOf(accommodation.getNumberOfGuests()));
         accommodationName.setText(accommodation.getName());
@@ -78,6 +79,17 @@ public class ReservationRequestsViewHolder extends RecyclerView.ViewHolder {
         dateFrom.setText(startDate);
         String endDate = endDateLocal.format(formatter);
         dateTo.setText(endDate);
+        String cancellationDeadlineString;
+        if (accommodation.getCancellationDeadline().equals("1"))
+            cancellationDeadlineString = accommodation.getCancellationDeadline() + " day";
+        else
+            cancellationDeadlineString = accommodation.getCancellationDeadline() + " days";
+        cancellationDeadline.setText(cancellationDeadlineString);
+        // disable cancel button if the deadline has passed from the start date of the reservation
+        cancelReservation.setEnabled(!LocalDate.now().isAfter(startDateLocal.minusDays(Integer.parseInt(accommodation.getCancellationDeadline()))));
+        // if disabled, change the color of the button
+        if (!cancelReservation.isEnabled())
+            cancelReservation.setBackgroundColor(cancelReservation.getContext().getResources().getColor(R.color.icon_gray));
         String base64ImageGuest = accommodation.getUserProfilePictureBytes();
         if (base64ImageGuest != null && !base64ImageGuest.isEmpty()) {
             byte[] decodedString = Base64.getDecoder().decode(base64ImageGuest);
@@ -89,13 +101,10 @@ public class ReservationRequestsViewHolder extends RecyclerView.ViewHolder {
             accommodationImage.setImageBitmap(BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length));
         }
 
+        // Update button visibility based on the status
         String status = accommodation.getRequestStatus();
         if ("DECLINED".equalsIgnoreCase(status)) {
-            approveButton.setVisibility(View.GONE);
-            rejectButton.setVisibility(View.GONE);
-        } else if ("SENT".equalsIgnoreCase(status)) {
-            approveButton.setVisibility(View.VISIBLE);
-            rejectButton.setVisibility(View.VISIBLE);
+            cancellationDeadline.setVisibility(View.GONE);
         }
     }
 }

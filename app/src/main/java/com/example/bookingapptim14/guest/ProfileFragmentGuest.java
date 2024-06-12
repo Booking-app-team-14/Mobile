@@ -73,9 +73,9 @@ public class ProfileFragmentGuest extends Fragment {
             @Override
             public void onClick(View v) {
                 // TODO: make my reservation requests fragment for guest
-//                Fragment fragment = new
-//                getActivity().getSupportFragmentManager().beginTransaction()
-//                        .replace(R.id.frameLayout, fragment, fragment.getClass().getSimpleName()).addToBackStack(null).commit();
+               Fragment fragment = new ReservationRequestsFragmentGuest();
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.frameLayout, fragment, fragment.getClass().getSimpleName()).addToBackStack(null).commit();
             }
         });
 

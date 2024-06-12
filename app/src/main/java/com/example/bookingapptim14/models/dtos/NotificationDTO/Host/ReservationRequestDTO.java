@@ -1,8 +1,7 @@
-package com.example.bookingapptim14.models.dtos.ReservationRequestDTO;
+package com.example.bookingapptim14.models.dtos.NotificationDTO.Host;
 
 import com.example.bookingapptim14.enums.RequestStatus;
 
-import java.lang.ref.ReferenceQueue;
 import java.time.LocalDate;
 
 public class ReservationRequestDTO {
@@ -14,21 +13,20 @@ public class ReservationRequestDTO {
     private LocalDate endDate;
     private int numberOfGuests;
     private double totalPrice;
-    private String requestStatus;
-    private RequestStatus requestStatus1;
+    private RequestStatus requestStatus;
     private String name;
     private String type;
-    private String userUsername; // owner username
+    private String userImageType;
+    private String userProfilePictureBytes;
+    private String userUsername;
     private String dateRequested; // date requested, (epoch seconds)
     private int stars;
-    private String mainPictureBytes;
     private String imageType; // accommodation main picture type (jpg, png, etc.)
-    private String userProfilePictureBytes;
-    private String userImageType;
+    private String mainPictureBytes;
 
     public ReservationRequestDTO() { }
 
-    public ReservationRequestDTO(Long id, Long guestId, Long accommodationId, LocalDate startDate, LocalDate endDate, int numberOfGuests, double totalPrice, String requestStatus, String name, String type, String userUsername, String dateRequested, int stars, String mainPictureBytes, String imageType, String userProfilePictureBytes, String userImageType) {
+    public ReservationRequestDTO(Long id, Long guestId, Long accommodationId, LocalDate startDate, LocalDate endDate, int numberOfGuests, double totalPrice, RequestStatus requestStatus, String name, String type, String userImageType, String userProfilePictureBytes, String userUsername, String dateRequested, int stars, String imageType, String mainPictureBytes) {
         this.id = id;
         this.guestId = guestId;
         this.accommodationId = accommodationId;
@@ -39,33 +37,15 @@ public class ReservationRequestDTO {
         this.requestStatus = requestStatus;
         this.name = name;
         this.type = type;
+        this.userImageType = userImageType;
+        this.userProfilePictureBytes = userProfilePictureBytes;
         this.userUsername = userUsername;
         this.dateRequested = dateRequested;
         this.stars = stars;
-        this.mainPictureBytes = mainPictureBytes;
         this.imageType = imageType;
-        this.userProfilePictureBytes = userProfilePictureBytes;
-        this.userImageType = userImageType;
+        this.mainPictureBytes = mainPictureBytes;
     }
 
-    public ReservationRequestDTO(Long guestId, Long accommodationId, LocalDate startDate, LocalDate endDate, int numberOfGuests, double totalPrice, RequestStatus requestStatus, String name, String type, String userUsername, String dateRequested, int stars, String mainPictureBytes, String imageType, String userProfilePictureBytes, String userImageType) {
-        this.guestId = guestId;
-        this.accommodationId = accommodationId;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.numberOfGuests = numberOfGuests;
-        this.totalPrice = totalPrice;
-        this.requestStatus1 = requestStatus;
-        this.name = name;
-        this.type = type;
-        this.userUsername = userUsername;
-        this.dateRequested = dateRequested;
-        this.stars = stars;
-        this.mainPictureBytes = mainPictureBytes;
-        this.imageType = imageType;
-        this.userProfilePictureBytes = userProfilePictureBytes;
-        this.userImageType = userImageType;
-    }
     public Long getId() {
         return id;
     }
@@ -122,11 +102,11 @@ public class ReservationRequestDTO {
         this.totalPrice = totalPrice;
     }
 
-    public String getRequestStatus() {
+    public RequestStatus getRequestStatus() {
         return requestStatus;
     }
 
-    public void setRequestStatus(String requestStatus) {
+    public void setRequestStatus(RequestStatus requestStatus) {
         this.requestStatus = requestStatus;
     }
 
@@ -144,6 +124,22 @@ public class ReservationRequestDTO {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getUserImageType() {
+        return userImageType;
+    }
+
+    public void setUserImageType(String userImageType) {
+        this.userImageType = userImageType;
+    }
+
+    public String getUserProfilePictureBytes() {
+        return userProfilePictureBytes;
+    }
+
+    public void setUserProfilePictureBytes(String userProfilePictureBytes) {
+        this.userProfilePictureBytes = userProfilePictureBytes;
     }
 
     public String getUserUsername() {
@@ -170,14 +166,6 @@ public class ReservationRequestDTO {
         this.stars = stars;
     }
 
-    public String getMainPictureBytes() {
-        return mainPictureBytes;
-    }
-
-    public void setMainPictureBytes(String mainPictureBytes) {
-        this.mainPictureBytes = mainPictureBytes;
-    }
-
     public String getImageType() {
         return imageType;
     }
@@ -186,19 +174,12 @@ public class ReservationRequestDTO {
         this.imageType = imageType;
     }
 
-    public String getUserProfilePictureBytes() {
-        return userProfilePictureBytes;
+    public String getMainPictureBytes() {
+        return mainPictureBytes;
     }
 
-    public void setUserProfilePictureBytes(String userProfilePictureBytes) {
-        this.userProfilePictureBytes = userProfilePictureBytes;
+    public void setMainPictureBytes(String mainPictureBytes) {
+        this.mainPictureBytes = mainPictureBytes;
     }
 
-    public String getUserImageType() {
-        return userImageType;
-    }
-
-    public void setUserImageType(String userImageType) {
-        this.userImageType = userImageType;
-    }
 }
