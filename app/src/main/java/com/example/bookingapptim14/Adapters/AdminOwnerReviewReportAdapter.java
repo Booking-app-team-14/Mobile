@@ -58,6 +58,7 @@ public class AdminOwnerReviewReportAdapter extends RecyclerView.Adapter<AdminOwn
 
     public void setOwnerReviewReports(List<OwnerReviewReportsData> reports) {
         this.reports = reports;
+        notifyDataSetChanged();
     }
 
     public void removeItem(OwnerReviewReportsData report) {

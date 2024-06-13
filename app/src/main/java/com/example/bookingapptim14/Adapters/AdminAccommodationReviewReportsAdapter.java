@@ -65,6 +65,7 @@ public class AdminAccommodationReviewReportsAdapter extends RecyclerView.Adapter
 
     public void setAccommodationReviewReports(List<AccommodationReviewReportsData> reports) {
         this.reports = reports;
+        notifyDataSetChanged();
     }
 
     public void removeItem(AccommodationReviewReportsData report) {

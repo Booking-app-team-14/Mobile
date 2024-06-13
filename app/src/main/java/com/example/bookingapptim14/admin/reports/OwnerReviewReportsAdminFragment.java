@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.VibrationEffect;
 import android.os.Vibrator;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -162,7 +163,7 @@ public class OwnerReviewReportsAdminFragment extends Fragment implements AdminOw
                                 OwnerReviewDTO ownerReviewDTO = gson.fromJson(reviewResponse.toString(), OwnerReviewDTO.class);
 
                                 // GET users/{senderId}/image-type-username -> senderUsername + " | " + senderProfilePictureType + " | " + senderProfilePictureBytes
-                                URL senderUrl = new URL(BuildConfig.IP_ADDR + "/users/" + ownerReviewDTO.getSenderId() + "/image-type-username");
+                                URL senderUrl = new URL(BuildConfig.IP_ADDR + "/api/users/" + ownerReviewDTO.getSenderId() + "/image-type-username");
                                 HttpURLConnection senderConn = (HttpURLConnection) senderUrl.openConnection();
                                 senderConn.setRequestMethod("GET");
                                 senderConn.setRequestProperty("Authorization", "Bearer " + jwtToken);
@@ -190,7 +191,7 @@ public class OwnerReviewReportsAdminFragment extends Fragment implements AdminOw
                                 }
 
                                 // GET users/{recipientId}/image-type-username -> recipientUsername + " | " + recipientProfilePictureType + " | " + recipientProfilePictureBytes
-                                URL recipientUrl = new URL(BuildConfig.IP_ADDR + "/users/" + ownerReviewDTO.getRecipientId() + "/image-type-username");
+                                URL recipientUrl = new URL(BuildConfig.IP_ADDR + "/api/users/" + ownerReviewDTO.getRecipientId() + "/image-type-username");
                                 HttpURLConnection recipientConn = (HttpURLConnection) recipientUrl.openConnection();
                                 recipientConn.setRequestMethod("GET");
                                 recipientConn.setRequestProperty("Authorization", "Bearer " + jwtToken);

@@ -50,7 +50,7 @@ public class AdminOwnerReviewReportsViewHolder extends RecyclerView.ViewHolder {
         reportingUserUsername.setText(review.getSenderUsername());
         reportedUserUsername.setText(review.getRecipientUsername());
         datePosted.setText("(" + review.getSentAt().format(DateTimeFormatter.ofPattern("MMMM dd yyyy")) + ")");
-        if (review.getOwnerReview().getComment().isEmpty()) {
+        if (review.getOwnerReview().getComment() == null || review.getOwnerReview().getComment().isEmpty()) {
             comment.setVisibility(View.GONE);
             itemView.findViewById(R.id.adminOwnerReviewReportsCommentLabel).setVisibility(View.GONE);
         }

@@ -45,7 +45,7 @@ public class CommentsAndReviewsApprovalOwnerViewHolder extends RecyclerView.View
     public void bind(ApproveOwnerReviewsData review) {
         guestUsername.setText(review.getGuestUsername());
         datePosted.setText("(" + review.getTimestamp().format(DateTimeFormatter.ofPattern("MMMM dd yyyy")) + ")");
-        if (review.getComment().isEmpty()) {
+        if (review.getComment() == null || review.getComment().isEmpty()) {
             comment.setVisibility(View.GONE);
             itemView.findViewById(R.id.adminCommentsAndReviewsOwnerCommentLabel).setVisibility(View.GONE);
         } else {

@@ -52,14 +52,14 @@ public class CommentsAndReviewsApprovalAccommodationViewHolder extends RecyclerV
     public void bind(ApproveAccommodationReviewsData review) {
         guestUsername.setText(review.getGuestUsername());
         datePosted.setText("(" + review.getSentAt().format(DateTimeFormatter.ofPattern("MMMM dd yyyy")) + ")");
-        if (review.getComment().isEmpty()) {
+        if (review.getComment() == null || review.getComment().isEmpty()) {
             comment.setVisibility(View.GONE);
             itemView.findViewById(R.id.adminCommentsAndReviewsAccommodationsRequestMessageLabel).setVisibility(View.GONE);
         }
         else {
             comment.setText("“" + review.getComment() + "“");
         }
-        if (review.getRating() == -1) {
+        if (review.getRating() == null || review.getRating() == -1) {
             ratingGiven.setVisibility(View.GONE);
             itemView.findViewById(R.id.adminCommentsAndReviewsAccommodationsRatingLabel).setVisibility(View.GONE);
         }

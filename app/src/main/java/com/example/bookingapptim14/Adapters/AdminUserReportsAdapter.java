@@ -57,6 +57,7 @@ public class AdminUserReportsAdapter extends RecyclerView.Adapter<AdminUserRepor
 
     public void setUserReports(List<UserReportsData> userReports) {
         this.userReports = userReports;
+        notifyDataSetChanged();
     }
 
     public void removeItem(UserReportsData userReport) {

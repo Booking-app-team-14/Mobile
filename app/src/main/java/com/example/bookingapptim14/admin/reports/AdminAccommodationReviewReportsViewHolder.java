@@ -54,14 +54,14 @@ public class AdminAccommodationReviewReportsViewHolder extends RecyclerView.View
     public void bind(AccommodationReviewReportsData review) {
         username.setText(review.getUserUsername());
         datePosted.setText("(" + review.getSentAt().format(DateTimeFormatter.ofPattern("MMMM dd yyyy")) + ")");
-        if (review.getAccommodationReviewDTO().getComment().isEmpty()) {
+        if (review.getAccommodationReviewDTO().getComment() == null || review.getAccommodationReviewDTO().getComment().isEmpty()) {
             comment.setVisibility(View.GONE);
             itemView.findViewById(R.id.adminAccommodationReviewsCommentLabel).setVisibility(View.GONE);
         }
         else {
             comment.setText("“" + review.getAccommodationReviewDTO().getComment() + "“");
         }
-        if (review.getAccommodationReviewDTO().getRating() == -1) {
+        if (review.getAccommodationReviewDTO().getRating() == null || review.getAccommodationReviewDTO().getRating() == -1) {
             ratingGiven.setVisibility(View.GONE);
             itemView.findViewById(R.id.adminAccommodationReviewsRatingLabel).setVisibility(View.GONE);
         }
@@ -70,7 +70,9 @@ public class AdminAccommodationReviewReportsViewHolder extends RecyclerView.View
         }
         accommodationName.setText(review.getAccommodationName());
         accommodationType.setText(review.getAccommodationType());
-        accommodationRating.setRating(review.getAccommodationReviewDTO().getRating());
+        if (review.getAccommodationReviewDTO().getRating() != null && review.getAccommodationReviewDTO().getRating() != -1) {
+            accommodationRating.setRating(review.getAccommodationReviewDTO().getRating());
+        }
         reason.setText("“" + review.getReason() + "“");
         String base64AccommodationImage = review.getAccommodationImageBytes();
         if (base64AccommodationImage != null && !base64AccommodationImage.isEmpty()) {

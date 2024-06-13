@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.VibrationEffect;
 import android.os.Vibrator;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,7 @@ import com.example.bookingapptim14.Adapters.AdminAccommodationReviewReportsAdapt
 import com.example.bookingapptim14.Adapters.AdminUserReportsAdapter;
 import com.example.bookingapptim14.Adapters.LocalDateDeserializer;
 import com.example.bookingapptim14.Adapters.LocalDateTimeDeserializer;
+import com.example.bookingapptim14.Adapters.ReviewStatusDeserializer;
 import com.example.bookingapptim14.BuildConfig;
 import com.example.bookingapptim14.GlobalData;
 import com.example.bookingapptim14.R;
@@ -34,6 +36,7 @@ import com.example.bookingapptim14.R;
 import com.example.bookingapptim14.admin.AccommodationDetailsActivityAdmin;
 import com.example.bookingapptim14.models.dtos.ApproveReviewsDTO.ApproveAccommodationReviewsDTO;
 import com.example.bookingapptim14.models.dtos.ApproveReviewsDTO.ApproveAccommodationReviewsData;
+import com.example.bookingapptim14.models.dtos.ApproveReviewsDTO.ReviewStatus;
 import com.example.bookingapptim14.models.dtos.ReportsDTO.AccommodationReviewDTO;
 import com.example.bookingapptim14.models.dtos.ReportsDTO.AccommodationReviewReportsDTO;
 import com.example.bookingapptim14.models.dtos.ReportsDTO.AccommodationReviewReportsData;
@@ -142,6 +145,7 @@ public class AccommodationReviewReportsAdminFragment extends Fragment implements
                         Gson gson = new GsonBuilder()
                                 .registerTypeAdapter(LocalDate.class, new LocalDateDeserializer())
                                 .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeDeserializer())
+                                //.registerTypeAdapter(ReviewStatus.class, new ReviewStatusDeserializer())
                                 .create();
                         Type listType = new TypeToken<List<AccommodationReviewReportsDTO>>(){}.getType();
                         List<AccommodationReviewReportsDTO> accommodationReviewsDTOs = gson.fromJson(content.toString(), listType);
@@ -165,9 +169,17 @@ public class AccommodationReviewReportsAdminFragment extends Fragment implements
                                 reviewIn.close();
                                 reviewConn.disconnect();
 
-                                AccommodationReviewDTO accommodationReview = gson.fromJson(content.toString(), AccommodationReviewDTO.class);
+                                AccommodationReviewDTO accommodationReview = gson.fromJson(reviewContent.toString(), AccommodationReviewDTO.class);
+//                                Type listType2 = new TypeToken<List<AccommodationReviewDTO>>(){}.getType();
+//                                List<AccommodationReviewDTO> accommodationReviewList = gson.fromJson(content.toString(), listType2);
+//                                AccommodationReviewDTO accommodationReview = accommodationReviewList.get(0);
+
+
+                                Log.d("OVDE ID", accommodationReview.getId() + "");
+                                Log.d("OVDE CONTNET", content.toString());
 
                                 // GET users/{id}/image-type-username -> userUsername + " | " + userProfilePictureType + " | " + userProfilePictureBytes
+                                Log.d("OVDE", accommodationReview.getUserId() + "");
                                 URL userUrl = new URL(BuildConfig.IP_ADDR + "/api/users/" + accommodationReview.getUserId() + "/image-type-username");
                                 HttpURLConnection userConn = (HttpURLConnection) userUrl.openConnection();
                                 userConn.setRequestMethod("GET");
