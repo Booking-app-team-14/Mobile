@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="16dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="8dp"
+    android:backgroundTint="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingBottom="8dp">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/guestApprovedGuestProfilePicture"
+                app:civ_border_color="@color/text_black"
+                app:civ_border_width="1dp"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:contentDescription="guest_avatar_image"
+                android:src="@drawable/default_profile_picture" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="start">
+
+                <TextView
+                    android:id="@+id/guestApprovedReservationsGuestUsername"
+                    android:layout_width="wrap_content"
+                    android:fontFamily="@font/inter_medium"
+                    android:layout_height="wrap_content"
+                    android:scrollbars="vertical"
+                    android:text="guest_username"
+                    android:maxHeight="20dp"
+                    android:layout_marginStart="8dp"
+                    android:textColor="@color/text_black"
+                    android:textSize="14dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="start">
+
+                    <TextView
+                        android:id="@+id/guestApprovedReservationsDateRequested"
+                        android:layout_width="wrap_content"
+                        android:fontFamily="@font/inter"
+                        android:layout_height="wrap_content"
+                        android:scrollbars="vertical"
+                        android:text="(5/21/2024),"
+                        android:maxHeight="20dp"
+                        android:layout_marginStart="8dp"
+                        android:textColor="@color/text_gray"
+                        android:textSize="14dp" />
+
+                    <TextView
+                        android:id="@+id/guestApprovedReservationsCancellations"
+                        android:layout_width="wrap_content"
+                        android:fontFamily="@font/inter"
+                        android:layout_height="wrap_content"
+                        android:scrollbars="vertical"
+                        android:text="2 cancellations"
+                        android:maxHeight="20dp"
+                        android:layout_marginStart="8dp"
+                        android:textColor="@color/text_gray"
+                        android:textSize="14dp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            app:cardCornerRadius="16dp"
+            android:layout_marginBottom="8dp">
+
+            <ImageView
+                android:id="@+id/guestApprovedReservationsImageView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@color/background"
+                android:background="@color/white"
+                android:scaleType="centerCrop" />
+
+        </androidx.cardview.widget.CardView>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp">
+
+            <LinearLayout
+                android:layout_centerVertical="true"
+                android:id="@+id/guestApprovedReservationsLinearLayoutAccommodationType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/guestApprovedReservationsAccommodationType"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Apartment"
+                    android:textColor="@color/text_gray"
+                    android:fontFamily="@font/inter_medium"
+                    android:textSize="14dp" />
+
+                <RatingBar
+                    android:id="@+id/guestApprovedReservationsAccommodationRating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:numStars="5"
+                    android:rating="4"
+                    android:stepSize="0.1"
+                    android:progressTint="@color/text_gray"
+                    android:secondaryProgressTint="@color/transparent"
+                    android:isIndicator="false"
+                    style="?android:attr/ratingBarStyleSmall"
+                    android:layout_marginStart="8dp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter"
+                    android:text="Price: "
+                    android:textColor="@color/text_gray"
+                    android:textSize="14dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter_bold"
+                    android:text="$"
+                    android:textColor="@color/text_black"
+                    android:textSize="16dp" />
+
+                <TextView
+                    android:id="@+id/guestApprovedReservationsPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter_bold"
+                    android:text="150"
+                    android:textColor="@color/text_black"
+                    android:textSize="16dp" />
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp">
+
+            <TextView
+                android:layout_centerVertical="true"
+                android:id="@+id/guestApprovedReservationsAccommodationName"
+                android:layout_width="wrap_content"
+                android:maxWidth="250dp"
+                android:layout_height="23dp"
+                android:scrollbars="vertical"
+                android:text="Deluxe “Novi Sad”"
+                android:textColor="@color/text_black"
+                android:fontFamily="@font/inter_bold"
+                android:textSize="16dp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:gravity="center_vertical"
+                android:layout_marginTop="2dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter"
+                    android:text="Guests: "
+                    android:textColor="@color/text_gray"
+                    android:textSize="14dp" />
+
+                <TextView
+                    android:id="@+id/guestApprovedReservationsGuests"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter_bold"
+                    android:text="4"
+                    android:textColor="@color/text_black"
+                    android:textSize="14dp" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter"
+                android:text="From: "
+                android:textColor="@color/text_gray"
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/guestApprovedReservationsFromDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter_bold"
+                android:text="May 22, 2024"
+                android:textColor="@color/text_black"
+                android:textSize="14dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter"
+                android:text="To: "
+                android:textColor="@color/text_gray"
+                android:textSize="14dp"
+                android:layout_marginLeft="10dp"/>
+
+            <TextView
+                android:id="@+id/guestApprovedReservationsToDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter_bold"
+                android:text="May 24, 2024"
+                android:textColor="@color/text_black"
+                android:textSize="14dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter"
+                android:text="Cancellation Deadline: "
+                android:textColor="@color/text_gray"
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/guestApprovedReservationsCancellationDeadline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter_bold"
+                android:text="3 days"
+                android:textColor="@color/text_black"
+                android:textSize="14dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <Button
+                android:id="@+id/hostApproveRequestButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:backgroundTint="@color/green"
+                android:text="Approve"
+                android:layout_marginEnd="5dp"
+                android:fontFamily="@font/inter"
+                android:textColor="#FFFFFF" />
+
+            <Button
+                android:id="@+id/hostRejectRequestButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="5dp"
+                android:backgroundTint="@color/red"
+                android:text="Reject"
+                android:fontFamily="@font/inter"
+                android:textColor="#FFFFFF" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

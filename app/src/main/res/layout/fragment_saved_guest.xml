@@ -5,12 +5,41 @@
     android:layout_height="match_parent"
     tools:context=".guest.SavedFragmentGuest">
 
-    <TextView
+    <!-- Header layout -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:padding="16dp"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="FAVOURITE ACCOMMODATIONS"
+            android:textColor="@color/primary_blue"
+            android:textSize="18sp"
+            android:fontFamily="@font/inter_bold"
+            android:gravity="center"/>
+    </LinearLayout>
+
+    <View
+        android:id="@+id/myAccommodationsDivider"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/icon_gray"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/savedAccommodationRecycleView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:textSize="16sp"
-        android:fontFamily="@font/inter_bold"
-        android:text="Saved Fragment" />
+        android:layout_marginTop="66dp"/>
+
 
 </FrameLayout>
+
+
+
+

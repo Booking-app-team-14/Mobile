@@ -3,92 +3,104 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <LinearLayout
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:layout_height="match_parent">
 
+        <!-- Date Range Selection -->
         <TextView
-            android:id="@+id/startDateLabel"
+            android:id="@+id/textViewStartDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Start Date"
-            android:textSize="16sp" />
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="20dp"/>
 
         <DatePicker
-            android:id="@+id/startDatePicker"
-            android:layout_width="match_parent"
+            android:id="@+id/datePickerStart"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:calendarViewShown="false" />
+            android:layout_below="@id/textViewStartDate"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="20dp"/>
 
-        <!-- End Date -->
         <TextView
-            android:id="@+id/endDateLabel"
+            android:id="@+id/textViewEndDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="End Date"
-            android:layout_marginTop="16dp"
-            android:textSize="16sp" />
+            android:layout_below="@id/datePickerStart"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="20dp"/>
 
         <DatePicker
-            android:id="@+id/endDatePicker"
+            android:id="@+id/datePickerEnd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textViewEndDate"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="20dp"/>
+
+        <!-- Number of Guests Selection -->
+        <TextView
+            android:id="@+id/textViewGuests"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Number of Guests"
+            android:layout_below="@id/datePickerEnd"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="20dp"/>
+
+        <NumberPicker
+            android:id="@+id/numberPickerGuests"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textViewGuests"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="20dp"/>
+
+        <!-- Available Dates Caption -->
+        <TextView
+            android:id="@+id/textViewAvailableDatesCaption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Available Dates"
+            android:layout_below="@id/numberPickerGuests"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="20dp"/>
+
+        <!-- ListView for Availabilities -->
+        <ListView
+            android:id="@+id/listViewAvailabilities"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:calendarViewShown="false" />
-        <!-- Number of People -->
-        <TextView
-            android:id="@+id/numberOfPeopleLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Number of People"
-            android:layout_marginTop="16dp"
-            android:textSize="16sp" />
+            android:layout_below="@id/textViewAvailableDatesCaption"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"/>
 
-        <EditText
-            android:id="@+id/numberEditText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:digits="0123456789" />
-
-
+        <!-- CALCULATE Button -->
         <Button
-            android:id="@+id/calculateButton"
+            android:id="@+id/buttonCalculate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Calculate"
-            android:clickable="true"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:layout_marginTop="16dp" />
+            android:text="CALCULATE"
+            android:layout_below="@id/listViewAvailabilities"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"/>
 
+        <!-- Recap TextView -->
         <TextView
-            android:id="@+id/dateRangeRecapTextView"
+            android:id="@+id/textViewRecap"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Date range: "
-            android:layout_marginTop="16dp"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:layout_below="@id/buttonCalculate"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            android:visibility="gone"/>
+    </RelativeLayout>
 
-
-        <TextView
-            android:id="@+id/totalAmountOfGuests"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Number of guests: 0"
-            android:layout_marginTop="16dp"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-        <TextView
-            android:id="@+id/totalAmountLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Total Amount to Pay: $0"
-            android:layout_marginTop="16dp"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
-    </LinearLayout>
 </ScrollView>

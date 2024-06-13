@@ -1,0 +1,214 @@
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="16dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="8dp"
+    android:backgroundTint="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Image -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            app:cardCornerRadius="16dp"
+            android:layout_marginBottom="8dp">
+
+            <ImageView
+                android:id="@+id/hostAccommodationImageView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@color/background"
+                android:background="@color/white"
+                android:scaleType="centerCrop" />
+
+        </androidx.cardview.widget.CardView>
+
+        <!-- Accommodation Type and Rating -->
+        <LinearLayout
+            android:id="@+id/linearLayoutAccommodationType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="8dp">
+
+            <TextView
+                android:id="@+id/hostAccommodationsAccommodationType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Apartment"
+                android:textColor="@color/text_gray"
+                android:fontFamily="@font/inter_medium"
+                android:textSize="14dp" />
+
+            <RatingBar
+                android:id="@+id/hostAccommodationsAccommodationRating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:numStars="5"
+                android:rating="4"
+                android:stepSize="0.1"
+                android:progressTint="@color/text_gray"
+                android:secondaryProgressTint="@color/transparent"
+                android:isIndicator="false"
+                style="?android:attr/ratingBarStyleSmall"
+                android:layout_marginStart="8dp"/>
+
+        </LinearLayout>
+
+        <!-- Price -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter"
+                android:text="Price: "
+                android:textColor="@color/text_gray"
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/hostAccommodationsPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter_bold"
+                android:text="$150"
+                android:textColor="@color/text_black"
+                android:textSize="16dp"
+                android:layout_marginStart="50dp"/>
+        </RelativeLayout>
+
+        <!-- Accommodation Name -->
+        <TextView
+            android:id="@+id/hostAccommodationsAccommodationName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxWidth="250dp"
+            android:text="Deluxe “Novi Sad”"
+            android:textColor="@color/text_black"
+            android:fontFamily="@font/inter_bold"
+            android:textSize="16dp"
+            android:layout_marginBottom="8dp"/>
+
+        <!-- Max Guests -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter"
+                android:text="Max guests: "
+                android:textColor="@color/text_gray"
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/hostAccommodationsMaxGuests"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter_bold"
+                android:text="4"
+                android:textColor="@color/text_black"
+                android:textSize="14dp"
+                android:layout_marginStart="8dp"/>
+
+        </LinearLayout>
+
+        <!-- Address -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter"
+                android:text="Address: "
+                android:textColor="@color/text_gray"
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/hostAccommodationsAddress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter_bold"
+                android:text="Bulevar Kralja Petra I 12, Novi Sad, Serbia"
+                android:textColor="@color/text_black"
+                android:textSize="14dp"
+                android:layout_marginStart="8dp"/>
+
+        </LinearLayout>
+
+        <!-- Total profit -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter"
+                android:text="Total profit"
+                android:textColor="@color/text_gray"
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/reservations"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter_bold"
+                android:text="$115"
+                android:textColor="@color/text_black"
+                android:textSize="14dp"
+                android:layout_marginStart="8dp"/>
+
+        </LinearLayout>
+
+        <!-- Total reservations -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter"
+                android:text="Total reservations: "
+                android:textColor="@color/text_gray"
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/total"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter_bold"
+                android:text="2"
+                android:textColor="@color/text_black"
+                android:textSize="14dp"
+                android:layout_marginStart="8dp"/>
+
+        </LinearLayout>
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
+

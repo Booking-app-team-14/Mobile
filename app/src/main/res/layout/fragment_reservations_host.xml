@@ -1,16 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".host.ReservationsFragmentHost">
 
-    <TextView
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayoutHostReservations"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        app:tabIndicatorColor="@color/primary_blue"
+        app:tabMode="fixed"
+        app:tabSelectedTextColor="@color/primary_blue"
+        app:tabTextColor="@color/text_black"
+        android:elevation="4dp">
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/tabReservationsHostReservations"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Reservations" />
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/tabRequestsHostReservations"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Requests" />
+    </com.google.android.material.tabs.TabLayout>
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPagerHostReservations"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:textSize="16sp"
-        android:fontFamily="@font/inter_bold"
-        android:text="Reservations Fragment" />
+        android:layout_marginTop="50dp"
+        android:background="@color/background"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 </FrameLayout>

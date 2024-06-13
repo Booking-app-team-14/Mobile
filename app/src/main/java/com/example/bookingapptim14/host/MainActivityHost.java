@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -17,10 +18,12 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 
+import com.example.bookingapptim14.GlobalData;
 import com.example.bookingapptim14.LoginScreen;
 import com.example.bookingapptim14.R;
 import com.example.bookingapptim14.UpdateAccountFragment;
 import com.example.bookingapptim14.UpdateAccountPasswordFragment;
+import com.example.bookingapptim14.models.User;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivityHost extends AppCompatActivity {
@@ -38,7 +41,7 @@ public class MainActivityHost extends AppCompatActivity {
                 loadFragment(new ReservationsFragmentHost(), false);
             }
             if (itemId == R.id.navNotificationsHost) {
-                loadFragment(new NotificationsFragmentHost(), false);
+                loadFragment(new HostNotificationsFragment(), false);
             }
             if (itemId == R.id.navProfileHost) {
                 loadFragment(new ProfileFragmentHost(), false);
@@ -91,7 +94,7 @@ public class MainActivityHost extends AppCompatActivity {
             bottomNavigationView.setSelectedItemId(R.id.navHomeHost);
         } else if (previousFragment instanceof ReservationsFragmentHost) {
             bottomNavigationView.setSelectedItemId(R.id.navReservationsHost);
-        } else if (previousFragment instanceof NotificationsFragmentHost) {
+        } else if (previousFragment instanceof HostNotificationsFragment) {
             bottomNavigationView.setSelectedItemId(R.id.navNotificationsHost);
         } else if (previousFragment instanceof ProfileFragmentHost) {
             bottomNavigationView.setSelectedItemId(R.id.navProfileHost);
@@ -100,6 +103,11 @@ public class MainActivityHost extends AppCompatActivity {
     }
 
     public void signOut(View view) {
+        SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove("jwtToken");
+        editor.remove("userId");
+        editor.apply();
         Intent intent = new Intent(MainActivityHost.this, LoginScreen.class);
         startActivity(intent);
         finish();
