@@ -562,7 +562,7 @@ public class CreateAccommodationScreen extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                Toast.makeText(CreateAccommodationScreen.this, "The request for approval of accommodation changes has been sent to the admin.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(CreateAccommodationScreen.this, "The request for approval of creating a new accommodation has been sent to the admin.", Toast.LENGTH_SHORT).show();
                                 getOnBackPressedDispatcher().onBackPressed();
                             }
                         });

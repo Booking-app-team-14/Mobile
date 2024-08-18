@@ -43,6 +43,7 @@ import com.example.bookingapptim14.Adapters.LocalDateDeserializerR;
 import com.example.bookingapptim14.Adapters.LocalDateTimeDeserializer;
 import com.example.bookingapptim14.BuildConfig;
 import com.example.bookingapptim14.GlobalData;
+import com.example.bookingapptim14.LoginScreen;
 import com.example.bookingapptim14.R;
 import com.example.bookingapptim14.enums.RequestStatus;
 import com.example.bookingapptim14.models.Accommodation;
@@ -51,6 +52,7 @@ import com.example.bookingapptim14.models.UserInfoDTO;
 import com.example.bookingapptim14.models.dtos.ReservationRequestDTO.RequestDTOGuest;
 import com.example.bookingapptim14.models.dtos.ReservationRequestDTO.ReservationRequestDTO;
 import com.example.bookingapptim14.models.dtos.UserBasicInfoDTO;
+import com.example.bookingapptim14.reviews.ReviewsActivity;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -88,19 +90,35 @@ public class AccommodationDetailsActivityGuest extends AppCompatActivity {
     private Long userId;
     private String jwtToken;
     private List<byte[]> imageList = new ArrayList<>();
+    //private Button button_reviews;
+
+    //private Long accommodationId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_accomodation_details_guest);
+        Button button_reviews = findViewById(R.id.button_reviews);
 
         SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
         jwtToken = sharedPreferences.getString("jwtToken", "");
         userId = sharedPreferences.getLong("userId", 0);
 
+//        button_reviews.setOnClickListener(v -> {
+//            Intent intent = new Intent(AccommodationDetailsActivityGuest.this, ReviewsActivity.class);
+//            intent.putExtra("accommodation_id", accommodationId); // Prosleđivanje ID-a smeštaja
+//            startActivity(intent);
+//        });
+
+
         Intent intent = getIntent();
         if (intent != null) {
             Long accommodationId = intent.getLongExtra("accommodation_id", -1);
+            button_reviews.setOnClickListener(v -> {
+                Intent intentReviews = new Intent(AccommodationDetailsActivityGuest.this, ReviewsActivity.class);
+                intentReviews.putExtra("accommodation_id", accommodationId);  // Korišćenje varijable
+                startActivity(intentReviews);
+            });
             if (accommodationId != -1) {
                 fetchAccommodationDetails(accommodationId);
             } else {
@@ -108,6 +126,7 @@ public class AccommodationDetailsActivityGuest extends AppCompatActivity {
                 finish();
             }
         }
+
     }
 
     private void fetchAccommodationDetails(Long accommodationId) {

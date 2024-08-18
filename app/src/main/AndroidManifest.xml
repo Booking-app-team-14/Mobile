@@ -70,6 +70,10 @@
             android:name=".RegisterScreen"
             android:exported="false"
             android:screenOrientation="portrait"/>
+        <activity android:name=".reviews.ReviewsActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+
         <activity
             android:name=".LoginScreen"
             android:exported="false"

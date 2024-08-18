@@ -1,0 +1,65 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp"
+    android:layout_marginBottom="12dp"
+    android:background="@drawable/review_background">
+
+    <ImageView
+        android:id="@+id/reviewSenderImage"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="6dp"
+        android:background="@drawable/circular_image_background"
+        android:contentDescription="@string/profile_image"
+        android:src="@drawable/default_profile_image" />
+
+    <TextView
+        android:id="@+id/reviewSender"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/reviewSenderImage"
+        android:layout_marginStart="8dp"
+        android:layout_alignTop="@id/reviewSenderImage"
+        android:text="Sender"
+        android:textStyle="bold"
+        android:textColor="@color/primary_blue"/>
+
+    <TextView
+        android:id="@+id/reviewDateTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/reviewSender"
+        android:layout_toEndOf="@id/reviewSenderImage"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:text="Date and Time"
+        android:textStyle="italic" />
+
+    <TextView
+        android:id="@+id/reviewComment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/reviewDateTime"
+        android:layout_marginTop="12dp"
+        android:text="Comment" />
+
+    <RatingBar
+        android:id="@+id/reviewRating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/reviewComment"
+        android:layout_marginTop="1dp"
+        android:numStars="5"
+        android:stepSize="1"
+        android:isIndicator="true"
+        android:rating="0"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="8dp"
+        android:scaleX="0.5"
+        android:scaleY="0.5"
+        android:progressTint="@color/primary_blue"/>
+
+
+</RelativeLayout>

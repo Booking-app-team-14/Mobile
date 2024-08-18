@@ -456,5 +456,14 @@
                 </LinearLayout>
             </TableRow>
         </TableLayout>
+        <Button
+            android:id="@+id/button_reviews"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="REVIEWS"
+            android:layout_gravity="center"
+            android:padding="8dp"
+            android:background="@color/primary_blue"
+        android:textColor="@color/white" />
     </LinearLayout>
 </ScrollView>
