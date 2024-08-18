@@ -18,7 +18,51 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/reviewsRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:layout_marginTop="16dp"/>
 
+    <!-- Comment Input Section -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="16dp">
+
+        <!-- Large TextBox for Comment -->
+        <EditText
+            android:id="@+id/commentInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Write your comment here"
+            android:minHeight="100dp"
+            android:padding="8dp"
+            android:background="@drawable/comment_background"
+            android:gravity="top|start"/>
+
+        <!-- RatingBar -->
+        <RatingBar
+            android:id="@+id/ratingBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:numStars="5"
+            android:stepSize="1"
+            android:rating="0"
+            android:progressTint="@color/primary_blue"/>
+
+        <!-- Submit Button -->
+        <Button
+            android:id="@+id/submitReviewButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Submit Review"
+            android:textColor="@android:color/white"
+            android:background="@color/primary_blue"
+            android:layout_gravity="center"/>
+
+    </LinearLayout>
+
 </LinearLayout>
+
