@@ -45,6 +45,9 @@ public class ReviewsActivity extends AppCompatActivity {
     private String jwtToken;
 
     private Button deleteButton;
+
+    private long userId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,11 +60,18 @@ public class ReviewsActivity extends AppCompatActivity {
         reviewCommentInput = findViewById(R.id.commentInput);
         reviewRatingBar = findViewById(R.id.ratingBar);
         submitReviewButton = findViewById(R.id.submitReviewButton);
+        userId = getCurrentUserId();
 
         reviewsList = new ArrayList<>();
         //reviewsAdapter = new ReviewsAdapter(reviewsList);
-        reviewsAdapter = new ReviewsAdapter(reviewsList, this);
+        //reviewsAdapter = new ReviewsAdapter(reviewsList, this);
+        reviewsAdapter = new ReviewsAdapter(reviewsList, this, userId);
         reviewsRecyclerView.setAdapter(reviewsAdapter);
+
+        //currentUserId = getCurrentUserId();
+
+
+        //userId = getCurrentUserId();
 
         Intent intent = getIntent();
         if (intent != null) {
@@ -119,7 +129,8 @@ public class ReviewsActivity extends AppCompatActivity {
 
                         // Parsing JSON response to Review objects
                         Gson gson = new GsonBuilder().create();
-                        Type listType = new TypeToken<List<Review>>(){}.getType();
+                        Type listType = new TypeToken<List<Review>>() {
+                        }.getType();
                         final List<Review> reviews = gson.fromJson(content.toString(), listType);
 
                         runOnUiThread(new Runnable() {
@@ -188,7 +199,7 @@ public class ReviewsActivity extends AppCompatActivity {
     public void deleteReviewById(Long reviewId, int position) {
         new Thread(() -> {
             try {
-                URL url = new URL(BuildConfig.IP_ADDR + "/api/accommodationReviews/" + reviewId ); //+ reviewId
+                URL url = new URL(BuildConfig.IP_ADDR + "/api/accommodationReviews/" + reviewId); //+ reviewId
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("DELETE");
 
@@ -219,4 +230,14 @@ public class ReviewsActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
         return sharedPreferences.getString("jwtToken", "");
     }
+
+    private long getCurrentUserId() {
+        SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
+        jwtToken = sharedPreferences.getString("jwtToken", "");
+        userId = sharedPreferences.getLong("userId", 0);
+        return userId;
+    }
+
+
+
 }

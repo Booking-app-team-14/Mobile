@@ -25,12 +25,15 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewVi
     private List<Review> reviewsList;
     private ReviewsActivity activity;
 
+    private long userId;
+
     public ReviewsAdapter(List<Review> reviewsList) {
         this.reviewsList = reviewsList;
     }
-    public ReviewsAdapter(List<Review> reviewsList, ReviewsActivity activity) {
+    public ReviewsAdapter(List<Review> reviewsList, ReviewsActivity activity, long userId) {
         this.reviewsList = reviewsList;
         this.activity = activity;
+        this.userId= userId;
     }
 
     @NonNull
@@ -44,7 +47,7 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewVi
     public void onBindViewHolder(@NonNull ReviewViewHolder holder, int position) {
         Review review = reviewsList.get(position);
         holder.reviewSender.setText(review.getUser().getFirstName() + " " + review.getUser().getLastName());
-        holder.reviewComment.setText(review.getComment()+ review.getId());
+        holder.reviewComment.setText(review.getComment()+ " "+review.getUser().getId()+" "+userId);
         holder.reviewDateTime.setText(formatDateTime(review.getSentAt()));
 
         // Postavljanje ocene u RatingBar
@@ -54,10 +57,15 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewVi
             holder.reviewRating.setVisibility(View.VISIBLE);
             holder.reviewRating.setRating(review.getRating());
         }
-        // Postavljanje onClickListener-a za delete dugme
-        holder.deleteButton.setOnClickListener(v -> {
-            activity.deleteReviewById(review.getId(), position);
-        });
+        // Prikazivanje dugmeta za brisanje samo ako je recenziju postavio trenutni korisnik
+        if (review.getUser().getId()==userId) {
+            holder.deleteButton.setVisibility(View.VISIBLE);
+            holder.deleteButton.setOnClickListener(v -> {
+                activity.deleteReviewById(review.getId(), position);
+            });
+        } else {
+            holder.deleteButton.setVisibility(View.GONE);
+        }
     }
 
     @Override
