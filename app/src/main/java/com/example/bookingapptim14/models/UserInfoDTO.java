@@ -3,6 +3,7 @@ package com.example.bookingapptim14.models;
 
 public class UserInfoDTO {
 
+    protected long id;
     protected String firstName;
 
     protected String lastName;
@@ -17,12 +18,17 @@ public class UserInfoDTO {
     public UserInfoDTO(){}
 
 
-    public UserInfoDTO(String firstName, String lastName, String username, String profilePictureType, String profilePictureBytes) {
+    public UserInfoDTO(long id, String firstName, String lastName, String username, String profilePictureType, String profilePictureBytes) {
+        this.id=id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
         this.profilePictureType = profilePictureType;
         this.profilePictureBytes = profilePictureBytes;
+    }
+
+    public long getId() {
+        return id;
     }
 
     public String getFirstName() {

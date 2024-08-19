@@ -53,6 +53,7 @@ import com.example.bookingapptim14.models.UserInfoDTO;
 import com.example.bookingapptim14.models.dtos.ReservationRequestDTO.RequestDTOGuest;
 import com.example.bookingapptim14.models.dtos.ReservationRequestDTO.ReservationRequestDTO;
 import com.example.bookingapptim14.models.dtos.UserBasicInfoDTO;
+import com.example.bookingapptim14.reviews.OwnerReviewsActivity;
 import com.example.bookingapptim14.reviews.ReviewsActivity;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -105,13 +106,6 @@ public class AccommodationDetailsActivityGuest extends AppCompatActivity {
         jwtToken = sharedPreferences.getString("jwtToken", "");
         userId = sharedPreferences.getLong("userId", 0);
 
-//        button_reviews.setOnClickListener(v -> {
-//            Intent intent = new Intent(AccommodationDetailsActivityGuest.this, ReviewsActivity.class);
-//            intent.putExtra("accommodation_id", accommodationId); // Prosleđivanje ID-a smeštaja
-//            startActivity(intent);
-//        });
-
-
         Intent intent = getIntent();
         if (intent != null) {
             Long accommodationId = intent.getLongExtra("accommodation_id", -1);
@@ -120,6 +114,7 @@ public class AccommodationDetailsActivityGuest extends AppCompatActivity {
                 intentReviews.putExtra("accommodation_id", accommodationId);  // Korišćenje varijable
                 startActivity(intentReviews);
             });
+
             if (accommodationId != -1) {
                 fetchAccommodationDetails(accommodationId);
             } else {
@@ -221,13 +216,18 @@ public class AccommodationDetailsActivityGuest extends AppCompatActivity {
                             byte[] decodedString = Base64.getDecoder().decode(base64ImageGuest);
                             ownerPicture.setImageBitmap(BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length));
                         }
-                        // Postavljanje OnClickListener-a na sliku Ownera
-                        ownerPicture.setOnClickListener(v -> {
-                            Intent intent = new Intent(AccommodationDetailsActivityGuest.this, ReviewsActivity.class);
-                            intent.putExtra("accommodation_id", accommodation.getId());
-                            startActivity(intent);
-
-                    });
+                        // Proveri da li je ownerId ispravan
+                        Long ownerId = accommodation.getOwner_Id();
+                        if (ownerId != null) {
+                            // Postavljanje OnClickListener-a na sliku Ownera sa ispravnim ownerId
+                            ownerPicture.setOnClickListener(v -> {
+                                Intent intent = new Intent(AccommodationDetailsActivityGuest.this, OwnerReviewsActivity.class);
+                                intent.putExtra("owner_id", ownerId);
+                                startActivity(intent);
+                            });
+                        } else {
+                            Log.e("AccommodationDetails", "Owner ID is null");
+                        }
                     });
                 } else {
                     runOnUiThread(() -> {
