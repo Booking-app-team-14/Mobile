@@ -1,11 +1,13 @@
 package com.example.bookingapptim14.Adapters;
 
+import android.content.res.ColorStateList;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bookingapptim14.R;
@@ -27,13 +29,22 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewVi
 
     private long userId;
 
+    private String userRole;
+
     public ReviewsAdapter(List<Review> reviewsList) {
         this.reviewsList = reviewsList;
     }
-    public ReviewsAdapter(List<Review> reviewsList, ReviewsActivity activity, long userId) {
+//    public ReviewsAdapter(List<Review> reviewsList, ReviewsActivity activity, long userId) {
+//        this.reviewsList = reviewsList;
+//        this.activity = activity;
+//        this.userId= userId;
+//    }
+
+    public ReviewsAdapter(List<Review> reviewsList, ReviewsActivity activity, long userId, String userRole) {
         this.reviewsList = reviewsList;
         this.activity = activity;
-        this.userId= userId;
+        this.userId = userId;
+        this.userRole = userRole;
     }
 
     @NonNull
@@ -57,14 +68,33 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewVi
             holder.reviewRating.setVisibility(View.VISIBLE);
             holder.reviewRating.setRating(review.getRating());
         }
-        // Prikazivanje dugmeta za brisanje samo ako je recenziju postavio trenutni korisnik
-        if (review.getUser().getId()==userId) {
-            holder.deleteButton.setVisibility(View.VISIBLE);
-            holder.deleteButton.setOnClickListener(v -> {
-                activity.deleteReviewById(review.getId(), position);
-            });
+
+
+        // Prikazivanje dugmeta u zavisnosti od uloge korisnika
+        if (userRole.equals("GUEST")) {
+            // GUEST - prikazivanje dugmeta za brisanje samo ako je recenziju postavio trenutni korisnik
+            if (review.getUser().getId() == userId) {
+                holder.actionButton.setVisibility(View.VISIBLE);
+                holder.actionButton.setText("Delete");
+                holder.actionButton.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(activity, R.color.red)));
+                holder.actionButton.setOnClickListener(v -> activity.deleteReviewById(review.getId(), position));
+            } else {
+                holder.actionButton.setVisibility(View.GONE);
+            }
+        } else if (userRole.equals("OWNER")) {
+            // OWNER - prikazivanje dugmeta za prijavljivanje recenzije
+            holder.actionButton.setVisibility(View.VISIBLE);
+            holder.actionButton.setText("Report");
+            holder.actionButton.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(activity, R.color.red)));
+            //holder.actionButton.setOnClickListener(v -> activity.reportReviewById(review.getId(), position));
+        } else if (userRole.equals("ADMIN")) {
+            // ADMIN - prikazivanje dugmeta za odobravanje recenzije
+            holder.actionButton.setVisibility(View.VISIBLE);
+            holder.actionButton.setText("Approve");
+            holder.actionButton.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(activity, R.color.green)));
+            //holder.actionButton.setOnClickListener(v -> activity.approveReviewById(review.getId(), position));
         } else {
-            holder.deleteButton.setVisibility(View.GONE);
+            holder.actionButton.setVisibility(View.GONE);
         }
     }
 
@@ -76,7 +106,7 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewVi
     public static class ReviewViewHolder extends RecyclerView.ViewHolder {
         TextView reviewSender, reviewComment, reviewDateTime;
         RatingBar reviewRating;  // Promena sa TextView na RatingBar
-        Button deleteButton;
+        Button actionButton;
 
         public ReviewViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -84,7 +114,7 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewVi
             reviewComment = itemView.findViewById(R.id.reviewComment);
             reviewRating = itemView.findViewById(R.id.reviewRating);  // Inicijalizacija RatingBar
             reviewDateTime = itemView.findViewById(R.id.reviewDateTime);
-            deleteButton = itemView.findViewById(R.id.deleteButton);
+            actionButton = itemView.findViewById(R.id.actionButton);
         }
     }
 

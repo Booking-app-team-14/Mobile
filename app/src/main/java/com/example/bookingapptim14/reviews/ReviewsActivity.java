@@ -20,6 +20,7 @@ import com.example.bookingapptim14.Adapters.ReviewsAdapter;
 import com.example.bookingapptim14.BuildConfig;
 import com.example.bookingapptim14.R;
 import com.example.bookingapptim14.models.Review;
+import com.example.bookingapptim14.models.User;
 import com.google.firebase.crashlytics.buildtools.reloc.com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -46,9 +47,13 @@ public class ReviewsActivity extends AppCompatActivity {
     private Button submitReviewButton;
     private String jwtToken;
 
-    private Button deleteButton;
+    private Button actionButton;
 
     private long userId;
+
+    private String userRole;
+
+    //String userRole = getUserRole();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +72,9 @@ public class ReviewsActivity extends AppCompatActivity {
         reviewsList = new ArrayList<>();
         //reviewsAdapter = new ReviewsAdapter(reviewsList);
         //reviewsAdapter = new ReviewsAdapter(reviewsList, this);
-        reviewsAdapter = new ReviewsAdapter(reviewsList, this, userId);
+
+        userRole = getUserRole();
+        reviewsAdapter = new ReviewsAdapter(reviewsList, this, userId, userRole);
         reviewsRecyclerView.setAdapter(reviewsAdapter);
 
         //currentUserId = getCurrentUserId();
@@ -240,6 +247,56 @@ public class ReviewsActivity extends AppCompatActivity {
         userId = sharedPreferences.getLong("userId", 0);
         return userId;
     }
+
+    private String getUserRole() {
+        SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
+        jwtToken = sharedPreferences.getString("jwtToken", "");
+
+        if (jwtToken == null || jwtToken.isEmpty()) {
+            return null;
+        }
+
+        final String[] userRole = {null}; // Mutable container for role
+
+        Thread thread = new Thread(() -> {
+            try {
+                URL url = new URL(BuildConfig.IP_ADDR + "/api/role");
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestMethod("GET");
+                conn.setDoInput(true);
+                conn.setRequestProperty("Authorization", "Bearer " + jwtToken);
+
+                int responseCode = conn.getResponseCode();
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                    StringBuilder content = new StringBuilder();
+                    String inputLine;
+                    while ((inputLine = in.readLine()) != null) {
+                        content.append(inputLine);
+                    }
+                    in.close();
+                    conn.disconnect();
+
+                    userRole[0] = content.toString();
+                } else {
+                    Log.e("getUserRole", "Failed to get user role, response code: " + responseCode);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+
+        thread.start();
+        try {
+            thread.join(); // Wait for the thread to finish
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return userRole[0];
+    }
+
+
 
     private void updateNoReviewsMessageVisibility() {
         TextView noReviewsMessage = findViewById(R.id.noReviewsMessage);

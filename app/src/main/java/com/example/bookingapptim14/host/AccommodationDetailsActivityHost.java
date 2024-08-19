@@ -51,6 +51,7 @@ import com.example.bookingapptim14.models.Availability;
 import com.example.bookingapptim14.models.ReservationRequest;
 import com.example.bookingapptim14.models.UserInfoDTO;
 import com.example.bookingapptim14.models.dtos.ReservationRequestDTO.RequestDTOGuest;
+import com.example.bookingapptim14.reviews.ReviewsActivity;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -91,6 +92,7 @@ public class AccommodationDetailsActivityHost extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_accomodation_details_host);
+        Button button_reviews = findViewById(R.id.button_reviews);
 
         SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
         jwtToken = sharedPreferences.getString("jwtToken", "");
@@ -99,6 +101,11 @@ public class AccommodationDetailsActivityHost extends AppCompatActivity {
         Intent intent = getIntent();
         if (intent != null) {
             Long accommodationId = intent.getLongExtra("accommodation_id", -1);
+            button_reviews.setOnClickListener(v -> {
+                Intent intentReviews = new Intent(AccommodationDetailsActivityHost.this, ReviewsActivity.class);
+                intentReviews.putExtra("accommodation_id", accommodationId);  // Korišćenje varijable
+                startActivity(intentReviews);
+            });
             if (accommodationId != -1) {
                 fetchAccommodationDetails(accommodationId);
             } else {
