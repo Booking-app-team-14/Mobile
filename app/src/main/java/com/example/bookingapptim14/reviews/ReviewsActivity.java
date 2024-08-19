@@ -46,6 +46,7 @@ public class ReviewsActivity extends AppCompatActivity {
     private RatingBar reviewRatingBar;
     private Button submitReviewButton;
     private String jwtToken;
+    private TextView averageRatingText;
 
     private Button actionButton;
 
@@ -73,6 +74,8 @@ public class ReviewsActivity extends AppCompatActivity {
         //reviewsAdapter = new ReviewsAdapter(reviewsList);
         //reviewsAdapter = new ReviewsAdapter(reviewsList, this);
 
+        averageRatingText = findViewById(R.id.averageRatingTextView);
+
         userRole = getUserRole();
         reviewsAdapter = new ReviewsAdapter(reviewsList, this, userId, userRole);
         reviewsRecyclerView.setAdapter(reviewsAdapter);
@@ -87,6 +90,7 @@ public class ReviewsActivity extends AppCompatActivity {
             Long accommodationId = intent.getLongExtra("accommodation_id", -1);
             if (accommodationId != -1) {
                 fetchAccommodationReviews(accommodationId);
+                fetchAverageRating(accommodationId);
             } else {
                 Toast.makeText(this, "Accommodation ID not provided", Toast.LENGTH_SHORT).show();
                 finish();
@@ -108,6 +112,7 @@ public class ReviewsActivity extends AppCompatActivity {
                         rating = -1;
                     }
                     submitReview(accommodationId, rating, comment);
+                    fetchAverageRating(accommodationId);
                 }
             });
 
@@ -294,6 +299,35 @@ public class ReviewsActivity extends AppCompatActivity {
         }
 
         return userRole[0];
+    }
+
+    private void fetchAverageRating(Long accommodationId) {
+        new Thread(() -> {
+            try {
+                URL url = new URL(BuildConfig.IP_ADDR + "/api/accommodation/"+ accommodationId + "/average-rating");
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("GET");
+
+                BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                StringBuilder result = new StringBuilder();
+                String line;
+
+                while ((line = reader.readLine()) != null) {
+                    result.append(line);
+                }
+
+                reader.close();
+                connection.disconnect();
+
+                runOnUiThread(() -> {
+                    String averageRating = result.toString();
+                    averageRatingText.setText("Average Rating: " + averageRating);
+                });
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }).start();
     }
 
 

@@ -34,6 +34,26 @@
         android:layout_weight="1"
         android:layout_marginTop="16dp"/>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="16dp"
+        android:layout_gravity="center">
+
+        <!-- Prosečna ocena -->
+        <TextView
+            android:id="@+id/averageRatingTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Average rating: "
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@color/text_black"
+            android:layout_gravity="center"/>
+
+    </LinearLayout>
+
     <!-- Comment Input Section -->
     <LinearLayout
         android:layout_width="match_parent"
