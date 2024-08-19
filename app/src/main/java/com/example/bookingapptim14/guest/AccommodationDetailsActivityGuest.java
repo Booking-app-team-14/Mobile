@@ -46,6 +46,7 @@ import com.example.bookingapptim14.GlobalData;
 import com.example.bookingapptim14.LoginScreen;
 import com.example.bookingapptim14.R;
 import com.example.bookingapptim14.enums.RequestStatus;
+import com.example.bookingapptim14.host.AccommodationDetailsActivityHost;
 import com.example.bookingapptim14.models.Accommodation;
 import com.example.bookingapptim14.models.Availability;
 import com.example.bookingapptim14.models.UserInfoDTO;
@@ -153,6 +154,7 @@ public class AccommodationDetailsActivityGuest extends AppCompatActivity {
                     accommodation = gson.fromJson(response.toString(), Accommodation.class);
 
                     runOnUiThread(() -> {
+
                         initializeUI();
                         setupViewPager();
                         setupMapView();
@@ -187,6 +189,54 @@ public class AccommodationDetailsActivityGuest extends AppCompatActivity {
         descriptionTextView.setText(accommodation.getDescription());
         priceTextView.setText("$" + accommodation.getPricePerNight());
         ratingTextView.setText(String.valueOf(accommodation.getRating()));
+
+        new Thread(() -> {
+            try {
+                URL url = new URL(BuildConfig.IP_ADDR + "/api/users/owner/" + accommodation.getOwner_Id());
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestMethod("GET");
+                conn.setRequestProperty("Authorization", "Bearer " + jwtToken);
+
+                int responseCode = conn.getResponseCode();
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                    StringBuilder response = new StringBuilder();
+                    String line;
+                    while ((line = in.readLine()) != null) {
+                        response.append(line);
+                    }
+                    in.close();
+
+                    Gson gson = new GsonBuilder()
+                            .registerTypeAdapter(LocalDate.class, new LocalDateDeserializer())
+                            .create();
+                    UserInfoDTO user = gson.fromJson(response.toString(), UserInfoDTO.class);
+
+                    runOnUiThread(() -> {
+                        TextView ownerName = findViewById(R.id.ownerName);
+                        ownerName.setText(user.getFirstName() + " " + user.getLastName());
+                        ImageView ownerPicture = findViewById(R.id.ownerPicture);
+                        String base64ImageGuest = user.getProfilePictureBytes();
+                        if (base64ImageGuest != null && !base64ImageGuest.isEmpty()) {
+                            byte[] decodedString = Base64.getDecoder().decode(base64ImageGuest);
+                            ownerPicture.setImageBitmap(BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length));
+                        }
+                    });
+                } else {
+                    runOnUiThread(() -> {
+                        Toast.makeText(AccommodationDetailsActivityGuest.this, "Failed to fetch accommodation details", Toast.LENGTH_SHORT).show();
+                        finish();
+                    });
+
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                runOnUiThread(() -> {
+                    Toast.makeText(AccommodationDetailsActivityGuest.this, "Error fetching accommodation details", Toast.LENGTH_SHORT).show();
+                    finish();
+                });
+            }
+        }).start();
     }
 
     private void setupViewPager() {
