@@ -47,7 +47,7 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewVi
     public void onBindViewHolder(@NonNull ReviewViewHolder holder, int position) {
         Review review = reviewsList.get(position);
         holder.reviewSender.setText(review.getUser().getFirstName() + " " + review.getUser().getLastName());
-        holder.reviewComment.setText(review.getComment()+ " "+review.getUser().getId()+" "+userId);
+        holder.reviewComment.setText(review.getComment());
         holder.reviewDateTime.setText(formatDateTime(review.getSentAt()));
 
         // Postavljanje ocene u RatingBar
