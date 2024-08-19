@@ -221,6 +221,13 @@ public class AccommodationDetailsActivityGuest extends AppCompatActivity {
                             byte[] decodedString = Base64.getDecoder().decode(base64ImageGuest);
                             ownerPicture.setImageBitmap(BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length));
                         }
+                        // Postavljanje OnClickListener-a na sliku Ownera
+                        ownerPicture.setOnClickListener(v -> {
+                            Intent intent = new Intent(AccommodationDetailsActivityGuest.this, ReviewsActivity.class);
+                            intent.putExtra("accommodation_id", accommodation.getId());
+                            startActivity(intent);
+
+                    });
                     });
                 } else {
                     runOnUiThread(() -> {
