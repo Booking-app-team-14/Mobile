@@ -44,6 +44,7 @@ public class ReviewsActivity extends AppCompatActivity {
     private Button submitReviewButton;
     private String jwtToken;
 
+    private Button deleteButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +59,8 @@ public class ReviewsActivity extends AppCompatActivity {
         submitReviewButton = findViewById(R.id.submitReviewButton);
 
         reviewsList = new ArrayList<>();
-        reviewsAdapter = new ReviewsAdapter(reviewsList);
+        //reviewsAdapter = new ReviewsAdapter(reviewsList);
+        reviewsAdapter = new ReviewsAdapter(reviewsList, this);
         reviewsRecyclerView.setAdapter(reviewsAdapter);
 
         Intent intent = getIntent();
@@ -179,6 +181,36 @@ public class ReviewsActivity extends AppCompatActivity {
             } catch (Exception e) {
                 e.printStackTrace();
                 runOnUiThread(() -> Toast.makeText(ReviewsActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show());
+            }
+        }).start();
+    }
+
+    public void deleteReviewById(Long reviewId, int position) {
+        new Thread(() -> {
+            try {
+                URL url = new URL(BuildConfig.IP_ADDR + "/api/accommodationReviews/" + reviewId ); //+ reviewId
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestMethod("DELETE");
+
+                // Dodavanje Authorization zaglavlja sa JWT tokenom
+                String token = getTokenFromSharedPreferences(); // metoda koja dohvata token iz SharedPreferences
+                conn.setRequestProperty("Authorization", "Bearer " + token);
+
+                int responseCode = conn.getResponseCode();
+                if (responseCode == HttpURLConnection.HTTP_NO_CONTENT) {
+                    runOnUiThread(() -> {
+                        reviewsList.remove(position);
+                        reviewsAdapter.notifyItemRemoved(position);
+                        Toast.makeText(ReviewsActivity.this, "Review deleted successfully", Toast.LENGTH_SHORT).show();
+                    });
+                } else {
+                    runOnUiThread(() -> Toast.makeText(ReviewsActivity.this, "Failed to delete review", Toast.LENGTH_SHORT).show());
+                }
+
+                conn.disconnect();
+            } catch (Exception e) {
+                e.printStackTrace();
+                runOnUiThread(() -> Toast.makeText(ReviewsActivity.this, "An error occurred", Toast.LENGTH_SHORT).show());
             }
         }).start();
     }

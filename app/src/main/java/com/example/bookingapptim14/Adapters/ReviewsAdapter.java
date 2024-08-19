@@ -3,12 +3,14 @@ package com.example.bookingapptim14.Adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bookingapptim14.R;
 import com.example.bookingapptim14.models.Review;
+import com.example.bookingapptim14.reviews.ReviewsActivity;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -21,9 +23,14 @@ import android.widget.RatingBar;
 public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewViewHolder> {
 
     private List<Review> reviewsList;
+    private ReviewsActivity activity;
 
     public ReviewsAdapter(List<Review> reviewsList) {
         this.reviewsList = reviewsList;
+    }
+    public ReviewsAdapter(List<Review> reviewsList, ReviewsActivity activity) {
+        this.reviewsList = reviewsList;
+        this.activity = activity;
     }
 
     @NonNull
@@ -37,7 +44,7 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewVi
     public void onBindViewHolder(@NonNull ReviewViewHolder holder, int position) {
         Review review = reviewsList.get(position);
         holder.reviewSender.setText(review.getUser().getFirstName() + " " + review.getUser().getLastName());
-        holder.reviewComment.setText(review.getComment());
+        holder.reviewComment.setText(review.getComment()+ review.getId());
         holder.reviewDateTime.setText(formatDateTime(review.getSentAt()));
 
         // Postavljanje ocene u RatingBar
@@ -47,6 +54,10 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewVi
             holder.reviewRating.setVisibility(View.VISIBLE);
             holder.reviewRating.setRating(review.getRating());
         }
+        // Postavljanje onClickListener-a za delete dugme
+        holder.deleteButton.setOnClickListener(v -> {
+            activity.deleteReviewById(review.getId(), position);
+        });
     }
 
     @Override
@@ -57,6 +68,7 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewVi
     public static class ReviewViewHolder extends RecyclerView.ViewHolder {
         TextView reviewSender, reviewComment, reviewDateTime;
         RatingBar reviewRating;  // Promena sa TextView na RatingBar
+        Button deleteButton;
 
         public ReviewViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -64,6 +76,7 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewVi
             reviewComment = itemView.findViewById(R.id.reviewComment);
             reviewRating = itemView.findViewById(R.id.reviewRating);  // Inicijalizacija RatingBar
             reviewDateTime = itemView.findViewById(R.id.reviewDateTime);
+            deleteButton = itemView.findViewById(R.id.deleteButton);
         }
     }
 

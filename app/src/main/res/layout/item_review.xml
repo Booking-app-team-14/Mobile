@@ -61,5 +61,18 @@
         android:scaleY="0.5"
         android:progressTint="@color/primary_blue"/>
 
+    <Button
+        android:id="@+id/deleteButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/reviewRating"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Delete"
+        android:textColor="@android:color/white"
+        android:backgroundTint="@color/red"
+        android:padding="8dp"/>
+
 
 </RelativeLayout>

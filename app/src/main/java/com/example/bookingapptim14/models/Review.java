@@ -3,6 +3,7 @@ package com.example.bookingapptim14.models;
 import com.google.gson.annotations.SerializedName;
 
 public class Review {
+    private Long id;
     private User user;
     private int rating;
 
@@ -11,6 +12,7 @@ public class Review {
     private String sentAt;
 
 
+    public Long getId() {return id;}
 
     public User getUser() {
         return user;
