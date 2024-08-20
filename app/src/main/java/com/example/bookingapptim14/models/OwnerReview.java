@@ -10,6 +10,8 @@ public class OwnerReview {
 
     private String timestamp;
 
+    private boolean reported;
+
 
     public Long getId() {return id;}
 
@@ -42,7 +44,13 @@ public class OwnerReview {
         return timestamp;
     }
 
+    public boolean isReported() {return reported;}
+
+    public void setReported(boolean isReported) {this.reported=isReported;}
+
     public void setTimestamp(String sentAt) {
         this.timestamp = sentAt;
     }}
+
+
 

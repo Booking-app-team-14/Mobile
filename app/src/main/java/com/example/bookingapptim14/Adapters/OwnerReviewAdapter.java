@@ -85,11 +85,18 @@ public class OwnerReviewAdapter extends RecyclerView.Adapter<OwnerReviewAdapter.
                 holder.actionButton.setVisibility(View.GONE);
             }
         } else if (userRole.equals("OWNER")) {
-            // OWNER - prikazivanje dugmeta za prijavljivanje recenzije
-            holder.actionButton.setVisibility(View.VISIBLE);
-            holder.actionButton.setText("Report");
-            holder.actionButton.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(activity, R.color.red)));
-            //holder.actionButton.setOnClickListener(v -> activity.reportReviewById(review.getId(), position));
+            if (review.isReported()) {
+                // Ako je recenzija već prijavljena, prikaži tekst "Reported"
+                holder.actionButton.setVisibility(View.VISIBLE);
+                holder.actionButton.setText("Reported");
+                holder.actionButton.setEnabled(false);
+            } else {
+                // Prikazivanje dugmeta za prijavljivanje recenzije
+                holder.actionButton.setVisibility(View.VISIBLE);
+                holder.actionButton.setText("Report");
+                holder.actionButton.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(activity, R.color.red)));
+                holder.actionButton.setOnClickListener(v -> activity.reportReviewById(review.getId(), position));
+            }
         } else if (userRole.equals("ADMIN")) {
             // ADMIN - prikazivanje dugmeta za odobravanje recenzije
             holder.actionButton.setVisibility(View.VISIBLE);

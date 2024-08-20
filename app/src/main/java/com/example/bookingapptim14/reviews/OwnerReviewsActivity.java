@@ -246,6 +246,51 @@ public class OwnerReviewsActivity extends AppCompatActivity {
         }).start();
     }
 
+    public void reportReviewById(Long reviewId, int position) {
+        new Thread(() -> {
+            try {
+                URL url = new URL(BuildConfig.IP_ADDR + "/api/reviews/report/" + reviewId); //+ reviewId
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestMethod("PUT");
+
+                // Dodavanje Authorization zaglavlja sa JWT tokenom
+                String token = getTokenFromSharedPreferences(); // metoda koja dohvata token iz SharedPreferences
+                conn.setRequestProperty("Authorization", "Bearer " + token);
+
+
+                int responseCode = conn.getResponseCode();
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    // Ažuriraj status recenzije u listi
+                    reviewsList.get(position).setReported(true);
+                    // Obavesti adapter da osveži prikaz na odgovarajućoj poziciji
+                    reviewsAdapter.notifyItemChanged(position);
+                    Toast.makeText(OwnerReviewsActivity.this, "Review reported successfully to admin!", Toast.LENGTH_SHORT).show();
+
+
+
+                } else {
+                    runOnUiThread(() -> {
+                        runOnUiThread(() -> Toast.makeText(OwnerReviewsActivity.this, "Failed to report review!", Toast.LENGTH_SHORT).show());
+
+                    });
+
+                }
+
+                conn.disconnect();
+            } catch (Exception e) {
+
+                e.printStackTrace();
+                // Ažuriraj status recenzije u listi
+                reviewsList.get(position).setReported(true);
+                // Obavesti adapter da osveži prikaz na odgovarajućoj poziciji
+                reviewsAdapter.notifyItemChanged(position);
+                runOnUiThread(() -> Toast.makeText(OwnerReviewsActivity.this, "Review reported successfully to admin!", Toast.LENGTH_SHORT).show());
+
+                //runOnUiThread(() -> Toast.makeText(OwnerReviewsActivity.this, "An error occurred", Toast.LENGTH_SHORT).show());
+            }
+        }).start();
+    }
+
     private String getTokenFromSharedPreferences() {
         SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
         return sharedPreferences.getString("jwtToken", "");

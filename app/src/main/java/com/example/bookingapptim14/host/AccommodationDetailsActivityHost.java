@@ -51,6 +51,7 @@ import com.example.bookingapptim14.models.Availability;
 import com.example.bookingapptim14.models.ReservationRequest;
 import com.example.bookingapptim14.models.UserInfoDTO;
 import com.example.bookingapptim14.models.dtos.ReservationRequestDTO.RequestDTOGuest;
+import com.example.bookingapptim14.reviews.OwnerReviewsActivity;
 import com.example.bookingapptim14.reviews.ReviewsActivity;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -205,6 +206,18 @@ public class AccommodationDetailsActivityHost extends AppCompatActivity {
                             byte[] decodedString = Base64.getDecoder().decode(base64ImageGuest);
                             ownerPicture.setImageBitmap(BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length));
                         }
+                        // Proveri da li je ownerId ispravan
+                        Long ownerId = accommodation.getOwner_Id();
+                        if (ownerId != null) {
+                            // Postavljanje OnClickListener-a na sliku Ownera sa ispravnim ownerId
+                            ownerPicture.setOnClickListener(v -> {
+                                Intent intent = new Intent(AccommodationDetailsActivityHost.this, OwnerReviewsActivity.class);
+                                intent.putExtra("owner_id", ownerId);
+                                startActivity(intent);
+                            });
+                        } else {
+                            Log.e("AccommodationDetails", "Owner ID is null");
+                        }
                     });
                 } else {
                     runOnUiThread(() -> {
@@ -221,7 +234,6 @@ public class AccommodationDetailsActivityHost extends AppCompatActivity {
                 });
             }
         }).start();
-
     }
 
     private void setupViewPager() {
