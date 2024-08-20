@@ -112,7 +112,7 @@ public class OwnerReviewsActivity extends AppCompatActivity {
                     if (rating <= 0) {
                         rating = -1;
                     }
-                    //submitReview(accommodationId, rating, comment);
+                    submitReview(ownerId, rating, comment,userId);
                     fetchAverageRating(ownerId);
                 }
             });
@@ -168,10 +168,10 @@ public class OwnerReviewsActivity extends AppCompatActivity {
         }).start();
     }
 
-    private void submitReview(Long accommodationId, float rating, String comment) {
+    private void submitReview(Long ownerId, float rating, String comment, Long userId) {
         new Thread(() -> {
             try {
-                URL url = new URL(BuildConfig.IP_ADDR + "/api/accommodations/accommodationReviews");
+                URL url = new URL(BuildConfig.IP_ADDR + "/api/reviews");
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("POST");
                 conn.setDoInput(true);
@@ -183,9 +183,13 @@ public class OwnerReviewsActivity extends AppCompatActivity {
                 conn.setRequestProperty("Authorization", "Bearer " + token);
 
                 JSONObject jsonParam = new JSONObject();
-                jsonParam.put("accommodationId", accommodationId);
-                jsonParam.put("rating", (int) rating);
+                //jsonParam.put("accommodationId", accommodationId);
                 jsonParam.put("comment", comment);
+                jsonParam.put("rating", (int) rating);
+                jsonParam.put("senderId", userId);
+                jsonParam.put("recipientId", ownerId);
+
+
 
                 DataOutputStream os = new DataOutputStream(conn.getOutputStream());
                 os.writeBytes(jsonParam.toString());
@@ -198,7 +202,7 @@ public class OwnerReviewsActivity extends AppCompatActivity {
                         Toast.makeText(OwnerReviewsActivity.this, "Review submitted successfully", Toast.LENGTH_SHORT).show();
                         reviewCommentInput.setText("");
                         reviewRatingBar.setRating(0);
-                        fetchOwnerReviews(accommodationId);
+                        fetchOwnerReviews(ownerId);
                     });
                 } else {
                     runOnUiThread(() -> Toast.makeText(OwnerReviewsActivity.this, "Failed to submit review", Toast.LENGTH_SHORT).show());
