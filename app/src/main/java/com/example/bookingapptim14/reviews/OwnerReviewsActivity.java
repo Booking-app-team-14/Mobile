@@ -219,7 +219,7 @@ public class OwnerReviewsActivity extends AppCompatActivity {
     public void deleteReviewById(Long reviewId, int position) {
         new Thread(() -> {
             try {
-                URL url = new URL(BuildConfig.IP_ADDR + "/api/accommodationReviews/" + reviewId); //+ reviewId
+                URL url = new URL(BuildConfig.IP_ADDR + "/api/reviews/" + reviewId); //+ reviewId
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("DELETE");
 
