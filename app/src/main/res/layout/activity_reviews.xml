@@ -12,7 +12,7 @@
         android:text="Reviews"
         android:textSize="24sp"
         android:textStyle="bold"
-        android:textColor="@color/primary_blue"
+        android:textColor="@color/text_black"
         android:layout_gravity="center"/>
 
     <!-- Message for no reviews -->
@@ -81,7 +81,7 @@
             android:numStars="5"
             android:stepSize="1"
             android:rating="0"
-            android:progressTint="@color/primary_blue"/>
+            android:progressTint="@color/purple_200"/>
 
         <!-- Submit Button -->
         <Button
