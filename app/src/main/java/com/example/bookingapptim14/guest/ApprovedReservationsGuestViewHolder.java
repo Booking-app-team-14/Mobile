@@ -3,6 +3,7 @@ package com.example.bookingapptim14.guest;
 import android.graphics.BitmapFactory;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -38,6 +39,9 @@ public class ApprovedReservationsGuestViewHolder extends RecyclerView.ViewHolder
     private TextView dateTo;
     private TextView cancellationDeadline;
     public Button cancelReservation;
+    public Button reportOwnerButton;
+    public EditText reportReasonEditText;
+    public Button submitReportButton;
 
     public ApprovedReservationsGuestViewHolder(@NonNull View itemView) {
         super(itemView);
@@ -55,7 +59,12 @@ public class ApprovedReservationsGuestViewHolder extends RecyclerView.ViewHolder
         dateTo =  itemView.findViewById(R.id.guestApprovedReservationsToDate);
         cancellationDeadline = itemView.findViewById(R.id.guestApprovedReservationsCancellationDeadline);
         cancelReservation = itemView.findViewById(R.id.guestApprovedReservationsCancelButton);
+
+        reportOwnerButton = itemView.findViewById(R.id.guestApprovedReservationsReportOwnerButton);
+        reportReasonEditText = itemView.findViewById(R.id.reportReasonEditText);
+        submitReportButton = itemView.findViewById(R.id.submitReportButton);
     }
+
 
     public void bind(ApprovedReservationGuestData accommodation) {
         guestUsername.setText(accommodation.getGuestUsername());
@@ -100,6 +109,15 @@ public class ApprovedReservationsGuestViewHolder extends RecyclerView.ViewHolder
             byte[] decodedString = Base64.getDecoder().decode(base64Image);
             accommodationImage.setImageBitmap(BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length));
         }
+
+        if (reportOwnerButton!=null){
+        reportOwnerButton.setEnabled(true);}
+
+        // Inicijalno sakrivanje polja za unos i dugmeta za submit
+        reportReasonEditText.setVisibility(View.GONE);
+        submitReportButton.setVisibility(View.GONE);
+
+
     }
 
 }

@@ -3,6 +3,7 @@ package com.example.bookingapptim14.Adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -22,9 +23,12 @@ import java.util.List;
 public class ApprovedReservationsAdapter extends RecyclerView.Adapter<ApprovedReservationsViewHolder> {
 
     private List<ApprovedReservationData> reservations;
+    private OnReportClickListener reportClickListener;
 
-    public ApprovedReservationsAdapter(List<ApprovedReservationData> reservations) {
+    // Dodajemo konstruktor koji prima OnReportClickListener
+    public ApprovedReservationsAdapter(List<ApprovedReservationData> reservations, OnReportClickListener reportClickListener) {
         this.reservations = reservations;
+        this.reportClickListener = reportClickListener;
     }
 
     @NonNull
@@ -38,6 +42,30 @@ public class ApprovedReservationsAdapter extends RecyclerView.Adapter<ApprovedRe
     public void onBindViewHolder(@NonNull ApprovedReservationsViewHolder holder, int position) {
         ApprovedReservationData reservation = reservations.get(position);
         holder.bind(reservation);
+
+        holder.report.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Prikazi polje za unos razloga i dugme za submit
+                holder.reportReasonEditText.setVisibility(View.VISIBLE);
+                holder.submitReportButton.setVisibility(View.VISIBLE);
+            }
+        });
+
+        holder.submitReportButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String reason = holder.reportReasonEditText.getText().toString().trim();
+                if (!reason.isEmpty()) {
+                    // Pozovite onReportClick metodu iz reportClickListener-a
+                    reportClickListener.onReportClick(reservation, reason);
+                    holder.reportReasonEditText.setVisibility(View.GONE);
+                    holder.submitReportButton.setVisibility(View.GONE);
+                } else {
+                    Toast.makeText(holder.itemView.getContext(), "Reason cannot be empty", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     @Override
@@ -59,4 +87,8 @@ public class ApprovedReservationsAdapter extends RecyclerView.Adapter<ApprovedRe
         notifyItemRemoved(position);
     }
 
+    // Interfejs za klik na Report dugme
+    public interface OnReportClickListener {
+        void onReportClick(ApprovedReservationData reservation, String reason);
+    }
 }
