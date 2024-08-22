@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RatingBar;
-import android.content.SharedPreferences;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,7 +19,6 @@ import com.example.bookingapptim14.Adapters.ReviewsAdapter;
 import com.example.bookingapptim14.BuildConfig;
 import com.example.bookingapptim14.R;
 import com.example.bookingapptim14.models.Review;
-import com.example.bookingapptim14.models.User;
 import com.google.firebase.crashlytics.buildtools.reloc.com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -28,9 +26,12 @@ import com.google.gson.GsonBuilder;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import androidx.fragment.app.Fragment;
+
+import java.io.BufferedWriter;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -300,6 +301,52 @@ public class ReviewsActivity extends AppCompatActivity {
 
         return userRole[0];
     }
+
+    public void reportReviewById(Long reviewId, int position) {
+        new Thread(() -> {
+            try {
+                URL url = new URL(BuildConfig.IP_ADDR + "/api/reviewReports/accommodationReviews/report");
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestMethod("POST");
+                conn.setRequestProperty("Content-Type", "application/json");
+
+                // Dodavanje Authorization zaglavlja sa JWT tokenom
+                String token = getTokenFromSharedPreferences(); // metoda koja dohvata token iz SharedPreferences
+                conn.setRequestProperty("Authorization", "Bearer " + token);
+
+                // Kreiraj JSON objekt koji će biti poslat u zahtevu
+                JSONObject reportJson = new JSONObject();
+                reportJson.put("accommodationReviewId", reviewId);
+                reportJson.put("reason", "Inappropriate content!\n");
+
+                // Pošalji JSON objekt
+                OutputStream os = conn.getOutputStream();
+                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
+                writer.write(reportJson.toString());
+                writer.flush();
+                writer.close();
+                os.close();
+
+                int responseCode = conn.getResponseCode();
+                if (responseCode == HttpURLConnection.HTTP_CREATED) {
+                    // Ažuriraj status recenzije u listi
+                    //reviewsList.get(position).setReported(true);
+                    // Obavesti adapter da osveži prikaz na odgovarajućoj poziciji
+                    reviewsAdapter.notifyItemChanged(position);
+                    runOnUiThread(() -> Toast.makeText(ReviewsActivity.this, "Review reported successfully to admin!", Toast.LENGTH_SHORT).show());
+
+                } else {
+                    runOnUiThread(() -> Toast.makeText(ReviewsActivity.this, "Failed to report review!", Toast.LENGTH_SHORT).show());
+                }
+
+                conn.disconnect();
+            } catch (Exception e) {
+                e.printStackTrace();
+                runOnUiThread(() -> Toast.makeText(ReviewsActivity.this, "An error occurred", Toast.LENGTH_SHORT).show());
+            }
+        }).start();
+    }
+
 
     private void fetchAverageRating(Long accommodationId) {
         new Thread(() -> {

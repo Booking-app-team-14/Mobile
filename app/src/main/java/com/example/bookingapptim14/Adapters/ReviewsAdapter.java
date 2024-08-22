@@ -86,7 +86,7 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewVi
             holder.actionButton.setVisibility(View.VISIBLE);
             holder.actionButton.setText("Report");
             holder.actionButton.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(activity, R.color.red)));
-            //holder.actionButton.setOnClickListener(v -> activity.reportReviewById(review.getId(), position));
+            holder.actionButton.setOnClickListener(v -> activity.reportReviewById(review.getId(), position));
         } else if (userRole.equals("ADMIN")) {
             // ADMIN - prikazivanje dugmeta za odobravanje recenzije
             holder.actionButton.setVisibility(View.VISIBLE);
