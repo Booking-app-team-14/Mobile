@@ -43,14 +43,18 @@ import com.example.bookingapptim14.Adapters.LocalDateDeserializerR;
 import com.example.bookingapptim14.Adapters.LocalDateTimeDeserializer;
 import com.example.bookingapptim14.BuildConfig;
 import com.example.bookingapptim14.GlobalData;
+import com.example.bookingapptim14.LoginScreen;
 import com.example.bookingapptim14.R;
 import com.example.bookingapptim14.enums.RequestStatus;
+import com.example.bookingapptim14.host.AccommodationDetailsActivityHost;
 import com.example.bookingapptim14.models.Accommodation;
 import com.example.bookingapptim14.models.Availability;
 import com.example.bookingapptim14.models.UserInfoDTO;
 import com.example.bookingapptim14.models.dtos.ReservationRequestDTO.RequestDTOGuest;
 import com.example.bookingapptim14.models.dtos.ReservationRequestDTO.ReservationRequestDTO;
 import com.example.bookingapptim14.models.dtos.UserBasicInfoDTO;
+import com.example.bookingapptim14.reviews.OwnerReviewsActivity;
+import com.example.bookingapptim14.reviews.ReviewsActivity;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -88,11 +92,15 @@ public class AccommodationDetailsActivityGuest extends AppCompatActivity {
     private Long userId;
     private String jwtToken;
     private List<byte[]> imageList = new ArrayList<>();
+    //private Button button_reviews;
+
+    //private Long accommodationId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_accomodation_details_guest);
+        Button button_reviews = findViewById(R.id.button_reviews);
 
         SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
         jwtToken = sharedPreferences.getString("jwtToken", "");
@@ -101,6 +109,12 @@ public class AccommodationDetailsActivityGuest extends AppCompatActivity {
         Intent intent = getIntent();
         if (intent != null) {
             Long accommodationId = intent.getLongExtra("accommodation_id", -1);
+            button_reviews.setOnClickListener(v -> {
+                Intent intentReviews = new Intent(AccommodationDetailsActivityGuest.this, ReviewsActivity.class);
+                intentReviews.putExtra("accommodation_id", accommodationId);  // Korišćenje varijable
+                startActivity(intentReviews);
+            });
+
             if (accommodationId != -1) {
                 fetchAccommodationDetails(accommodationId);
             } else {
@@ -108,6 +122,7 @@ public class AccommodationDetailsActivityGuest extends AppCompatActivity {
                 finish();
             }
         }
+
     }
 
     private void fetchAccommodationDetails(Long accommodationId) {
@@ -134,6 +149,7 @@ public class AccommodationDetailsActivityGuest extends AppCompatActivity {
                     accommodation = gson.fromJson(response.toString(), Accommodation.class);
 
                     runOnUiThread(() -> {
+
                         initializeUI();
                         setupViewPager();
                         setupMapView();
@@ -168,6 +184,66 @@ public class AccommodationDetailsActivityGuest extends AppCompatActivity {
         descriptionTextView.setText(accommodation.getDescription());
         priceTextView.setText("$" + accommodation.getPricePerNight());
         ratingTextView.setText(String.valueOf(accommodation.getRating()));
+
+        new Thread(() -> {
+            try {
+                URL url = new URL(BuildConfig.IP_ADDR + "/api/users/owner/" + accommodation.getOwner_Id());
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestMethod("GET");
+                conn.setRequestProperty("Authorization", "Bearer " + jwtToken);
+
+                int responseCode = conn.getResponseCode();
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                    StringBuilder response = new StringBuilder();
+                    String line;
+                    while ((line = in.readLine()) != null) {
+                        response.append(line);
+                    }
+                    in.close();
+
+                    Gson gson = new GsonBuilder()
+                            .registerTypeAdapter(LocalDate.class, new LocalDateDeserializer())
+                            .create();
+                    UserInfoDTO user = gson.fromJson(response.toString(), UserInfoDTO.class);
+
+                    runOnUiThread(() -> {
+                        TextView ownerName = findViewById(R.id.ownerName);
+                        ownerName.setText(user.getFirstName() + " " + user.getLastName());
+                        ImageView ownerPicture = findViewById(R.id.ownerPicture);
+                        String base64ImageGuest = user.getProfilePictureBytes();
+                        if (base64ImageGuest != null && !base64ImageGuest.isEmpty()) {
+                            byte[] decodedString = Base64.getDecoder().decode(base64ImageGuest);
+                            ownerPicture.setImageBitmap(BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length));
+                        }
+                        // Proveri da li je ownerId ispravan
+                        Long ownerId = accommodation.getOwner_Id();
+                        if (ownerId != null) {
+                            // Postavljanje OnClickListener-a na sliku Ownera sa ispravnim ownerId
+                            ownerPicture.setOnClickListener(v -> {
+                                Intent intent = new Intent(AccommodationDetailsActivityGuest.this, OwnerReviewsActivity.class);
+                                intent.putExtra("owner_id", ownerId);
+                                startActivity(intent);
+                            });
+                        } else {
+                            Log.e("AccommodationDetails", "Owner ID is null");
+                        }
+                    });
+                } else {
+                    runOnUiThread(() -> {
+                        Toast.makeText(AccommodationDetailsActivityGuest.this, "Failed to fetch accommodation details", Toast.LENGTH_SHORT).show();
+                        finish();
+                    });
+
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                runOnUiThread(() -> {
+                    Toast.makeText(AccommodationDetailsActivityGuest.this, "Error fetching accommodation details", Toast.LENGTH_SHORT).show();
+                    finish();
+                });
+            }
+        }).start();
     }
 
     private void setupViewPager() {

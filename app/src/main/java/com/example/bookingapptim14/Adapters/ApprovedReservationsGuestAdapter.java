@@ -45,7 +45,31 @@ public class ApprovedReservationsGuestAdapter extends RecyclerView.Adapter<Appro
                 listener.onReservationCancelled(reservation);
             }
         });
+
+        holder.reportOwnerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Prikazuje tekstualno polje za unos razloga prijave i dugme submit
+                holder.reportReasonEditText.setVisibility(View.VISIBLE);
+                holder.submitReportButton.setVisibility(View.VISIBLE);
+            }
+        });
+
+        holder.submitReportButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Sakriva tekstualno polje i dugme submit nakon submitovanja
+                holder.reportReasonEditText.setVisibility(View.GONE);
+                holder.submitReportButton.setVisibility(View.GONE);
+
+                // Možeš dodati logiku za slanje prijave ovde
+                String reportReason = holder.reportReasonEditText.getText().toString();
+                listener.onOwnerReported(reservation, reportReason);
+            }
+        });
     }
+
+
 
     @Override
     public int getItemCount() {
@@ -68,6 +92,9 @@ public class ApprovedReservationsGuestAdapter extends RecyclerView.Adapter<Appro
 
     public interface OnReservationListener {
         void onReservationCancelled(ApprovedReservationGuestData reservation);
+
+        void onOwnerReported(ApprovedReservationGuestData reservation, String reason);
+
     }
 
 }

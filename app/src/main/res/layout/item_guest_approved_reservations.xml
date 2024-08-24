@@ -296,6 +296,43 @@
             android:fontFamily="@font/inter"
             android:textColor="#FFFFFF" />
 
+        <!-- Dodavanje dugmeta Report Owner -->
+        <Button
+            android:id="@+id/guestApprovedReservationsReportOwnerButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:backgroundTint="@color/text_black"
+            android:text="Report Owner"
+            android:fontFamily="@font/inter"
+            android:textColor="#FFFFFF"
+            android:visibility="visible"/>
+
+        <!-- Text polje za unos razloga prijave -->
+        <EditText
+            android:id="@+id/reportReasonEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="Enter the reason for reporting"
+            android:inputType="text"
+            android:backgroundTint="@color/text_gray"
+            android:padding="10dp"
+            android:visibility="gone"
+            />/>
+
+        <!-- Submit dugme -->
+        <Button
+            android:id="@+id/submitReportButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:backgroundTint="@color/text_black"
+            android:text="Submit"
+            android:fontFamily="@font/inter"
+            android:textColor="#FFFFFF"
+            android:visibility="gone"/>
+
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>

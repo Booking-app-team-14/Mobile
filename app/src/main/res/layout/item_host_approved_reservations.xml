@@ -259,7 +259,45 @@
                 android:textColor="@color/text_black"
                 android:textSize="14dp" />
 
+
+
         </LinearLayout>
+        <Button
+            android:id="@+id/hostApprovedReservationsReportGuestButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="10dp"
+            android:backgroundTint="@color/text_black"
+            android:text="Report Guest"
+            android:fontFamily="@font/inter"
+            android:textColor="#FFFFFF"
+            android:visibility="visible"/>
+
+        <!-- Text polje za unos razloga prijave -->
+        <EditText
+            android:id="@+id/hostreportReasonEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="Enter the reason for reporting"
+            android:inputType="text"
+            android:backgroundTint="@color/text_gray"
+            android:padding="10dp"
+            android:visibility="gone"
+            />/>
+
+        <!-- Submit dugme -->
+        <Button
+            android:id="@+id/hostsubmitReportButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:backgroundTint="@color/text_black"
+            android:text="Submit"
+            android:fontFamily="@font/inter"
+            android:textColor="#FFFFFF"
+            android:visibility="gone"/>
 
     </LinearLayout>
 

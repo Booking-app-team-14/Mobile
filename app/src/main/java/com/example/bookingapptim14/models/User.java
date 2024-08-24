@@ -1,6 +1,7 @@
 package com.example.bookingapptim14.models;
 
 public class User {
+    private long id;
 
     private String email;
     private String firstName;
@@ -28,6 +29,10 @@ public class User {
         this.address = address;
         this.password = password;
         this.role = role;
+    }
+
+    public long getId() {
+        return id;
     }
 
     public String getEmail() {

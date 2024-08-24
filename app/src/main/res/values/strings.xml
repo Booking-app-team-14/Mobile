@@ -1,3 +1,4 @@
+<!-- res/values/strings.xml -->
 <resources>
     <string name="app_name">Home Sweet Home</string>
     <string name="barcino_string">Barcino</string>
@@ -16,4 +17,5 @@
     <string name="button_string">Book Now</string>
     <string name="update_string">Update an accommodation</string>
     <string name="report_string">Generate a report</string>
+    <string name="profile_image">Profile Image</string> <!-- Dodaj ovde -->
 </resources>

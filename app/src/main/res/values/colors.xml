@@ -9,4 +9,6 @@
     <color name="red">#DD4141</color>
     <color name="green">#18A659</color>
     <color name="transparent">#00000000</color>
+    <color name="purple_200">#BB86FC</color>
+    <color name="purple_500">#6200EE</color>
 </resources>

@@ -10,6 +10,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,9 +24,11 @@ import com.example.bookingapptim14.BuildConfig;
 import com.example.bookingapptim14.R;
 import com.example.bookingapptim14.enums.RequestStatus;
 import com.example.bookingapptim14.guest.AccommodationDetailsActivityGuest;
+import com.example.bookingapptim14.host.AccommodationDetailsActivityHost;
 import com.example.bookingapptim14.models.Accommodation;
 import com.example.bookingapptim14.models.UserInfoDTO;
 import com.example.bookingapptim14.models.dtos.ReservationRequestDTO.RequestDTOGuest;
+import com.example.bookingapptim14.reviews.ReviewsActivity;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -63,6 +66,7 @@ public class AccommodationDetailsActivityAdmin extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_accommodation_details_admin);
+        Button button_reviews = findViewById(R.id.button_reviews);
 
         SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
         jwtToken = sharedPreferences.getString("jwtToken", "");
@@ -71,6 +75,11 @@ public class AccommodationDetailsActivityAdmin extends AppCompatActivity {
         Intent intent = getIntent();
         if (intent != null) {
             Long accommodationId = intent.getLongExtra("accommodation_id", -1);
+            button_reviews.setOnClickListener(v -> {
+                Intent intentReviews = new Intent(AccommodationDetailsActivityAdmin.this, ReviewsActivity.class);
+                intentReviews.putExtra("accommodation_id", accommodationId);  // Korišćenje varijable
+                startActivity(intentReviews);
+            });
             if (accommodationId != -1) {
                 fetchAccommodationDetails(accommodationId);
             } else {

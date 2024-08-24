@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.media.Image;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -48,6 +49,11 @@ public class ApprovedReservationsViewHolder extends RecyclerView.ViewHolder {
     private TextView dateFrom;
     private TextView dateTo;
 
+    public Button report;
+
+    public EditText reportReasonEditText;
+    public Button submitReportButton;
+
     public ApprovedReservationsViewHolder(@NonNull View itemView) {
         super(itemView);
         profilePicture = itemView.findViewById(R.id.hostApprovedGuestProfilePicture);
@@ -62,6 +68,9 @@ public class ApprovedReservationsViewHolder extends RecyclerView.ViewHolder {
         accommodationName = itemView.findViewById(R.id.hostApprovedReservationsAccommodationName);
         dateFrom = itemView.findViewById(R.id.hostApprovedReservationsFromDate);
         dateTo =  itemView.findViewById(R.id.hostApprovedReservationsToDate);
+        report= itemView.findViewById(R.id.hostApprovedReservationsReportGuestButton);
+        reportReasonEditText = itemView.findViewById(R.id.hostreportReasonEditText);
+        submitReportButton = itemView.findViewById(R.id.hostsubmitReportButton);
     }
 
     public void bind(ApprovedReservationData accommodation) {
@@ -95,6 +104,13 @@ public class ApprovedReservationsViewHolder extends RecyclerView.ViewHolder {
             byte[] decodedString = Base64.getDecoder().decode(base64Image);
             accommodationImage.setImageBitmap(BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length));
         }
+
+        if (report!=null){
+            report.setEnabled(true);}
+
+        // Inicijalno sakrivanje polja za unos i dugmeta za submit
+        reportReasonEditText.setVisibility(View.GONE);
+        submitReportButton.setVisibility(View.GONE);
     }
 
 }

@@ -37,13 +37,17 @@ import com.example.bookingapptim14.models.dtos.ReportsDTO.AccommodationReviewDTO
 import com.example.bookingapptim14.models.dtos.ReportsDTO.AccommodationReviewReportsDTO;
 import com.example.bookingapptim14.models.dtos.ReportsDTO.AccommodationReviewReportsData;
 import com.example.bookingapptim14.models.dtos.ReservationRequestDTO.ApprovedReservationData;
+import com.example.bookingapptim14.models.dtos.ReservationRequestDTO.ApprovedReservationGuestData;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.example.bookingapptim14.models.dtos.ReservationRequestDTO.ReservationRequestDTO;
 
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -52,7 +56,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ApprovedReservationsFragmentHost extends Fragment {
+public class ApprovedReservationsFragmentHost extends Fragment implements ApprovedReservationsAdapter.OnReportClickListener {
 
     private Vibrator vibrator;
     private SensorManager sensorManager;
@@ -72,7 +76,7 @@ public class ApprovedReservationsFragmentHost extends Fragment {
         userId = sharedPreferences.getLong("userId", 0);
 
         reservationsRecyclerView = view.findViewById(R.id.approvedReservationsRecyclerView);
-        adapter = new ApprovedReservationsAdapter(new ArrayList<>());
+        adapter = new ApprovedReservationsAdapter(new ArrayList<>(), this);
         reservationsRecyclerView.setAdapter(adapter);
         reservationsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -198,4 +202,70 @@ public class ApprovedReservationsFragmentHost extends Fragment {
         }).start();
     }
 
+    @Override
+    public void onReportClick(ApprovedReservationData reservation, String reason) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    URL url = new URL(BuildConfig.IP_ADDR + "/api/userReports/report");
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    conn.setRequestMethod("POST");
+                    conn.setDoOutput(true);
+                    conn.setRequestProperty("Authorization", "Bearer " + jwtToken);
+                    conn.setRequestProperty("Content-Type", "application/json");
+
+                    // Dobijanje ownerId
+                    URL url4 = new URL(BuildConfig.IP_ADDR + "/api/users/username/" + reservation.getUserUsername() + "/id");
+                    HttpURLConnection conn4 = (HttpURLConnection) url4.openConnection();
+                    conn4.setRequestMethod("GET");
+                    conn4.setDoInput(true);
+                    conn4.setRequestProperty("Authorization", "Bearer " + jwtToken);
+
+                    int responseCode4 = conn4.getResponseCode();
+
+//                    long ownerId = -1;
+//                    if (responseCode4 == HttpURLConnection.HTTP_OK) {
+//                        BufferedReader in4 = new BufferedReader(new InputStreamReader(conn4.getInputStream()));
+//                        String inputLine4;
+//                        StringBuilder content4 = new StringBuilder();
+//                        while ((inputLine4 = in4.readLine()) != null) {
+//                            content4.append(inputLine4);
+//                        }
+//                        in4.close();
+//                        conn4.disconnect();
+//
+//                        ownerId = Long.parseLong(content4.toString());
+//                    } else {
+//                        System.out.println("GET request failed!");
+//                    }
+
+                    JSONObject reportData = new JSONObject();
+                    reportData.put("reportedUserId", reservation.getGuestId());
+                    reportData.put("description", reason);
+
+                    OutputStream os = conn.getOutputStream();
+                    os.write(reportData.toString().getBytes("UTF-8"));
+                    os.close();
+
+                    int responseCode = conn.getResponseCode();
+                    if (responseCode == HttpURLConnection.HTTP_OK) {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(getContext(), "Owner reported successfully", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    } else {
+                        System.out.println("POST request failed!");
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+
+
+
+    }
 }
